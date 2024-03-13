@@ -1,0 +1,12 @@
+.app-header {
+  background-color: #1c1c21;
+  display: flex;
+  justify-content: center;
+  height: 88px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  border: 1px solid red;
+}

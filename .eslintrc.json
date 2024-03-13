@@ -1,0 +1,18 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["airbnb-base", "plugin:@typescript-eslint/recommended"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "undefined": 0,
+    "linebreak-style": 0,
+    "quotes": ["error", "single"]
+  },
+  "parser": "@typescript-eslint/parser"
+}

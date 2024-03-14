@@ -6,7 +6,50 @@
 }
 
 .container {
+  justify-content: space-between;
   width: 100%;
   max-width: 1240px;
-  border: 1px solid red;
+}
+
+.logo-wrapper {
+  cursor: pointer;
+  line-height: 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 343px;
+}
+
+.nav-btn {
+  display: flex;
+  cursor: pointer;
+  color: #8585AD;
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-btn.active {
+  color: #fff;
+}
+
+.nav-btn svg {
+  fill: #8585AD;
+}
+
+.nav-btn.active svg {
+  fill: #fff;
 }

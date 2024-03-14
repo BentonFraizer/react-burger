@@ -1,4 +1,4 @@
-import { JSX } from 'react'
+import { JSX } from 'react';
 
 type NavBtnProps = {
   className: string;
@@ -12,7 +12,7 @@ function NavBtn(props: NavBtnProps) {
   return (
     <button className={className}>
       {icon}
-      <p className="text text_type_main-default ml-2">
+      <p className='text text_type_main-default ml-2'>
         {children}
       </p>
     </button>

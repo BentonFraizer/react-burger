@@ -1,0 +1,17 @@
+.burger-ingredients {
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid lightseagreen;
+  max-height: calc(100vh - 88px);
+}
+
+.subtitle {
+  text-align: left;
+}
+
+.ingredients-wrapper {
+  background-color: darkgreen;
+  height: calc(100vh - 297px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}

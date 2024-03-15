@@ -22,7 +22,26 @@ function BurgerIngredients() {
           </Tab>
         </div>
         <div className={s['ingredients-wrapper']}>
-          asd
+          {/* Код ниже разнести по разным файлам согласно скриншота из видео */}
+          <div className={s['ingredients-group']}>
+            <div className={s['ingredients-group__title']}>
+              <p className="text text_type_main-medium">
+                Булки
+              </p>
+            </div>
+            <div className={s['ingredient-item__container']}>
+              <div className={s['ingredient-item']}>
+                <div className={s['ingredient-item__img']}></div>
+                <div className={s['ingredient-item__price']}>
+                  <div className={s['price-value']}></div>
+                  <div className={s['price-icon']}></div>
+                </div>
+                <div className={s['ingredient-item__name']}></div>
+                <div className='ingredient-item__counter'></div>
+              </div>
+            </div>
+          </div>
+          {/*  Конец кода который необходимо разнести по файлам  */}
         </div>
       </div>
     </>

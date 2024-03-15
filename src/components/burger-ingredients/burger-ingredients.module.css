@@ -10,8 +10,20 @@
 }
 
 .ingredients-wrapper {
-  background-color: darkgreen;
+  border:1px solid red;
   height: calc(100vh - 297px);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Стили для компонента ingredients-group (вынести в отдельный файл) */
+.ingredients-group {
+}
+
+.ingredients-group__title {
+  text-align: left;
+}
+
+.ingredient-item__container {
+  padding: 24px 16px 40px;
 }

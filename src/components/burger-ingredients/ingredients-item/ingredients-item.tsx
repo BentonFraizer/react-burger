@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
 
@@ -29,7 +29,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         </p>
       </div>
       <div className={`${s['ingredient-item__counter']}`}>
-        <p className='text text_type_digits-default'>1</p>
+        <Counter count={1} size="default" extraClass="m-1" />
       </div>
     </div>
   );

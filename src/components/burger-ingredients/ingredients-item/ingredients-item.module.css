@@ -8,17 +8,3 @@
   display: flex;
   justify-content: center;
 }
-
-.ingredient-item__counter {
-  position: absolute;
-  top: 0;
-  right: 0;
-  content: '';
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #4C4CFF;
-}

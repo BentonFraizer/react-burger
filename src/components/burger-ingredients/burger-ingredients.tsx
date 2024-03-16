@@ -1,11 +1,32 @@
 import { useState } from 'react';
-import { CurrencyIcon, Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { data } from '../../utils/data';
+import { Ingredient } from '../../types';
+import IngredientsGroup from './ingredient-group/ingredients-group';
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState('buns');
-  const firstBurger = data[0];
+
+  // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
+  // Можно будет вынести в отдельный файл когда её будет необходимо использовать в нескольких местах
+  function groupIngredientsByType(ingredients: Ingredient[]): Record<string, Ingredient[]> {
+    const groupedIngredients: Record<string, Ingredient[]> = {};
+
+    for (let i = 0; i < ingredients.length; i += 1) {
+      const ingredient = ingredients[i];
+      const { type } = ingredient;
+
+      if (!groupedIngredients[type]) {
+        groupedIngredients[type] = [];
+      }
+
+      groupedIngredients[type].push(ingredient);
+    }
+
+    return groupedIngredients;
+  }
+  const groupedIngredients = groupIngredientsByType(data);
 
   return (
     <>
@@ -25,59 +46,9 @@ function BurgerIngredients() {
           </Tab>
         </div>
         <div className={s['ingredients-wrapper']}>
-          {/* Код ниже разнести по разным файлам согласно скриншота из видео */}
-          <div className={s['ingredients-group']}>
-            <div className={s['ingredients-group__title']}>
-              <p className='text text_type_main-medium'>
-                Булки
-              </p>
-            </div>
-            <div className={s['ingredient-item__container']}>
-              <div className={s['ingredient-item']}>
-                <div className={s['ingredient-item__img']}>
-                  <img src={firstBurger.image} alt={firstBurger.name} />
-                </div>
-                <div className={s['ingredient-item__price']}>
-                  <div className={s['price-value']}>
-                    <p className='text text_type_digits-default'>{firstBurger.price}</p>
-                  </div>
-                  <div className={s['price-icon']}>
-                    <CurrencyIcon type='primary' />
-                  </div>
-                </div>
-                <div className={s['ingredient-item__name']}>
-                  <p className='text text_type_main-default'>
-                    {firstBurger.name}
-                  </p>
-                </div>
-                <div className='ingredient-item__counter'>
-                  <p className='text text_type_digits-default'>1</p>
-                </div>
-              </div>
-              <div className={s['ingredient-item']}>
-                <div className={s['ingredient-item__img']}>
-                  <img src={firstBurger.image} alt={firstBurger.name} />
-                </div>
-                <div className={s['ingredient-item__price']}>
-                  <div className={s['price-value']}>
-                    <p className='text text_type_digits-default'>{firstBurger.price}</p>
-                  </div>
-                  <div className={s['price-icon']}>
-                    <CurrencyIcon type='primary' />
-                  </div>
-                </div>
-                <div className={s['ingredient-item__name']}>
-                  <p className='text text_type_main-default'>
-                    {firstBurger.name}
-                  </p>
-                </div>
-                <div className='ingredient-item__counter'>
-                  <p className='text text_type_digits-default'>1</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/*  Конец кода который необходимо разнести по файлам  */}
+          {Object.entries(groupedIngredients).map(([type, ingredients]) => (
+            <IngredientsGroup key={type} type={type} ingredients={ingredients} />
+          ))}
         </div>
       </div>
     </>

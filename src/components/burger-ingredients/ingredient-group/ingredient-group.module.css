@@ -1,0 +1,9 @@
+.ingredients-group__title {
+  text-align: left;
+}
+
+.ingredient-item__container {
+  display: flex;
+  flex-wrap: wrap ;
+  justify-content: space-between;
+}

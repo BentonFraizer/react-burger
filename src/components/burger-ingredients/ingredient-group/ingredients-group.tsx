@@ -17,8 +17,8 @@ function IngredientsGroup({ type, ingredients }: IngredientGroupProps): JSX.Elem
         <p className='text text_type_main-medium'>{groupTitle}</p>
       </div>
       <div className={`${s['ingredient-item__container']} pt-6 pl-4 pr-4 pb-10`}>
-        {ingredients.map((ingredient, index) => (
-          <IngredientsItem key={index} ingredient={ingredient} />
+        {ingredients.map((ingredient) => (
+          <IngredientsItem key={ingredient._id} ingredient={ingredient} />
         ))}
       </div>
     </div>

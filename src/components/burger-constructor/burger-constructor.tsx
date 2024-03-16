@@ -19,7 +19,7 @@ function BurgerConstructor() {
       />
       <ul className={s['constructor-elements__wrapper']}>
         {mains.length
-          && mains.map((main) => <li>
+          && mains.map((main) => <li key={main._id}>
             <ConstructorElement
               text='Краторная булка N-200i (верх)'
               price={50}

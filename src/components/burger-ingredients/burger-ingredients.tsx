@@ -29,29 +29,27 @@ function BurgerIngredients() {
   const groupedIngredients = groupIngredientsByType(data);
 
   return (
-    <>
-      <div className={s['burger-ingredients']}>
-        <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`}>
-          Соберите бургер
-        </p>
-        <div style={{ display: 'flex' }}>
-          <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
-            Булки
-          </Tab>
-          <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
-            Соусы
-          </Tab>
-          <Tab value='mains' active={current === 'mains'} onClick={setCurrent}>
-            Начинки
-          </Tab>
-        </div>
-        <div className={s['ingredients-wrapper']}>
-          {Object.entries(groupedIngredients).map(([type, ingredients]) => (
-            <IngredientsGroup key={type} type={type} ingredients={ingredients} />
-          ))}
-        </div>
+    <div className={s['burger-ingredients']}>
+      <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`}>
+        Соберите бургер
+      </p>
+      <div style={{ display: 'flex' }}>
+        <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
+          Булки
+        </Tab>
+        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
+          Соусы
+        </Tab>
+        <Tab value='mains' active={current === 'mains'} onClick={setCurrent}>
+          Начинки
+        </Tab>
       </div>
-    </>
+      <div className={s['ingredients-wrapper']}>
+        {Object.entries(groupedIngredients).map(([type, ingredients]) => (
+          <IngredientsGroup key={type} type={type} ingredients={ingredients} />
+        ))}
+      </div>
+    </div>
   );
 }
 

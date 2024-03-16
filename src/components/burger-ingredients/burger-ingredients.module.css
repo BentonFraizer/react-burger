@@ -26,4 +26,11 @@
 
 .ingredient-item__container {
   padding: 24px 16px 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ingredient-item{
+  width: 100%;
+  max-width: 272px;
 }

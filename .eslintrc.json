@@ -15,7 +15,10 @@
     "quotes": ["error", "single"],
     "comma-dangle": "off",
     "import/no-unresolved": 0,
-    "import/extensions": 0
+    "import/extensions": 0,
+    "object-curly-newline": "off",
+    "import/prefer-default-export": "off",
+    "max-len": ["error", 130]
   },
   "parser": "@typescript-eslint/parser"
 }

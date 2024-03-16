@@ -1,0 +1,18 @@
+.burger-ingredients {
+  width: 100%;
+  max-width: 600px;
+  max-height: calc(100vh - 88px);
+}
+
+.subtitle {
+  text-align: left;
+}
+
+.ingredients-wrapper {
+  height: calc(100vh - 297px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+}

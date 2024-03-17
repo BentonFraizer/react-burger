@@ -33,7 +33,7 @@ function BurgerIngredients() {
       <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`}>
         Соберите бургер
       </p>
-      <div style={{ display: 'flex' }}>
+      <div className={s['tabs-wrapper']}>
         <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
           Булки
         </Tab>

@@ -1,7 +1,11 @@
-import { JSX } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
+import Modal from '../../modal/modal';
+import IngredientDetails from '../ingredient-detailes/ingredient-details';
+import { isEscKeyPressed } from '../../../utils/utils';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
@@ -9,9 +13,26 @@ type IngredientsItemProps = {
 
 function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
+  const [isModalOpened, setIsModalOpened] = useState(false);
+
+  useEffect(() => {
+    const handleEscKeyPress = (e: KeyboardEvent) => {
+      if (isEscKeyPressed(e)) {
+        setIsModalOpened(false);
+      }
+    };
+
+    if (isModalOpened) {
+      window.addEventListener('keydown', handleEscKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleEscKeyPress);
+    };
+  }, [isModalOpened]);
 
   return (
-    <div className={s['ingredient-item']}>
+    <div className={s['ingredient-item']} onClick={() => setIsModalOpened(true)}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
         <img src={image} alt={name} />
       </div>
@@ -29,8 +50,20 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         </p>
       </div>
       <div className={`${s['ingredient-item__counter']}`}>
-        <Counter count={1} size="default" extraClass="m-1" />
+        <Counter count={1} size='default' extraClass='m-1' />
       </div>
+      {isModalOpened && createPortal(
+        <Modal title='Детали ингредиента' onClose={() => setIsModalOpened(false)}>
+          <IngredientDetails
+            imageSrc={ingredient?.image_large}
+            name={ingredient?.name}
+            calories={ingredient?.calories}
+            proteins={ingredient?.proteins}
+            fat={ingredient?.fat}
+            carbohydrates={ingredient?.carbohydrates} />
+        </Modal>,
+        document.body,
+      )}
     </div>
   );
 }

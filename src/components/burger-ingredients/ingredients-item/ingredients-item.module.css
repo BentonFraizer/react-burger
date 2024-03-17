@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   max-width: 272px;
+  cursor: pointer;
 }
 
 .ingredient-item__price {

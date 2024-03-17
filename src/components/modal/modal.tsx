@@ -6,19 +6,25 @@ import ModalOverlay from './modal-overlay/modal-overlay';
 type ModalProps = {
   title?: string;
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-function Modal({ title, children }: ModalProps): JSX.Element {
+function Modal({ title, children, onClose }: ModalProps): JSX.Element {
+  const handleCloseBtnClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
   return (
     <div className={s.modal}>
       <div className={s['modal-wrapper']}>
-        <ModalOverlay />
+        <ModalOverlay onClose={onClose} />
         <div className={s['modal-content']}>
           <div className={`${s['modal-header']} mb-4`}>
             <p className='text text_type_main-large'>
               {title}
             </p>
-            <div className={s['close-btn']}>
+            <div className={s['close-btn']} onClick={handleCloseBtnClick}>
               <img src={xmark} alt='крестик закрытия модального окна' />
             </div>
           </div>

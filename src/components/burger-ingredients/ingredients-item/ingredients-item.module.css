@@ -1,0 +1,10 @@
+.ingredient-item {
+  position: relative;
+  width: 100%;
+  max-width: 272px;
+}
+
+.ingredient-item__price {
+  display: flex;
+  justify-content: center;
+}

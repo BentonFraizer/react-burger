@@ -1,0 +1,45 @@
+.burger-constructor {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  padding: 100px 16px 0;
+}
+
+.constructor-elements__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-height: 480px;
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.constructor-element {
+  position: relative;
+}
+
+.constructor-element:before {
+  content: url('/src/images/icons/dnd-dots.png');
+  position: absolute;
+  height: 80px;
+  top: 0;
+  left: -27px;
+  display: flex;
+  align-items: center;
+}
+
+.total-price {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.preorder-info {
+  display: flex;
+  justify-content: flex-end;
+}

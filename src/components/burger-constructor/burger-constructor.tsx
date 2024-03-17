@@ -1,9 +1,12 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-constructor.module.css';
+import { Ingredient } from '../../types';
 
-import { data } from '../../utils/data';
+type BurgerConstructorProps = {
+  data: Ingredient[]
+}
 
-function BurgerConstructor() {
+function BurgerConstructor({ data }: BurgerConstructorProps) {
   const firstBurger = data[0];
   const mains = data.filter((ingredient) => ingredient.type === 'main');
 
@@ -14,7 +17,7 @@ function BurgerConstructor() {
         isLocked={true}
         text='Краторная булка N-200i (верх)'
         price={200}
-        thumbnail={firstBurger.image}
+        thumbnail={firstBurger?.image}
         extraClass={'mb-4'}
       />
       <ul className={s['constructor-elements__wrapper']}>
@@ -34,7 +37,7 @@ function BurgerConstructor() {
         isLocked={true}
         text='Краторная булка N-200i (низ)'
         price={200}
-        thumbnail={firstBurger.image}
+        thumbnail={firstBurger?.image}
         extraClass={'mt-4 mb-10'}
       />
       <div className={s['preorder-info']}>

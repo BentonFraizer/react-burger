@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
-import { data } from '../../utils/data';
 import { Ingredient } from '../../types';
 import IngredientsGroup from './ingredient-group/ingredients-group';
 
-function BurgerIngredients() {
+type BurgerIngredientsProps = {
+  data: Ingredient[]
+}
+
+function BurgerIngredients({ data }: BurgerIngredientsProps) {
   const [current, setCurrent] = useState('buns');
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке

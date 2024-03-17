@@ -1,0 +1,8 @@
+.order-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-text .text:last-child {
+  color: #8585AD;
+}

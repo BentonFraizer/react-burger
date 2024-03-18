@@ -12,5 +12,6 @@
   margin: 0;
   display: flex;
   justify-content: space-between;
+  text-align: center;
   color: #8585AD;
 }

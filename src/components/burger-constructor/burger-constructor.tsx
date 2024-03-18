@@ -67,7 +67,7 @@ function BurgerConstructor({ data }: BurgerConstructorProps) {
         </Button>
       </div>
       {isModalOpened && createPortal(
-        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick} isModalOpen={isModalOpened}>
+        <Modal onClose={onCloseBtnOrOverlayClick} isModalOpen={isModalOpened}>
           <OrderDetails />
         </Modal>,
         document.body,

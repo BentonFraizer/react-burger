@@ -1,0 +1,16 @@
+.ingredient-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.ingredient-macronutrients {
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  color: #8585AD;
+}

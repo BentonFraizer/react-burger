@@ -1,8 +1,18 @@
+import React from 'react';
 import s from './modal-overlay.module.css';
 
-function ModalOverlay() {
+type ModalOverlayProps = {
+  onClose: () => void;
+}
+
+function ModalOverlay({ onClose }: ModalOverlayProps) {
+  const handleCloseBtnClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
   return (
-    <div className={s['modal-overlay']} />
+    <div className={s['modal-overlay']} onClick={handleCloseBtnClick} />
   );
 }
 

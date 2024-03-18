@@ -1,6 +1,10 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import s from './burger-constructor.module.css';
 import { Ingredient } from '../../types';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
 
 type BurgerConstructorProps = {
   data: Ingredient[]
@@ -9,6 +13,15 @@ type BurgerConstructorProps = {
 function BurgerConstructor({ data }: BurgerConstructorProps) {
   const firstBurger = data[0];
   const mains = data.filter((ingredient) => ingredient.type === 'main');
+  const [isModalOpened, setIsModalOpened] = useState(false);
+
+  const handleMakeOrderBtnClick = () => {
+    setIsModalOpened(true);
+  };
+
+  const onCloseBtnOrOverlayClick = () => {
+    setIsModalOpened(false);
+  };
 
   return (
     <div className={s['burger-constructor']}>
@@ -49,11 +62,16 @@ function BurgerConstructor({ data }: BurgerConstructorProps) {
             <CurrencyIcon type='primary' />
           </div>
         </div>
-        <Button htmlType='button' type='primary' size='medium'>
+        <Button htmlType='button' type='primary' size='medium' onClick={handleMakeOrderBtnClick}>
           Оформить заказ
         </Button>
       </div>
-
+      {isModalOpened && createPortal(
+        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick} isModalOpen={isModalOpened}>
+          <OrderDetails />
+        </Modal>,
+        document.body,
+      )}
     </div>
   );
 }

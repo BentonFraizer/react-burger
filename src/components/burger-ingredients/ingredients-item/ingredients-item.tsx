@@ -1,11 +1,10 @@
-import React, { JSX, useEffect, useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
 import Modal from '../../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { isEscKeyPressed } from '../../../utils/utils';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
@@ -22,22 +21,6 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   const onCloseBtnOrOverlayClick = () => {
     setIsModalOpened(false);
   };
-
-  useEffect(() => {
-    const handleEscKeyPress = (e: KeyboardEvent) => {
-      if (isEscKeyPressed(e)) {
-        setIsModalOpened(false);
-      }
-    };
-
-    if (isModalOpened) {
-      window.addEventListener('keydown', handleEscKeyPress);
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleEscKeyPress);
-    };
-  }, [isModalOpened]);
 
   return (
     <div className={s['ingredient-item']} onClick={handleIngredientItemClick}>
@@ -61,7 +44,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         <Counter count={1} size='default' extraClass='m-1' />
       </div>
       {isModalOpened && createPortal(
-        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick}>
+        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick} isModalOpen={isModalOpened}>
           <IngredientDetails
             imageSrc={ingredient?.image_large}
             name={ingredient?.name}

@@ -1,11 +1,10 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import s from './burger-constructor.module.css';
 import { Ingredient } from '../../types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { isEscKeyPressed } from '../../utils/utils';
 
 type BurgerConstructorProps = {
   data: Ingredient[]
@@ -23,22 +22,6 @@ function BurgerConstructor({ data }: BurgerConstructorProps) {
   const onCloseBtnOrOverlayClick = () => {
     setIsModalOpened(false);
   };
-
-  useEffect(() => {
-    const handleEscKeyPress = (e: KeyboardEvent) => {
-      if (isEscKeyPressed(e)) {
-        setIsModalOpened(false);
-      }
-    };
-
-    if (isModalOpened) {
-      window.addEventListener('keydown', handleEscKeyPress);
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleEscKeyPress);
-    };
-  }, [isModalOpened]);
 
   return (
     <div className={s['burger-constructor']}>
@@ -84,7 +67,7 @@ function BurgerConstructor({ data }: BurgerConstructorProps) {
         </Button>
       </div>
       {isModalOpened && createPortal(
-        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick}>
+        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick} isModalOpen={isModalOpened}>
           <OrderDetails />
         </Modal>,
         document.body,

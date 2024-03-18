@@ -1,6 +1,6 @@
 import React, { JSX } from 'react';
 import s from './modal.module.css';
-import xmark from '../../images/icons/xmark.png';
+import xmark from '../../images/icons/xmark.svg';
 import ModalOverlay from './modal-overlay/modal-overlay';
 
 type ModalProps = {

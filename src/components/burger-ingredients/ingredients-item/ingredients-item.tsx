@@ -4,7 +4,7 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
 import Modal from '../../modal/modal';
-import IngredientDetails from '../ingredient-detailes/ingredient-details';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import { isEscKeyPressed } from '../../../utils/utils';
 
 type IngredientsItemProps = {
@@ -14,6 +14,14 @@ type IngredientsItemProps = {
 function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
   const [isModalOpened, setIsModalOpened] = useState(false);
+
+  const handleIngredientItemClick = () => {
+    setIsModalOpened(true);
+  };
+
+  const onCloseBtnOrOverlayClick = () => {
+    setIsModalOpened(false);
+  };
 
   useEffect(() => {
     const handleEscKeyPress = (e: KeyboardEvent) => {
@@ -32,7 +40,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   }, [isModalOpened]);
 
   return (
-    <div className={s['ingredient-item']} onClick={() => setIsModalOpened(true)}>
+    <div className={s['ingredient-item']} onClick={handleIngredientItemClick}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
         <img src={image} alt={name} />
       </div>
@@ -53,7 +61,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         <Counter count={1} size='default' extraClass='m-1' />
       </div>
       {isModalOpened && createPortal(
-        <Modal title='Детали ингредиента' onClose={() => setIsModalOpened(false)}>
+        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick}>
           <IngredientDetails
             imageSrc={ingredient?.image_large}
             name={ingredient?.name}

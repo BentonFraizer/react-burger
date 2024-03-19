@@ -11,7 +11,12 @@ function App() {
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/${APIRoute.ingredients}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return new Error(`Ошибка ${response.status}`);
+      })
       .then((receivedData) => setData(receivedData.data))
       .catch((error) => {
       // Не нашел в задании информацию о том, что делать с ошибкой. Оставил пока вывод с консоль.

@@ -36,13 +36,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         <Counter count={1} size='default' extraClass='m-1' />
       </div>
       {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
-        <IngredientDetails
-          imageSrc={ingredient?.image_large}
-          name={ingredient?.name}
-          calories={ingredient?.calories}
-          proteins={ingredient?.proteins}
-          fat={ingredient?.fat}
-          carbohydrates={ingredient?.carbohydrates} />
+        <IngredientDetails ingredient={ingredient}/>
       </Modal>}
     </div>
   );

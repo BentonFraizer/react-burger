@@ -1,21 +1,17 @@
 import { JSX } from 'react';
 import s from './ingredient-details.module.css';
+import { Ingredient } from '../../../types';
 
 type IngredientDetailsProps = {
-  imageSrc: string;
-  name: string;
-  calories: number;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
+  ingredient: Ingredient;
 }
 
-function IngredientDetails(props: IngredientDetailsProps): JSX.Element {
-  const { imageSrc, name, calories, proteins, fat, carbohydrates } = props;
+function IngredientDetails({ ingredient }: IngredientDetailsProps): JSX.Element {
+  const { image_large: imageLarge, name, calories, proteins, fat, carbohydrates } = ingredient;
   return (
     <div className={s['ingredient-details']}>
       <div className='ingredient-image mb-4'>
-        <img src={imageSrc} alt='внешний вид ингредиента' />
+        <img src={imageLarge} alt='внешний вид ингредиента' />
       </div>
       <div className='ingredient-name mb-8'>
         <p className='text text_type_main-medium'>

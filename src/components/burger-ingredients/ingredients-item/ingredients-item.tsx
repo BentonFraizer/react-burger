@@ -1,10 +1,11 @@
-import React, { JSX, useState } from 'react';
+import React, { JSX } from 'react';
 import { createPortal } from 'react-dom';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
 import Modal from '../../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { useModal } from '../../../hooks/useModal';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
@@ -12,18 +13,10 @@ type IngredientsItemProps = {
 
 function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
-  const [isModalOpened, setIsModalOpened] = useState(false);
-
-  const handleIngredientItemClick = () => {
-    setIsModalOpened(true);
-  };
-
-  const onCloseBtnOrOverlayClick = () => {
-    setIsModalOpened(false);
-  };
+  const { isModalOpened, openModal, closeModal } = useModal();
 
   return (
-    <div className={s['ingredient-item']} onClick={handleIngredientItemClick}>
+    <div className={s['ingredient-item']} onClick={openModal}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
         <img src={image} alt={name} />
       </div>
@@ -44,7 +37,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         <Counter count={1} size='default' extraClass='m-1' />
       </div>
       {isModalOpened && createPortal(
-        <Modal title='Детали ингредиента' onClose={onCloseBtnOrOverlayClick} isModalOpen={isModalOpened}>
+        <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
           <IngredientDetails
             imageSrc={ingredient?.image_large}
             name={ingredient?.name}

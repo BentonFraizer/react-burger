@@ -1,7 +1,7 @@
 import React, { JSX, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './modal.module.css';
-import xmark from '../../images/icons/xmark.svg';
 import ModalOverlay from './modal-overlay/modal-overlay';
 import { isEscKeyPressed } from '../../utils/utils';
 
@@ -47,7 +47,7 @@ function Modal({ title, children, onClose, isModalOpen }: ModalProps): JSX.Eleme
                 {title}
               </p>
               <div className={s['close-btn']} onClick={handleCloseBtnClick}>
-                <img src={xmark} alt='крестик закрытия модального окна' />
+                <CloseIcon type="primary" />
               </div>
             </div>
             <div className={s['modal-content__wrapper']}>

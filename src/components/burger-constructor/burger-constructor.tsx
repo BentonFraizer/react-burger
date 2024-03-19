@@ -1,6 +1,5 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
-import { createPortal } from 'react-dom';
 import s from './burger-constructor.module.css';
 import { Ingredient } from '../../types';
 import Modal from '../modal/modal';
@@ -59,12 +58,9 @@ function BurgerConstructor({ data }: BurgerConstructorProps) {
           Оформить заказ
         </Button>
       </div>
-      {isModalOpened && createPortal(
-        <Modal onClose={closeModal} isModalOpen={isModalOpened}>
+      {isModalOpened && <Modal onClose={closeModal} isModalOpen={isModalOpened}>
           <OrderDetails />
-        </Modal>,
-        document.body,
-      )}
+        </Modal>}
     </div>
   );
 }

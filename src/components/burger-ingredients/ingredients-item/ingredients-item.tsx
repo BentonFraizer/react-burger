@@ -1,5 +1,4 @@
 import React, { JSX } from 'react';
-import { createPortal } from 'react-dom';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
@@ -36,18 +35,15 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
       <div className={`${s['ingredient-item__counter']}`}>
         <Counter count={1} size='default' extraClass='m-1' />
       </div>
-      {isModalOpened && createPortal(
-        <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
-          <IngredientDetails
-            imageSrc={ingredient?.image_large}
-            name={ingredient?.name}
-            calories={ingredient?.calories}
-            proteins={ingredient?.proteins}
-            fat={ingredient?.fat}
-            carbohydrates={ingredient?.carbohydrates} />
-        </Modal>,
-        document.body,
-      )}
+      {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
+        <IngredientDetails
+          imageSrc={ingredient?.image_large}
+          name={ingredient?.name}
+          calories={ingredient?.calories}
+          proteins={ingredient?.proteins}
+          fat={ingredient?.fat}
+          carbohydrates={ingredient?.carbohydrates} />
+      </Modal>}
     </div>
   );
 }

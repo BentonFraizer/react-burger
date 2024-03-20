@@ -2,20 +2,22 @@ import React, { JSX } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
-import Modal from '../../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useModal } from '../../../hooks/useModal';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
+  getCurrentIngredientId: (id: string) => void;
+  openModal: () => void;
 };
 
-function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
+function IngredientsItem({ ingredient, getCurrentIngredientId, openModal }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
-  const { isModalOpened, openModal, closeModal } = useModal();
+  const handleIngredientItemClick = (ingredientData:Ingredient) => {
+    getCurrentIngredientId(ingredientData._id);
+    openModal();
+  };
 
   return (
-    <div className={s['ingredient-item']} onClick={openModal}>
+    <div className={s['ingredient-item']} onClick={() => handleIngredientItemClick(ingredient)}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
         <img src={image} alt={name} />
       </div>
@@ -35,9 +37,6 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
       <div className={`${s['ingredient-item__counter']}`}>
         <Counter count={1} size='default' extraClass='m-1' />
       </div>
-      {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
-        <IngredientDetails ingredient={ingredient}/>
-      </Modal>}
     </div>
   );
 }

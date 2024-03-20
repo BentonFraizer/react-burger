@@ -29,7 +29,7 @@ function BurgerConstructor({ data }: BurgerConstructorProps) {
         {mains.length
           && mains.map((main) => <li key={main._id}>
             <ConstructorElement
-              text='Краторная булка N-200i (верх)'
+              text={main.name}
               price={50}
               thumbnail={main.image}
               extraClass={`${s['constructor-element']} mt-4 mb-4`}

@@ -13,14 +13,12 @@ type BurgerIngredientsProps = {
 
 function BurgerIngredients({ data }: BurgerIngredientsProps) {
   const [current, setCurrent] = useState('buns');
-  const [currentIngredientId, setCurrentIngredientId] = useState<string>();
+  const [currentIngredient, setCurrentIngredient] = useState<Ingredient>();
   const { isModalOpened, openModal, closeModal } = useModal();
 
-  const onGetCurrentIngredientId = (ingredientId: string) => {
-    setCurrentIngredientId(ingredientId);
+  const onGetCurrentIngredient = (ingredient: Ingredient) => {
+    setCurrentIngredient(ingredient);
   };
-
-  const currentIngredient = data.filter((item) => item._id === currentIngredientId)[0];
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
   // Можно будет вынести в отдельный файл когда её будет необходимо использовать в нескольких местах
@@ -40,6 +38,7 @@ function BurgerIngredients({ data }: BurgerIngredientsProps) {
 
     return groupedIngredients;
   }
+
   const groupedIngredients = groupIngredientsByType(data);
 
   return (
@@ -51,11 +50,11 @@ function BurgerIngredients({ data }: BurgerIngredientsProps) {
         <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
           Булки
         </Tab>
-        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
-          Соусы
-        </Tab>
         <Tab value='mains' active={current === 'mains'} onClick={setCurrent}>
           Начинки
+        </Tab>
+        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
+          Соусы
         </Tab>
       </div>
       <div className={s['ingredients-wrapper']}>
@@ -64,7 +63,7 @@ function BurgerIngredients({ data }: BurgerIngredientsProps) {
             key={type}
             type={type}
             ingredients={ingredients}
-            getCurrentIngredientId={onGetCurrentIngredientId}
+            getCurrentIngredient={onGetCurrentIngredient}
             openModal={openModal} />
         ))}
       </div>

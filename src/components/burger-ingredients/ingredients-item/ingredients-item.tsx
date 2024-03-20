@@ -5,14 +5,14 @@ import Ingredient from '../../../types/ingredient';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
-  getCurrentIngredientId: (id: string) => void;
+  getCurrentIngredient: (ingredient: Ingredient) => void;
   openModal: () => void;
 };
 
-function IngredientsItem({ ingredient, getCurrentIngredientId, openModal }: IngredientsItemProps): JSX.Element {
+function IngredientsItem({ ingredient, getCurrentIngredient, openModal }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
-  const handleIngredientItemClick = (ingredientData:Ingredient) => {
-    getCurrentIngredientId(ingredientData._id);
+  const handleIngredientItemClick = (ingredientData: Ingredient) => {
+    getCurrentIngredient(ingredientData);
     openModal();
   };
 

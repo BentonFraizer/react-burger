@@ -6,11 +6,11 @@ import IngredientsItem from '../ingredients-item/ingredients-item';
 type IngredientGroupProps = {
   type: string;
   ingredients: Ingredient[];
-  getCurrentIngredientId: (id: string) => void;
+  getCurrentIngredient: (ingredient: Ingredient) => void;
   openModal: () => void;
 };
 
-function IngredientsGroup({ type, ingredients, getCurrentIngredientId, openModal }: IngredientGroupProps): JSX.Element {
+function IngredientsGroup({ type, ingredients, getCurrentIngredient, openModal }: IngredientGroupProps): JSX.Element {
   const groupTitle = { bun: 'Булки', sauce: 'Соусы', main: 'Начинки' }[type];
 
   return (
@@ -23,7 +23,7 @@ function IngredientsGroup({ type, ingredients, getCurrentIngredientId, openModal
           <IngredientsItem
             key={ingredient._id}
             ingredient={ingredient}
-            getCurrentIngredientId={getCurrentIngredientId}
+            getCurrentIngredient={getCurrentIngredient}
             openModal={openModal} />
         ))}
       </div>

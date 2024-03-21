@@ -1,12 +1,24 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
-import { data } from '../../utils/data';
 import { Ingredient } from '../../types';
 import IngredientsGroup from './ingredient-group/ingredients-group';
+import { useModal } from '../../hooks/useModal';
+import Modal from '../modal/modal';
+import IngredientDetails from './ingredient-details/ingredient-details';
 
-function BurgerIngredients() {
+type BurgerIngredientsProps = {
+  data: Ingredient[]
+}
+
+function BurgerIngredients({ data }: BurgerIngredientsProps) {
   const [current, setCurrent] = useState('buns');
+  const [currentIngredient, setCurrentIngredient] = useState<Ingredient>();
+  const { isModalOpened, openModal, closeModal } = useModal();
+
+  const onGetCurrentIngredient = (ingredient: Ingredient) => {
+    setCurrentIngredient(ingredient);
+  };
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
   // Можно будет вынести в отдельный файл когда её будет необходимо использовать в нескольких местах
@@ -26,6 +38,7 @@ function BurgerIngredients() {
 
     return groupedIngredients;
   }
+
   const groupedIngredients = groupIngredientsByType(data);
 
   return (
@@ -33,22 +46,30 @@ function BurgerIngredients() {
       <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`}>
         Соберите бургер
       </p>
-      <div style={{ display: 'flex' }}>
+      <div className={s['tabs-wrapper']}>
         <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
           Булки
-        </Tab>
-        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
-          Соусы
         </Tab>
         <Tab value='mains' active={current === 'mains'} onClick={setCurrent}>
           Начинки
         </Tab>
+        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
+          Соусы
+        </Tab>
       </div>
       <div className={s['ingredients-wrapper']}>
         {Object.entries(groupedIngredients).map(([type, ingredients]) => (
-          <IngredientsGroup key={type} type={type} ingredients={ingredients} />
+          <IngredientsGroup
+            key={type}
+            type={type}
+            ingredients={ingredients}
+            getCurrentIngredient={onGetCurrentIngredient}
+            openModal={openModal} />
         ))}
       </div>
+      {isModalOpened && currentIngredient && <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
+        <IngredientDetails ingredient={currentIngredient} />
+      </Modal>}
     </div>
   );
 }

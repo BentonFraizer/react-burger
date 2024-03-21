@@ -6,9 +6,11 @@ import IngredientsItem from '../ingredients-item/ingredients-item';
 type IngredientGroupProps = {
   type: string;
   ingredients: Ingredient[];
+  getCurrentIngredient: (ingredient: Ingredient) => void;
+  openModal: () => void;
 };
 
-function IngredientsGroup({ type, ingredients }: IngredientGroupProps): JSX.Element {
+function IngredientsGroup({ type, ingredients, getCurrentIngredient, openModal }: IngredientGroupProps): JSX.Element {
   const groupTitle = { bun: 'Булки', sauce: 'Соусы', main: 'Начинки' }[type];
 
   return (
@@ -18,7 +20,11 @@ function IngredientsGroup({ type, ingredients }: IngredientGroupProps): JSX.Elem
       </div>
       <div className={`${s['ingredient-item__container']} pt-6 pl-4 pr-4 pb-10`}>
         {ingredients.map((ingredient) => (
-          <IngredientsItem key={ingredient._id} ingredient={ingredient} />
+          <IngredientsItem
+            key={ingredient._id}
+            ingredient={ingredient}
+            getCurrentIngredient={getCurrentIngredient}
+            openModal={openModal} />
         ))}
       </div>
     </div>

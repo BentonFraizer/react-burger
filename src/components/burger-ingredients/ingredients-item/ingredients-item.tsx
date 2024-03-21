@@ -1,17 +1,23 @@
-import { JSX } from 'react';
+import React, { JSX } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
+  getCurrentIngredient: (ingredient: Ingredient) => void;
+  openModal: () => void;
 };
 
-function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
+function IngredientsItem({ ingredient, getCurrentIngredient, openModal }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
+  const handleIngredientItemClick = (ingredientData: Ingredient) => {
+    getCurrentIngredient(ingredientData);
+    openModal();
+  };
 
   return (
-    <div className={s['ingredient-item']}>
+    <div className={s['ingredient-item']} onClick={() => handleIngredientItemClick(ingredient)}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
         <img src={image} alt={name} />
       </div>
@@ -29,7 +35,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
         </p>
       </div>
       <div className={`${s['ingredient-item__counter']}`}>
-        <Counter count={1} size="default" extraClass="m-1" />
+        <Counter count={1} size='default' extraClass='m-1' />
       </div>
     </div>
   );

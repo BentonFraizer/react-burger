@@ -8,6 +8,10 @@
   text-align: left;
 }
 
+.tabs-wrapper {
+  display: flex;
+}
+
 .ingredients-wrapper {
   height: calc(100vh - 297px);
   overflow-y: auto;

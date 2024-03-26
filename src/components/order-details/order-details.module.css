@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.order-number {
+  height: 120px;
+}
+
 .order-number p {
   text-shadow: 1px -9px 32px #3333FF80, -2px 10px 8px #3333FF40;
 }

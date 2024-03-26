@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { Ingredient } from '../../types';
@@ -6,12 +6,10 @@ import IngredientsGroup from './ingredient-group/ingredients-group';
 import { useModal } from '../../hooks/useModal';
 import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
+import { IngredientsContext } from '../../services/ingredientsContext';
 
-type BurgerIngredientsProps = {
-  data: Ingredient[]
-}
-
-function BurgerIngredients({ data }: BurgerIngredientsProps) {
+function BurgerIngredients() {
+  const { data } = useContext(IngredientsContext);
   const [current, setCurrent] = useState('buns');
   const [currentIngredient, setCurrentIngredient] = useState<Ingredient>();
   const { isModalOpened, openModal, closeModal } = useModal();

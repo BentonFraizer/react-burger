@@ -1,16 +1,13 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
+import React, { useContext } from 'react';
 import s from './burger-constructor.module.css';
-import { Ingredient } from '../../types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
+import { IngredientsContext } from '../../services/ingredientsContext';
 
-type BurgerConstructorProps = {
-  data: Ingredient[]
-}
-
-function BurgerConstructor({ data }: BurgerConstructorProps) {
+function BurgerConstructor() {
+  const { data } = useContext(IngredientsContext);
   const firstBurger = data[0];
   const mains = data.filter((ingredient) => ingredient.type === 'main');
   const { isModalOpened, openModal, closeModal } = useModal();

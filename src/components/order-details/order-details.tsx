@@ -1,12 +1,15 @@
-import { JSX } from 'react';
+import { JSX, useContext } from 'react';
 import s from './order-details.module.css';
 import doneIcon from '../../images/icons/done.svg';
+import { OrderNumberContext } from '../../services/orderNumberContext';
 
 function OrderDetails(): JSX.Element {
+  const { orderNumber } = useContext(OrderNumberContext);
+
   return (
     <div className={s['order-details']}>
       <div className={`${s['order-number']} mb-10`}>
-        <p className='text text_type_digits-large'>034536</p>
+        <p className='text text_type_digits-large'>{orderNumber}</p>
       </div>
       <div className={s['order-id']}>
         <p className='text text_type_main-medium mb-15'>

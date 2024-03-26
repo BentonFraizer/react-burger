@@ -7,6 +7,7 @@ import { Ingredient } from '../../types';
 import { APIRoute, BACKEND_URL } from '../../consts';
 import { IngredientsContext } from '../../services/ingredientsContext';
 import { TotalPriceContext } from '../../services/totalPriceContext';
+import { OrderNumberContext } from '../../services/orderNumberContext';
 
 const totalPriceInitialState = { totalPrice: 0 };
 type TotalPriceStateType = typeof totalPriceInitialState;
@@ -16,7 +17,7 @@ export type TotalPriceActionType = {
   payload?: number;
 };
 
-function reducer(state:TotalPriceStateType, action: TotalPriceActionType) {
+function reducer(state: TotalPriceStateType, action: TotalPriceActionType) {
   switch (action.type) {
     case 'set':
       return { totalPrice: action.payload };
@@ -33,6 +34,7 @@ function App() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [totalPrice, totalPriceDispatcher] = useReducer(reducer, totalPriceInitialState);
+  const [orderNumber, setOrderNumber] = useState<number | null>(null);
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/${APIRoute.ingredients}`).then((response) => {
@@ -51,13 +53,15 @@ function App() {
     <div className={s.app}>
       <IngredientsContext.Provider value={{ data, setData }}>
         <TotalPriceContext.Provider value={{ totalPrice, totalPriceDispatcher }}>
-          <AppHeader />
-          <main className={s.main}>
-            <section className={s.section}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </section>
-          </main>
+          <OrderNumberContext.Provider value={{ orderNumber, setOrderNumber }}>
+            <AppHeader />
+            <main className={s.main}>
+              <section className={s.section}>
+                <BurgerIngredients />
+                <BurgerConstructor />
+              </section>
+            </main>
+          </OrderNumberContext.Provider>
         </TotalPriceContext.Provider>
       </IngredientsContext.Provider>
     </div>

@@ -1,5 +1,5 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -8,13 +8,18 @@ import { IngredientsContext } from '../../services/ingredientsContext';
 import { generateRandomIngredients } from '../../utils/utils';
 import { Ingredient } from '../../types';
 import { TotalPriceContext } from '../../services/totalPriceContext';
+import { APIRoute, BACKEND_URL } from '../../consts';
+import { OrderNumberContext } from '../../services/orderNumberContext';
 
 function BurgerConstructor() {
   const { data } = useContext(IngredientsContext);
   const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
+  const { setOrderNumber } = useContext(OrderNumberContext);
   // Код ниже необходим для генерации случайного количества ингредиентов между закреплёнными элементами типа bun
   const [randomIngredients, setRandomIngredients] = useState<Ingredient[]>([]);
   const [mains, setMains] = useState<Ingredient[]>([]);
+  const [identifiersForOrder, setIdentifiersForOrder] = useState<string[]>([]);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     if (data.length !== 0) {
@@ -41,6 +46,40 @@ function BurgerConstructor() {
   }, [bun, mains]);
 
   const { isModalOpened, openModal, closeModal } = useModal();
+
+  useEffect(() => {
+    if (!isInitialMount.current) {
+      fetch(`${BACKEND_URL}/${APIRoute.orders}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ingredients: identifiersForOrder }),
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return new Error(`Ошибка ${response.status}`);
+      }).then((receivedData) => setOrderNumber(receivedData.order.number)).catch((error) => {
+        // eslint-disable-next-line
+        console.error('Ошибка получения данных в компоненте BurgerConstructor', error);
+      });
+    }
+  }, [identifiersForOrder]);
+
+  const handleMakeOrderBtnClick = () => {
+    isInitialMount.current = false;
+    openModal();
+    const bunId = [bun._id];
+    const mainsIds = mains.map((main) => main._id);
+    setIdentifiersForOrder([...bunId, ...mainsIds]);
+  };
+
+  const handleCloseModalClick = () => {
+    closeModal();
+    setOrderNumber(null);
+  };
 
   // Полностью запутался в типах для контекста поэтому в паре мест пришлось использовать @ts-ignore
   // хотя знаю, что это очень плохая практика.
@@ -86,11 +125,11 @@ function BurgerConstructor() {
             <CurrencyIcon type='primary' />
           </div>
         </div>
-        <Button htmlType='button' type='primary' size='medium' onClick={openModal}>
+        <Button htmlType='button' type='primary' size='medium' onClick={handleMakeOrderBtnClick}>
           Оформить заказ
         </Button>
       </div>
-      {isModalOpened && <Modal onClose={closeModal} isModalOpen={isModalOpened}>
+      {isModalOpened && <Modal onClose={handleCloseModalClick} isModalOpen={isModalOpened}>
         <OrderDetails />
       </Modal>}
     </div>

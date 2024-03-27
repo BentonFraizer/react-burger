@@ -5,7 +5,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
 import { IngredientsContext } from '../../services/ingredientsContext';
-import { generateRandomIngredients } from '../../utils/utils';
+import { generateRandomIngredients, request } from '../../utils/utils';
 import { Ingredient } from '../../types';
 import { TotalPriceContext } from '../../services/totalPriceContext';
 import { APIRoute, BACKEND_URL } from '../../consts';
@@ -47,24 +47,23 @@ function BurgerConstructor() {
 
   const { isModalOpened, openModal, closeModal } = useModal();
 
+  const orderNumberUrl = `${BACKEND_URL}/${APIRoute.orders}`;
+  const orderNumberOptions = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ingredients: identifiersForOrder }),
+  };
+
   useEffect(() => {
     if (!isInitialMount.current) {
-      fetch(`${BACKEND_URL}/${APIRoute.orders}`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ingredients: identifiersForOrder }),
-      }).then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        return new Error(`Ошибка ${response.status}`);
-      }).then((receivedData) => setOrderNumber(receivedData.order.number)).catch((error) => {
-        // eslint-disable-next-line
-        console.error('Ошибка получения данных в компоненте BurgerConstructor', error);
-      });
+      request(orderNumberUrl, orderNumberOptions)
+        .then((receivedData) => setOrderNumber(receivedData.order.number)).catch((error) => {
+          // eslint-disable-next-line
+          console.error('Ошибка получения данных в компоненте BurgerConstructor', error);
+        });
     }
   }, [identifiersForOrder]);
 

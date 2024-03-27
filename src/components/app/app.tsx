@@ -8,6 +8,7 @@ import { APIRoute, BACKEND_URL } from '../../consts';
 import { IngredientsContext } from '../../services/ingredientsContext';
 import { TotalPriceContext } from '../../services/totalPriceContext';
 import { OrderNumberContext } from '../../services/orderNumberContext';
+import { request } from '../../utils/utils';
 
 const totalPriceInitialState = { totalPrice: 0 };
 type TotalPriceStateType = typeof totalPriceInitialState;
@@ -36,17 +37,15 @@ function App() {
   const [totalPrice, totalPriceDispatcher] = useReducer(reducer, totalPriceInitialState);
   const [orderNumber, setOrderNumber] = useState<number | null>(null);
 
+  const ingredientsUrl = `${BACKEND_URL}/${APIRoute.ingredients}`;
+
   useEffect(() => {
-    fetch(`${BACKEND_URL}/${APIRoute.ingredients}`).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return new Error(`Ошибка ${response.status}`);
-    }).then((receivedData) => setData(receivedData.data)).catch((error) => {
-      // Не нашел в задании информацию о том, что делать с ошибкой. Оставил пока вывод в консоль.
-      // eslint-disable-next-line
-      console.error('Ошибка получения данных в компоненте App', error);
-    });
+    request(ingredientsUrl)
+      .then((receivedData) => setData(receivedData.data)).catch((error) => {
+        // Не нашел в задании информацию о том, что делать с ошибкой. Оставил пока вывод в консоль.
+        // eslint-disable-next-line
+        console.error('Ошибка получения данных в компоненте App', error);
+      });
   }, []);
 
   return (

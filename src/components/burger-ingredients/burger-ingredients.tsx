@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { Ingredient } from '../../types';
@@ -6,13 +6,27 @@ import IngredientsGroup from './ingredient-group/ingredients-group';
 import { useModal } from '../../hooks/useModal';
 import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { getIngredients } from '../../services/actions/ingredients';
+import { RootState } from '../../index';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 function BurgerIngredients() {
-  const { data } = useContext(IngredientsContext);
   const [current, setCurrent] = useState('buns');
   const [currentIngredient, setCurrentIngredient] = useState<Ingredient>();
   const { isModalOpened, openModal, closeModal } = useModal();
+
+  const dispatch = useAppDispatch();
+  const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
+
+  if (data === undefined) {
+    return null;
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const onGetCurrentIngredient = (ingredient: Ingredient) => {
     setCurrentIngredient(ingredient);

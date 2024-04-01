@@ -21,7 +21,7 @@ type ActionTypes = typeof GET_INGREDIENTS_REQUEST | typeof GET_INGREDIENTS_SUCCE
 
 export type IngredientsAction = {
   type: ActionTypes;
-  ingredients?: Ingredient[];
+  payload?: Ingredient[];
 };
 
 // eslint-disable-next-line default-param-last
@@ -37,7 +37,7 @@ export const ingredientsReducer = (state:InitialStateType = initialState, action
       return {
         ...state,
         ingredientsRequest: false,
-        ingredients: action.ingredients,
+        ingredients: action.payload,
         ingredientsFailed: false,
       };
     }

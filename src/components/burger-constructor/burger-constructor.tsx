@@ -4,15 +4,19 @@ import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
-import { IngredientsContext } from '../../services/ingredientsContext';
 import { generateRandomIngredients, request } from '../../utils/utils';
 import { Ingredient } from '../../types';
 import { TotalPriceContext } from '../../services/totalPriceContext';
 import { APIRoute, BACKEND_URL } from '../../consts';
 import { OrderNumberContext } from '../../services/orderNumberContext';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { RootState } from '../../index';
+import { getConstructorIngredients } from '../../services/actions/constructor';
 
 function BurgerConstructor() {
-  const { data } = useContext(IngredientsContext);
+  // const { data } = useContext(IngredientsContext);
+  const constructor = useAppSelector((state: RootState) => state);
+  console.log('constructor-state', constructor);
   const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
   const { setOrderNumber } = useContext(OrderNumberContext);
   // Код ниже необходим для генерации случайного количества ингредиентов между закреплёнными элементами типа bun
@@ -21,12 +25,20 @@ function BurgerConstructor() {
   const [identifiersForOrder, setIdentifiersForOrder] = useState<string[]>([]);
   const isInitialMount = useRef(true);
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    if (data.length !== 0) {
-      const random = generateRandomIngredients(data, 2, data.length - 1);
-      setRandomIngredients(random);
-    }
-  }, [data]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getConstructorIngredients());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (data.length !== 0) {
+  //     const random = generateRandomIngredients(data, 2, data.length - 1);
+  //     setRandomIngredients(random);
+  //   }
+  // }, [data]);
 
   useEffect(() => {
     if (randomIngredients.length !== 0) {

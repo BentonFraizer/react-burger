@@ -11,7 +11,7 @@ import { APIRoute, BACKEND_URL } from '../../consts';
 import { OrderNumberContext } from '../../services/orderNumberContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
-import { getConstructorIngredients } from '../../services/actions/constructor';
+import { getConstructorIngredients } from '../../services/actions/constructor-ingredients';
 
 function BurgerConstructor() {
   // const { data } = useContext(IngredientsContext);

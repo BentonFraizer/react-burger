@@ -1,4 +1,4 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT, GET_CONSTRUCTOR_INGREDIENTS } from '../actions/constructor';
+import { ADD_INGREDIENT, REMOVE_INGREDIENT, GET_CONSTRUCTOR_INGREDIENTS } from '../actions/constructor-ingredients';
 import Ingredient from '../../types/ingredient';
 
 type InitialStateType1 = {
@@ -63,11 +63,6 @@ export type ConstructorIngredientsAction = {
 export const constructorReducer = (state: InitialStateType1 = initialState, action: ConstructorIngredientsAction) => {
   console.log('state', state);
   switch (action.type) {
-    case GET_CONSTRUCTOR_INGREDIENTS: {
-      return {
-        state
-      };
-    }
     case ADD_INGREDIENT: {
       return {
         ...state,
@@ -78,6 +73,12 @@ export const constructorReducer = (state: InitialStateType1 = initialState, acti
       return {
         ...state,
         constructorIngredients: [...state.constructorIngredients.filter((el) => el._id !== action.payload)],
+      };
+    }
+    case GET_CONSTRUCTOR_INGREDIENTS: {
+      return {
+        ...state,
+        constructorIngredients: [...state.constructorIngredients]
       };
     }
     default: {

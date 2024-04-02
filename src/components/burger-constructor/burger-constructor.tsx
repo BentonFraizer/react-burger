@@ -11,7 +11,11 @@ import { APIRoute, BACKEND_URL } from '../../consts';
 import { OrderNumberContext } from '../../services/orderNumberContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
-import { getConstructorBun, getConstructorIngredients } from '../../services/actions/constructor-ingredients';
+import {
+  getConstructorBun,
+  getConstructorIngredients,
+  removeConstructorIngredient,
+} from '../../services/actions/constructor-ingredients';
 
 function BurgerConstructor() {
   const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
@@ -77,6 +81,12 @@ function BurgerConstructor() {
     setOrderNumber(null);
   };
 
+  const handleDeleteIngredientBtnClick = (id:string) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(removeConstructorIngredient(id));
+  };
+
   // Полностью запутался в типах для контекста поэтому в паре мест пришлось использовать @ts-ignore
   // хотя знаю, что это очень плохая практика.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -100,6 +110,7 @@ function BurgerConstructor() {
               price={main.price}
               thumbnail={main.image}
               extraClass={`${s['constructor-element']} mt-4 mb-4`}
+              handleClose={() => handleDeleteIngredientBtnClick(main._id)}
             />
           </li>)
         }

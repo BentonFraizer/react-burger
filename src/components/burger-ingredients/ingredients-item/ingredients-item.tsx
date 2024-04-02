@@ -2,17 +2,21 @@ import React, { JSX } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
+import { useAppDispatch } from '../../../hooks/hooks';
+import { setIngredientDetails } from '../../../services/actions/ingredient-details';
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
-  getCurrentIngredient: (ingredient: Ingredient) => void;
   openModal: () => void;
 };
 
-function IngredientsItem({ ingredient, getCurrentIngredient, openModal }: IngredientsItemProps): JSX.Element {
+function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
+  const dispatch = useAppDispatch();
   const handleIngredientItemClick = (ingredientData: Ingredient) => {
-    getCurrentIngredient(ingredientData);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(setIngredientDetails(ingredientData));
     openModal();
   };
 

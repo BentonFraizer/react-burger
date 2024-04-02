@@ -9,10 +9,10 @@ import IngredientDetails from './ingredient-details/ingredient-details';
 import { getIngredients } from '../../services/actions/ingredients';
 import { RootState } from '../../index';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { deleteIngredientDetails } from '../../services/actions/ingredient-details';
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState('buns');
-  const [currentIngredient, setCurrentIngredient] = useState<Ingredient>();
   const { isModalOpened, openModal, closeModal } = useModal();
 
   const dispatch = useAppDispatch();
@@ -28,8 +28,11 @@ function BurgerIngredients() {
     dispatch(getIngredients());
   }, [dispatch]);
 
-  const onGetCurrentIngredient = (ingredient: Ingredient) => {
-    setCurrentIngredient(ingredient);
+  const closeModalHandler = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(deleteIngredientDetails());
+    closeModal();
   };
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
@@ -75,12 +78,11 @@ function BurgerIngredients() {
             key={type}
             type={type}
             ingredients={ingredients}
-            getCurrentIngredient={onGetCurrentIngredient}
             openModal={openModal} />
         ))}
       </div>
-      {isModalOpened && currentIngredient && <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
-        <IngredientDetails ingredient={currentIngredient} />
+      {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModalHandler} isModalOpen={isModalOpened}>
+        <IngredientDetails />
       </Modal>}
     </div>
   );

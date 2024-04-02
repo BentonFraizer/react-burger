@@ -1,7 +1,7 @@
 import { Ingredient } from '../../types';
 
-export const ADD_CONSTRUCTOR_INGREDIENT = 'ADD_INGREDIENT';
-export const REMOVE_CONSTRUCTOR_INGREDIENT = 'REMOVE_INGREDIENT';
+export const ADD_CONSTRUCTOR_INGREDIENT = 'ADD_CONSTRUCTOR_INGREDIENT';
+export const REMOVE_CONSTRUCTOR_INGREDIENT = 'REMOVE_CONSTRUCTOR_INGREDIENT';
 export const GET_CONSTRUCTOR_INGREDIENTS = 'GET_CONSTRUCTOR_INGREDIENTS';
 export const ADD_CONSTRUCTOR_BUN = 'ADD_CONSTRUCTOR_BUN';
 export const REMOVE_CONSTRUCTOR_BUN = 'REMOVE_CONSTRUCTOR_BUN';
@@ -34,10 +34,9 @@ export function addConstructorBun(bun: Ingredient) {
   };
 }
 
-export function removeConstructorBun(bunId: string) {
+export function removeConstructorBun() {
   return {
     type: REMOVE_CONSTRUCTOR_BUN,
-    payload: bunId,
   };
 }
 

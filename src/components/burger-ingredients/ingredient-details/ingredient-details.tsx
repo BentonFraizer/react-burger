@@ -1,13 +1,11 @@
 import { JSX } from 'react';
 import s from './ingredient-details.module.css';
 import { Ingredient } from '../../../types';
+import { useAppSelector } from '../../../hooks/hooks';
 
-type IngredientDetailsProps = {
-  ingredient: Ingredient;
-}
-
-function IngredientDetails({ ingredient }: IngredientDetailsProps): JSX.Element {
-  const { image_large: imageLarge, name, calories, proteins, fat, carbohydrates } = ingredient;
+function IngredientDetails(): JSX.Element {
+  const { ingredientDetails } = useAppSelector((state) => state.ingredientDetails);
+  const { image_large: imageLarge, name, calories, proteins, fat, carbohydrates } = ingredientDetails as Ingredient;
   return (
     <div className={s['ingredient-details']}>
       <div className='ingredient-image mb-4'>

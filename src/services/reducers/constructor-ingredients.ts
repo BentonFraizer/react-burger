@@ -1,26 +1,34 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT, GET_CONSTRUCTOR_INGREDIENTS } from '../actions/constructor-ingredients';
+import {
+  ADD_CONSTRUCTOR_INGREDIENT,
+  REMOVE_CONSTRUCTOR_INGREDIENT,
+  GET_CONSTRUCTOR_INGREDIENTS,
+  ADD_CONSTRUCTOR_BUN,
+  REMOVE_CONSTRUCTOR_BUN,
+  GET_CONSTRUCTOR_BUN,
+} from '../actions/constructor-ingredients';
 import Ingredient from '../../types/ingredient';
 
-type InitialStateType1 = {
+type InitialConstructorStateType = {
+  bun: Ingredient,
   constructorIngredients: Ingredient[],
 }
 
-const initialState: InitialStateType1 = {
+const initialState: InitialConstructorStateType = {
+  bun: {
+    _id: '643d69a5c3f7b9001cfa093c',
+    name: 'Краторная булка N-200i',
+    type: 'bun',
+    proteins: 80,
+    fat: 24,
+    carbohydrates: 53,
+    calories: 420,
+    price: 1255,
+    image: 'https://code.s3.yandex.net/react/code/bun-02.png',
+    image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
+    image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
+    __v: 0,
+  },
   constructorIngredients: [
-    {
-      _id: '643d69a5c3f7b9001cfa093c',
-      name: 'Краторная булка N-200i',
-      type: 'bun',
-      proteins: 80,
-      fat: 24,
-      carbohydrates: 53,
-      calories: 420,
-      price: 1255,
-      image: 'https://code.s3.yandex.net/react/code/bun-02.png',
-      image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
-      image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
-      __v: 0,
-    },
     {
       _id: '643d69a5c3f7b9001cfa094a',
       name: 'Сыр с астероидной плесенью',
@@ -52,24 +60,29 @@ const initialState: InitialStateType1 = {
   ],
 };
 
-type ActionTypes = typeof ADD_INGREDIENT | typeof REMOVE_INGREDIENT | typeof GET_CONSTRUCTOR_INGREDIENTS;
+type ActionTypes =
+  typeof ADD_CONSTRUCTOR_INGREDIENT
+  | typeof REMOVE_CONSTRUCTOR_INGREDIENT
+  | typeof GET_CONSTRUCTOR_INGREDIENTS
+  | typeof ADD_CONSTRUCTOR_BUN
+  | typeof REMOVE_CONSTRUCTOR_BUN
+  | typeof GET_CONSTRUCTOR_BUN;
 
 export type ConstructorIngredientsAction = {
   type: ActionTypes;
-  payload?: Ingredient | string | Ingredient[];
+  payload?: Ingredient | string;
 };
 
 // eslint-disable-next-line default-param-last
-export const constructorReducer = (state: InitialStateType1 = initialState, action: ConstructorIngredientsAction) => {
-  console.log('state', state);
+export const constructorReducer = (state: InitialConstructorStateType = initialState, action: ConstructorIngredientsAction) => {
   switch (action.type) {
-    case ADD_INGREDIENT: {
+    case ADD_CONSTRUCTOR_INGREDIENT: {
       return {
         ...state,
         constructorIngredients: [...state.constructorIngredients, action.payload],
       };
     }
-    case REMOVE_INGREDIENT: {
+    case REMOVE_CONSTRUCTOR_INGREDIENT: {
       return {
         ...state,
         constructorIngredients: [...state.constructorIngredients.filter((el) => el._id !== action.payload)],
@@ -78,7 +91,25 @@ export const constructorReducer = (state: InitialStateType1 = initialState, acti
     case GET_CONSTRUCTOR_INGREDIENTS: {
       return {
         ...state,
-        constructorIngredients: [...state.constructorIngredients]
+        constructorIngredients: [...state.constructorIngredients],
+      };
+    }
+    case ADD_CONSTRUCTOR_BUN: {
+      return {
+        ...state,
+        bun: action.payload,
+      };
+    }
+    case REMOVE_CONSTRUCTOR_BUN: {
+      return {
+        ...state,
+        bun: null,
+      };
+    }
+    case GET_CONSTRUCTOR_BUN: {
+      return {
+        ...state,
+        bun: state.bun,
       };
     }
     default: {

@@ -4,24 +4,22 @@ import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
-import { generateRandomIngredients, request } from '../../utils/utils';
+import { request } from '../../utils/utils';
 import { Ingredient } from '../../types';
 import { TotalPriceContext } from '../../services/totalPriceContext';
 import { APIRoute, BACKEND_URL } from '../../consts';
 import { OrderNumberContext } from '../../services/orderNumberContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
-import { getConstructorIngredients } from '../../services/actions/constructor-ingredients';
+import { getConstructorBun, getConstructorIngredients } from '../../services/actions/constructor-ingredients';
 
 function BurgerConstructor() {
-  // const { data } = useContext(IngredientsContext);
-  const constructor = useAppSelector((state: RootState) => state);
-  console.log('constructor-state', constructor);
+  const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
+  const constructorIngredients = useAppSelector(
+    (state: RootState) => state.constructorIngredients.constructorIngredients,
+  ) as Ingredient[];
   const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
   const { setOrderNumber } = useContext(OrderNumberContext);
-  // Код ниже необходим для генерации случайного количества ингредиентов между закреплёнными элементами типа bun
-  const [randomIngredients, setRandomIngredients] = useState<Ingredient[]>([]);
-  const [mains, setMains] = useState<Ingredient[]>([]);
   const [identifiersForOrder, setIdentifiersForOrder] = useState<string[]>([]);
   const isInitialMount = useRef(true);
 
@@ -31,31 +29,18 @@ function BurgerConstructor() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     dispatch(getConstructorIngredients());
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getConstructorBun());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (data.length !== 0) {
-  //     const random = generateRandomIngredients(data, 2, data.length - 1);
-  //     setRandomIngredients(random);
-  //   }
-  // }, [data]);
-
   useEffect(() => {
-    if (randomIngredients.length !== 0) {
-      const exceptBunIngredients = randomIngredients.filter((ingredient) => ingredient.type !== 'bun');
-      setMains(exceptBunIngredients);
-    }
-  }, [randomIngredients]);
-
-  const bun = randomIngredients[0];
-
-  useEffect(() => {
-    if (bun !== undefined) {
+    if (bun !== undefined && bun !== null) {
       const bunsCost = bun.price * 2;
-      const mainsCost = mains.reduce((acc, cur) => acc + cur.price, 0);
+      const mainsCost = constructorIngredients.reduce((acc, cur) => acc + cur.price, 0);
       totalPriceDispatcher({ type: 'set', payload: bunsCost + mainsCost });
     }
-  }, [bun, mains]);
+  }, [bun, constructorIngredients]);
 
   const { isModalOpened, openModal, closeModal } = useModal();
 
@@ -82,8 +67,8 @@ function BurgerConstructor() {
   const handleMakeOrderBtnClick = () => {
     isInitialMount.current = false;
     openModal();
-    const bunId = [bun._id];
-    const mainsIds = mains.map((main) => main._id);
+    const bunId = [bun?._id];
+    const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
     setIdentifiersForOrder([...bunId, ...mainsIds]);
   };
 
@@ -108,8 +93,8 @@ function BurgerConstructor() {
         extraClass={'mb-4'}
       />
       <ul className={s['constructor-elements__wrapper']}>
-        {mains.length
-          && mains.map((main) => <li key={main._id}>
+        {constructorIngredients.length
+          && constructorIngredients.map((main) => <li key={main._id}>
             <ConstructorElement
               text={main.name}
               price={main.price}

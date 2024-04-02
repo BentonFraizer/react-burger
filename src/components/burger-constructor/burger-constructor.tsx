@@ -1,13 +1,11 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
-import { request } from '../../utils/utils';
 import { Ingredient } from '../../types';
 import { TotalPriceContext } from '../../services/totalPriceContext';
-import { APIRoute, BACKEND_URL } from '../../consts';
 import { OrderNumberContext } from '../../services/orderNumberContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
@@ -16,6 +14,7 @@ import {
   getConstructorIngredients,
   removeConstructorIngredient,
 } from '../../services/actions/constructor-ingredients';
+import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order';
 
 function BurgerConstructor() {
   const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
@@ -24,7 +23,6 @@ function BurgerConstructor() {
   ) as Ingredient[];
   const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
   const { setOrderNumber } = useContext(OrderNumberContext);
-  const [identifiersForOrder, setIdentifiersForOrder] = useState<string[]>([]);
   const isInitialMount = useRef(true);
 
   const dispatch = useAppDispatch();
@@ -48,37 +46,22 @@ function BurgerConstructor() {
 
   const { isModalOpened, openModal, closeModal } = useModal();
 
-  const orderNumberUrl = `${BACKEND_URL}/${APIRoute.orders}`;
-  const orderNumberOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ ingredients: identifiersForOrder }),
-  };
-
-  useEffect(() => {
-    if (!isInitialMount.current) {
-      request(orderNumberUrl, orderNumberOptions)
-        .then((receivedData) => setOrderNumber(receivedData.order.number)).catch((error) => {
-          // eslint-disable-next-line
-          console.error('Ошибка получения данных в компоненте BurgerConstructor', error);
-        });
-    }
-  }, [identifiersForOrder]);
-
   const handleMakeOrderBtnClick = () => {
     isInitialMount.current = false;
     openModal();
     const bunId = [bun?._id];
     const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
-    setIdentifiersForOrder([...bunId, ...mainsIds]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getOrderNumber([...bunId, ...mainsIds]));
   };
 
-  const handleCloseModalClick = () => {
+  const handleCloseModal = () => {
     closeModal();
     setOrderNumber(null);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(deleteOrderNumber());
   };
 
   const handleDeleteIngredientBtnClick = (id:string) => {
@@ -136,7 +119,7 @@ function BurgerConstructor() {
           Оформить заказ
         </Button>
       </div>
-      {isModalOpened && <Modal onClose={handleCloseModalClick} isModalOpen={isModalOpened}>
+      {isModalOpened && <Modal onClose={handleCloseModal} isModalOpen={isModalOpened}>
         <OrderDetails />
       </Modal>}
     </div>

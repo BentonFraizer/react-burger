@@ -1,10 +1,10 @@
-import { JSX, useContext } from 'react';
+import { JSX } from 'react';
 import s from './order-details.module.css';
 import doneIcon from '../../images/icons/done.svg';
-import { OrderNumberContext } from '../../services/orderNumberContext';
+import { useAppSelector } from '../../hooks/hooks';
 
 function OrderDetails(): JSX.Element {
-  const { orderNumber } = useContext(OrderNumberContext);
+  const { orderNumber } = useAppSelector((state) => state.order);
 
   return (
     <div className={s['order-details']}>

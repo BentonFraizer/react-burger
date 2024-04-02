@@ -3,7 +3,6 @@ import {
   REMOVE_CONSTRUCTOR_INGREDIENT,
   GET_CONSTRUCTOR_INGREDIENTS,
   ADD_CONSTRUCTOR_BUN,
-  REMOVE_CONSTRUCTOR_BUN,
   GET_CONSTRUCTOR_BUN,
 } from '../actions/constructor-ingredients';
 import Ingredient from '../../types/ingredient';
@@ -65,7 +64,6 @@ type ActionTypes =
   | typeof REMOVE_CONSTRUCTOR_INGREDIENT
   | typeof GET_CONSTRUCTOR_INGREDIENTS
   | typeof ADD_CONSTRUCTOR_BUN
-  | typeof REMOVE_CONSTRUCTOR_BUN
   | typeof GET_CONSTRUCTOR_BUN;
 
 export type ConstructorIngredientsAction = {
@@ -98,12 +96,6 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
       return {
         ...state,
         bun: action.payload,
-      };
-    }
-    case REMOVE_CONSTRUCTOR_BUN: {
-      return {
-        ...state,
-        bun: null,
       };
     }
     case GET_CONSTRUCTOR_BUN: {

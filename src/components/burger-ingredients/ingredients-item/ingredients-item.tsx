@@ -1,5 +1,6 @@
 import React, { JSX } from 'react';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
 import { useAppDispatch } from '../../../hooks/hooks';
@@ -13,6 +14,18 @@ type IngredientsItemProps = {
 function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
   const dispatch = useAppDispatch();
+  const [{ isDrag }, dragRef] = useDrag({
+    type: 'bun',
+    item: ingredient,
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
+
+  const style = {
+    opacity: isDrag ? 0.4 : 1,
+  };
+
   const handleIngredientItemClick = (ingredientData: Ingredient) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -21,7 +34,7 @@ function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.E
   };
 
   return (
-    <div className={s['ingredient-item']} onClick={() => handleIngredientItemClick(ingredient)}>
+    <div className={s['ingredient-item']} onClick={() => handleIngredientItemClick(ingredient)} ref={dragRef} style={style}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
         <img src={image} alt={name} />
       </div>

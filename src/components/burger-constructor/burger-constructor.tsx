@@ -15,6 +15,8 @@ import {
 } from '../../services/actions/constructor-ingredients';
 import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order';
 import uniqueIdIngredient from '../../types/uniqueIdIngredient';
+import EmptyBun from './empty-bun/empty-bun';
+import EmptyFilling from './empty-filling/empty-filling';
 
 function BurgerConstructor() {
   const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
@@ -75,35 +77,41 @@ function BurgerConstructor() {
   const { totalPrice: totalPrice1 } = totalPrice;
   return (
     <div className={s['burger-constructor']}>
-      <ConstructorElement
-        type='top'
-        isLocked={true}
-        text={bun?.name}
-        price={bun?.price}
-        thumbnail={bun?.image}
-        extraClass={'mb-4'}
-      />
+      {bun === null ? <EmptyBun type={'top'} />
+        : <ConstructorElement
+          type='top'
+          isLocked={true}
+          text={bun?.name}
+          price={bun?.price}
+          thumbnail={bun?.image !== '' ? bun?.image : ''}
+          extraClass={'mb-2'}
+        />
+      }
       <ul className={s['constructor-elements__wrapper']}>
-        {constructorIngredients.length
-          && constructorIngredients.map((main) => <li key={main.uniqueId}>
+        {constructorIngredients.length !== 0
+          ? constructorIngredients.map((main) => <li key={main.uniqueId}>
             <ConstructorElement
               text={main.name}
               price={main.price}
               thumbnail={main.image}
-              extraClass={`${s['constructor-element']} mt-4 mb-4`}
+              extraClass={`${s['constructor-element']} mt-2 mb-2`}
               handleClose={() => handleDeleteIngredientBtnClick(main._id)}
             />
           </li>)
+          : <EmptyFilling />
         }
       </ul>
-      <ConstructorElement
-        type='bottom'
-        isLocked={true}
-        text={bun?.name}
-        price={bun?.price}
-        thumbnail={bun?.image}
-        extraClass={'mt-4 mb-10'}
-      />
+      {bun === null ? <EmptyBun type='bottom' />
+        : <ConstructorElement
+          type='bottom'
+          isLocked={true}
+          text={bun?.name}
+          price={bun?.price}
+          thumbnail={bun?.image}
+          extraClass={'mt-2 mb-10'}
+        />
+      }
+
       <div className={s['preorder-info']}>
         <div className={`${s['total-price']} mr-10`}>
           <div className='total-price__value mr-2'>

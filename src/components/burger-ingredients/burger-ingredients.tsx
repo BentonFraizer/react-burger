@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { deleteIngredientDetails } from '../../services/actions/ingredient-details';
 
 function BurgerIngredients() {
-  const [current, setCurrent] = useState('buns');
+  const [current, setCurrent] = useState('bun');
   const { isModalOpened, openModal, closeModal } = useModal();
   const containerRef = useRef<HTMLDivElement>(null);
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -48,11 +48,11 @@ function BurgerIngredients() {
         const containerMainDifference = Math.abs(containerTopCoordinate - mainRefTopCoordinate);
         const containerSauceDifference = Math.abs(containerTopCoordinate - sauceRefTopCoordinate);
         if (containerBunDifference < containerMainDifference) {
-          setCurrent('buns');
+          setCurrent('bun');
         } else if (containerMainDifference < containerSauceDifference) {
-          setCurrent('mains');
+          setCurrent('main');
         } else {
-          setCurrent('sauces');
+          setCurrent('sauce');
         }
       }
     }
@@ -60,6 +60,11 @@ function BurgerIngredients() {
 
   const onGetGroupRef = (type: string, ref: HTMLDivElement | null) => {
     groupRefs.current[type] = ref;
+  };
+
+  const tabClickHandler = (e: string) => {
+    setCurrent(e);
+    groupRefs.current[e]?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
@@ -89,13 +94,13 @@ function BurgerIngredients() {
         Соберите бургер
       </p>
       <div className={s['tabs-wrapper']}>
-        <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
+        <Tab value='bun' active={current === 'bun'} onClick={(e) => tabClickHandler(e)}>
           Булки
         </Tab>
-        <Tab value='mains' active={current === 'mains'} onClick={setCurrent}>
+        <Tab value='main' active={current === 'main'} onClick={(e) => tabClickHandler(e)}>
           Начинки
         </Tab>
-        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
+        <Tab value='sauce' active={current === 'sauce'} onClick={(e) => tabClickHandler(e)}>
           Соусы
         </Tab>
       </div>

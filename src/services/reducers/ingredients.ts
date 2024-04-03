@@ -1,7 +1,7 @@
 import {
-  GET_INGREDIENTS_REQUEST,
-  GET_INGREDIENTS_SUCCESS,
-  GET_INGREDIENTS_FAILED,
+  FETCH_INGREDIENTS_REQUEST,
+  FETCH_INGREDIENTS_SUCCESS,
+  FETCH_INGREDIENTS_FAILED,
 } from '../actions/ingredients';
 import Ingredient from '../../types/ingredient';
 
@@ -17,7 +17,7 @@ const initialState: InitialStateType = {
   ingredientsFailed: false,
 };
 
-type ActionTypes = typeof GET_INGREDIENTS_REQUEST | typeof GET_INGREDIENTS_SUCCESS | typeof GET_INGREDIENTS_FAILED;
+type ActionTypes = typeof FETCH_INGREDIENTS_REQUEST | typeof FETCH_INGREDIENTS_SUCCESS | typeof FETCH_INGREDIENTS_FAILED;
 
 export type IngredientsAction = {
   type: ActionTypes;
@@ -27,13 +27,13 @@ export type IngredientsAction = {
 // eslint-disable-next-line default-param-last
 export const ingredientsReducer = (state:InitialStateType = initialState, action:IngredientsAction) => {
   switch (action.type) {
-    case GET_INGREDIENTS_REQUEST: {
+    case FETCH_INGREDIENTS_REQUEST: {
       return {
         ...state,
         ingredientsRequest: true,
       };
     }
-    case GET_INGREDIENTS_SUCCESS: {
+    case FETCH_INGREDIENTS_SUCCESS: {
       return {
         ...state,
         ingredientsRequest: false,
@@ -41,7 +41,7 @@ export const ingredientsReducer = (state:InitialStateType = initialState, action
         ingredientsFailed: false,
       };
     }
-    case GET_INGREDIENTS_FAILED: {
+    case FETCH_INGREDIENTS_FAILED: {
       return {
         ...state,
         ingredientsFailed: true,

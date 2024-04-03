@@ -3,26 +3,27 @@ import { request } from '../../utils/utils';
 import { APIRoute, BACKEND_URL } from '../../consts';
 import { IngredientsAction } from '../reducers/ingredients';
 
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+export const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS_REQUEST';
+export const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS';
+export const FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED';
 
 const ingredientsUrl = `${BACKEND_URL}/${APIRoute.ingredients}`;
 
 export function getIngredients() {
+  // eslint-disable-next-line func-names
   return function (dispatch: Dispatch<IngredientsAction>) {
     dispatch({
-      type: GET_INGREDIENTS_REQUEST,
+      type: FETCH_INGREDIENTS_REQUEST,
     });
     request(ingredientsUrl).then((res) => {
       if (res && res.success) {
         dispatch({
-          type: GET_INGREDIENTS_SUCCESS,
+          type: FETCH_INGREDIENTS_SUCCESS,
           payload: res.data,
         });
       } else {
         dispatch({
-          type: GET_INGREDIENTS_FAILED,
+          type: FETCH_INGREDIENTS_FAILED,
         });
       }
     });

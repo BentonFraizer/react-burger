@@ -1,8 +1,8 @@
 import {
   DELETE_ORDER_NUMBER,
-  GET_ORDER_NUMBER_FAILED,
-  GET_ORDER_NUMBER_REQUEST,
-  GET_ORDER_NUMBER_SUCCESS,
+  FETCH_ORDER_NUMBER_FAILED,
+  FETCH_ORDER_NUMBER_REQUEST,
+  FETCH_ORDER_NUMBER_SUCCESS,
 } from '../actions/order';
 
 type InitialStateType = {
@@ -20,9 +20,9 @@ const initialState: InitialStateType = {
 };
 
 type ActionTypes =
-  typeof GET_ORDER_NUMBER_REQUEST
-  | typeof GET_ORDER_NUMBER_SUCCESS
-  | typeof GET_ORDER_NUMBER_FAILED
+  typeof FETCH_ORDER_NUMBER_REQUEST
+  | typeof FETCH_ORDER_NUMBER_SUCCESS
+  | typeof FETCH_ORDER_NUMBER_FAILED
   | typeof DELETE_ORDER_NUMBER;
 
 export type OrderAction = {
@@ -33,13 +33,13 @@ export type OrderAction = {
 // eslint-disable-next-line default-param-last
 export const orderReducer = (state: InitialStateType = initialState, action: OrderAction) => {
   switch (action.type) {
-    case GET_ORDER_NUMBER_REQUEST: {
+    case FETCH_ORDER_NUMBER_REQUEST: {
       return {
         ...state,
         orderRequest: true,
       };
     }
-    case GET_ORDER_NUMBER_SUCCESS: {
+    case FETCH_ORDER_NUMBER_SUCCESS: {
       return {
         ...state,
         orderRequest: false,
@@ -47,7 +47,7 @@ export const orderReducer = (state: InitialStateType = initialState, action: Ord
         orderFailed: false,
       };
     }
-    case GET_ORDER_NUMBER_FAILED: {
+    case FETCH_ORDER_NUMBER_FAILED: {
       return {
         ...state,
         orderRequest: false,

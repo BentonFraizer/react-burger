@@ -6,7 +6,6 @@ import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
 import { Ingredient } from '../../types';
 import { TotalPriceContext } from '../../services/totalPriceContext';
-import { OrderNumberContext } from '../../services/orderNumberContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
@@ -22,7 +21,6 @@ function BurgerConstructor() {
     (state: RootState) => state.constructorIngredients.constructorIngredients,
   ) as Ingredient[];
   const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
-  const { setOrderNumber } = useContext(OrderNumberContext);
   const isInitialMount = useRef(true);
 
   const dispatch = useAppDispatch();
@@ -58,7 +56,6 @@ function BurgerConstructor() {
 
   const handleCloseModal = () => {
     closeModal();
-    setOrderNumber(null);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     dispatch(deleteOrderNumber());

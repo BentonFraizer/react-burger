@@ -37,6 +37,8 @@ function BurgerIngredients() {
     closeModal();
   };
 
+  // Обработчик, отслеживающий положение групп элементов. Если верхняя часть группы ближе к верху конейнера,
+  // выполняется автоматический выбор соответствующего таба.
   const handleScroll = () => {
     if (containerRef.current) {
       const containerTopCoordinate = containerRef.current.getBoundingClientRect().top;
@@ -58,10 +60,12 @@ function BurgerIngredients() {
     }
   };
 
+  // Обработчик, выполняющий сбор всех вложенных ref из компонента IngredientsGroup
   const onGetGroupRef = (type: string, ref: HTMLDivElement | null) => {
     groupRefs.current[type] = ref;
   };
 
+  // Обработчик нажатия на вкладку. Выполняет скролл до соответствующей группы компонентов
   const tabClickHandler = (e: string) => {
     setCurrent(e);
     groupRefs.current[e]?.scrollIntoView({ behavior: 'smooth' });

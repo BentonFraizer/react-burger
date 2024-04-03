@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { Ingredient } from '../../types';
@@ -14,6 +14,8 @@ import { deleteIngredientDetails } from '../../services/actions/ingredient-detai
 function BurgerIngredients() {
   const [current, setCurrent] = useState('buns');
   const { isModalOpened, openModal, closeModal } = useModal();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
@@ -33,6 +35,31 @@ function BurgerIngredients() {
     // @ts-ignore
     dispatch(deleteIngredientDetails());
     closeModal();
+  };
+
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const containerTopCoordinate = containerRef.current.getBoundingClientRect().top;
+      const bunRefTopCoordinate = groupRefs.current.bun?.getBoundingClientRect().top;
+      const mainRefTopCoordinate = groupRefs.current.main?.getBoundingClientRect().top;
+      const sauceRefTopCoordinate = groupRefs.current.sauce?.getBoundingClientRect().top;
+      if (bunRefTopCoordinate && mainRefTopCoordinate && sauceRefTopCoordinate) {
+        const containerBunDifference = Math.abs(containerTopCoordinate - bunRefTopCoordinate);
+        const containerMainDifference = Math.abs(containerTopCoordinate - mainRefTopCoordinate);
+        const containerSauceDifference = Math.abs(containerTopCoordinate - sauceRefTopCoordinate);
+        if (containerBunDifference < containerMainDifference) {
+          setCurrent('buns');
+        } else if (containerMainDifference < containerSauceDifference) {
+          setCurrent('mains');
+        } else {
+          setCurrent('sauces');
+        }
+      }
+    }
+  };
+
+  const onGetGroupRef = (type: string, ref: HTMLDivElement | null) => {
+    groupRefs.current[type] = ref;
   };
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
@@ -72,13 +99,15 @@ function BurgerIngredients() {
           Соусы
         </Tab>
       </div>
-      <div className={s['ingredients-wrapper']}>
+      <div className={s['ingredients-wrapper']} onScroll={handleScroll} ref={containerRef}>
         {Object.entries(groupedIngredients).map(([type, ingredients]) => (
           <IngredientsGroup
             key={type}
             type={type}
             ingredients={ingredients}
-            openModal={openModal} />
+            openModal={openModal}
+            onGetGroupRef={(ref) => onGetGroupRef(type, ref)}
+          />
         ))}
       </div>
       {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModalHandler} isModalOpen={isModalOpened}>

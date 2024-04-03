@@ -5,11 +5,11 @@ import {
   ADD_CONSTRUCTOR_BUN,
   GET_CONSTRUCTOR_BUN,
 } from '../actions/constructor-ingredients';
-import Ingredient from '../../types/ingredient';
+import { Ingredient, UniqueIdIngredient } from '../../types';
 
 type InitialConstructorStateType = {
   bun: Ingredient,
-  constructorIngredients: Ingredient[],
+  constructorIngredients: UniqueIdIngredient[],
 }
 
 const initialState: InitialConstructorStateType = {
@@ -29,6 +29,7 @@ const initialState: InitialConstructorStateType = {
   },
   constructorIngredients: [
     {
+      uniqueId: 'asdsadasjhfapiuhf',
       _id: '643d69a5c3f7b9001cfa094a',
       name: 'Сыр с астероидной плесенью',
       type: 'main',
@@ -43,6 +44,7 @@ const initialState: InitialConstructorStateType = {
       __v: 0,
     },
     {
+      uniqueId: 'asdsasadasddasjhfapiuhf',
       _id: '643d69a5c3f7b9001cfa0943',
       name: 'Соус фирменный Space Sauce',
       type: 'sauce',

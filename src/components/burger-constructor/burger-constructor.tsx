@@ -14,12 +14,13 @@ import {
   removeConstructorIngredient,
 } from '../../services/actions/constructor-ingredients';
 import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order';
+import uniqueIdIngredient from '../../types/uniqueIdIngredient';
 
 function BurgerConstructor() {
   const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
   const constructorIngredients = useAppSelector(
     (state: RootState) => state.constructorIngredients.constructorIngredients,
-  ) as Ingredient[];
+  ) as uniqueIdIngredient[];
   const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
   const isInitialMount = useRef(true);
 
@@ -61,7 +62,7 @@ function BurgerConstructor() {
     dispatch(deleteOrderNumber());
   };
 
-  const handleDeleteIngredientBtnClick = (id:string) => {
+  const handleDeleteIngredientBtnClick = (id: string) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     dispatch(removeConstructorIngredient(id));
@@ -84,7 +85,7 @@ function BurgerConstructor() {
       />
       <ul className={s['constructor-elements__wrapper']}>
         {constructorIngredients.length
-          && constructorIngredients.map((main) => <li key={main._id}>
+          && constructorIngredients.map((main) => <li key={main.uniqueId}>
             <ConstructorElement
               text={main.name}
               price={main.price}

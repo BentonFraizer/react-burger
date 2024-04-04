@@ -3,7 +3,7 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from 'react-dnd';
 import s from './ingredients-item.module.css';
 import Ingredient from '../../../types/ingredient';
-import { useAppDispatch } from '../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { setIngredientDetails } from '../../../services/actions/ingredient-details';
 
 type IngredientsItemProps = {
@@ -12,8 +12,10 @@ type IngredientsItemProps = {
 };
 
 function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.Element {
-  const { image, name, price } = ingredient;
+  const { image, name, price, type, _id } = ingredient;
   const dragType = ingredient.type === 'bun' ? 'bun' : 'filling';
+  const { ingredients: ingredientsCounter, buns: bunsCounter } = useAppSelector((state) => state.constructorIngredients.counters);
+
   const dispatch = useAppDispatch();
   const [{ isDrag }, dragRef] = useDrag({
     type: dragType,
@@ -34,6 +36,8 @@ function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.E
     openModal();
   };
 
+  const counterToRender = type === 'bun' ? bunsCounter[_id] : ingredientsCounter[_id];
+
   return (
     <div className={s['ingredient-item']} onClick={() => handleIngredientItemClick(ingredient)} ref={dragRef} style={style}>
       <div className={`${s['ingredient-item__img']} mb-1`}>
@@ -53,7 +57,11 @@ function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.E
         </p>
       </div>
       <div className={`${s['ingredient-item__counter']}`}>
-        <Counter count={1} size='default' extraClass='m-1' />
+        {
+          counterToRender !== undefined
+            ? <Counter count={counterToRender} size='default' extraClass='m-1' />
+            : null
+        }
       </div>
     </div>
   );

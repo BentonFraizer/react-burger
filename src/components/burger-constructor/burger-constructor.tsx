@@ -1,5 +1,5 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useDrop } from 'react-dnd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +8,6 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
 import { Ingredient } from '../../types';
-import { TotalPriceContext } from '../../services/totalPriceContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
@@ -27,7 +26,6 @@ function BurgerConstructor() {
   const constructorIngredients = useAppSelector(
     (state: RootState) => state.constructorIngredients.constructorIngredients,
   ) as uniqueIdIngredient[];
-  const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
   const isInitialMount = useRef(true);
 
   const dispatch = useAppDispatch();
@@ -41,12 +39,16 @@ function BurgerConstructor() {
     dispatch(getConstructorBun());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (bun !== undefined && bun !== null) {
-      const bunsCost = bun.price * 2;
-      const mainsCost = constructorIngredients.reduce((acc, cur) => acc + cur.price, 0);
-      totalPriceDispatcher({ type: 'set', payload: bunsCost + mainsCost });
+  const totalPrice = useMemo(() => {
+    if (bun === null && constructorIngredients.length === 0) {
+      return 0;
     }
+    if (bun === null && constructorIngredients.length !== 0) {
+      return constructorIngredients.reduce((acc, cur) => acc + cur.price, 0);
+    }
+    const bunsCost = bun.price * 2;
+    const mainsCost = constructorIngredients.reduce((acc, cur) => acc + cur.price, 0);
+    return bunsCost + mainsCost;
   }, [bun, constructorIngredients]);
 
   const { isModalOpened, openModal, closeModal } = useModal();
@@ -113,7 +115,6 @@ function BurgerConstructor() {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { totalPrice: totalPrice1 } = totalPrice;
   return (
     <div className={s['burger-constructor']}>
       {bun === null ? <EmptyBun type={'top'} />
@@ -158,7 +159,7 @@ function BurgerConstructor() {
       <div className={s['preorder-info']}>
         <div className={`${s['total-price']} mr-10`}>
           <div className='total-price__value mr-2'>
-            <p className='text text_type_digits-medium'>{totalPrice1}</p>
+            <p className='text text_type_digits-medium'>{totalPrice}</p>
           </div>
           <div className='total-price__icon'>
             <CurrencyIcon type='primary' />

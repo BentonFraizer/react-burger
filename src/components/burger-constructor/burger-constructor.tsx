@@ -1,6 +1,8 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useContext, useEffect, useRef } from 'react';
 import { useDrop } from 'react-dnd';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuidv4 } from 'uuid';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -10,7 +12,7 @@ import { TotalPriceContext } from '../../services/totalPriceContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
-  addConstructorBun,
+  addConstructorBun, addConstructorIngredient,
   getConstructorBun,
   getConstructorIngredients,
   removeConstructorIngredient,
@@ -96,6 +98,19 @@ function BurgerConstructor() {
   });
   const isDraggingClass = canDrop ? s['is-dragging'] : '';
 
+  const [{ canFillingDrop }, dropTargetForFillings] = useDrop({
+    accept: 'filling',
+    drop(item: Ingredient) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addConstructorIngredient(item, uuidv4()));
+    },
+    collect: (monitor) => ({
+      canFillingDrop: monitor.canDrop(),
+    }),
+  });
+  const isFillingDraggingClass = canFillingDrop ? s['is-dragging'] : '';
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { totalPrice: totalPrice1 } = totalPrice;
@@ -113,9 +128,9 @@ function BurgerConstructor() {
           />
         </div>
       }
-      <ul className={s['constructor-elements__wrapper']}>
-        {constructorIngredients.length !== 0
-          ? constructorIngredients.map((main) => <li key={main.uniqueId}>
+      {constructorIngredients.length !== 0
+        ? <ul className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`} ref={dropTargetForFillings}>
+          {constructorIngredients.map((main) => <li key={main.uniqueId}>
             <ConstructorElement
               text={main.name}
               price={main.price}
@@ -123,10 +138,10 @@ function BurgerConstructor() {
               extraClass={`${s['constructor-element']} mt-2 mb-2`}
               handleClose={() => handleDeleteIngredientBtnClick(main.uniqueId)}
             />
-          </li>)
-          : <EmptyFilling />
-        }
-      </ul>
+          </li>)}
+        </ul>
+        : <EmptyFilling />
+      }
       {bun === null ? <EmptyBun type='bottom' />
         : <div className={isDraggingClass} ref={dropTargetForBottomBun}>
           <ConstructorElement

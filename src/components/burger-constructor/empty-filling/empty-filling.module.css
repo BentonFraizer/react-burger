@@ -13,11 +13,14 @@
   color: #F2F2F3;
   flex-grow: 1;
   box-sizing: border-box;
-  /*border: 3px dashed #7c02a4;*/
 }
 
 .constructor-element__row {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.constructor-element.is-dragging,
+.constructor-element.is-dragging {
+  border: 3px dashed #27b700;
 }

@@ -88,7 +88,7 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
     case REMOVE_CONSTRUCTOR_INGREDIENT: {
       return {
         ...state,
-        constructorIngredients: [...state.constructorIngredients.filter((el) => el._id !== action.payload)],
+        constructorIngredients: [...state.constructorIngredients.filter((el) => el.uniqueId !== action.payload)],
       };
     }
     case GET_CONSTRUCTOR_INGREDIENTS: {

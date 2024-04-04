@@ -13,10 +13,10 @@ export function addConstructorIngredient(ingredient: UniqueIdIngredient, uniqueI
   };
 }
 
-export function removeConstructorIngredient(uniqueIngredientId: string) {
+export function removeConstructorIngredient(ingredient: UniqueIdIngredient) {
   return {
     type: REMOVE_CONSTRUCTOR_INGREDIENT,
-    payload: uniqueIngredientId,
+    payload: ingredient,
   };
 }
 

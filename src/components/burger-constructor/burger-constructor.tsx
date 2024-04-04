@@ -7,7 +7,7 @@ import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
-import { Ingredient } from '../../types';
+import { Ingredient, UniqueIdIngredient } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
@@ -70,10 +70,10 @@ function BurgerConstructor() {
     dispatch(deleteOrderNumber());
   };
 
-  const handleDeleteIngredientBtnClick = (uniqueId: string) => {
+  const handleDeleteIngredientBtnClick = (ingredient: UniqueIdIngredient) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    dispatch(removeConstructorIngredient(uniqueId));
+    dispatch(removeConstructorIngredient(ingredient));
   };
 
   const [{ canDrop }, dropTargetForTopBun] = useDrop({
@@ -137,7 +137,7 @@ function BurgerConstructor() {
               price={main.price}
               thumbnail={main.image}
               extraClass={`${s['constructor-element']} mt-2 mb-2`}
-              handleClose={() => handleDeleteIngredientBtnClick(main.uniqueId)}
+              handleClose={() => handleDeleteIngredientBtnClick(main)}
             />
           </li>)}
         </ul>

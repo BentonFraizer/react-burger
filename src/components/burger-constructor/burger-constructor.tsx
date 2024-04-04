@@ -20,6 +20,7 @@ import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order'
 import uniqueIdIngredient from '../../types/uniqueIdIngredient';
 import EmptyBun from './empty-bun/empty-bun';
 import EmptyFilling from './empty-filling/empty-filling';
+import DraggableConstructorElement from './draggable-constructor-element/draggable-constructor-element';
 
 function BurgerConstructor() {
   const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
@@ -76,6 +77,7 @@ function BurgerConstructor() {
     dispatch(removeConstructorIngredient(ingredient));
   };
 
+  // Хуки обрабатывают перетаскивание булок из списка ингредиентов в конструктор
   const [{ canDrop }, dropTargetForTopBun] = useDrop({
     accept: 'bun',
     drop(item: Ingredient) {
@@ -100,6 +102,7 @@ function BurgerConstructor() {
   });
   const isDraggingClass = canDrop ? s['is-dragging'] : '';
 
+  // Хук обрабатывают перетаскивание начинок и соусов из списка ингредиентов в конструктор
   const [{ canFillingDrop }, dropTargetForFillings] = useDrop({
     accept: 'filling',
     drop(item: Ingredient) {
@@ -131,15 +134,12 @@ function BurgerConstructor() {
       }
       {constructorIngredients.length !== 0
         ? <ul className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`} ref={dropTargetForFillings}>
-          {constructorIngredients.map((main) => <li key={main.uniqueId}>
-            <ConstructorElement
-              text={main.name}
-              price={main.price}
-              thumbnail={main.image}
-              extraClass={`${s['constructor-element']} mt-2 mb-2`}
-              handleClose={() => handleDeleteIngredientBtnClick(main)}
-            />
-          </li>)}
+          {constructorIngredients.map((main, index) => <DraggableConstructorElement
+            key={main.uniqueId}
+            index={index}
+            id={main.uniqueId}
+            main={main}
+            onDeleteIngredient={handleDeleteIngredientBtnClick} />)}
         </ul>
         : <EmptyFilling />
       }

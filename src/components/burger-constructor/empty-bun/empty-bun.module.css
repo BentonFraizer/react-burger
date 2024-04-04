@@ -18,17 +18,21 @@
 .constructor-element_pos_top {
   border-radius: var(--top-constructor-item-border-radius);
   margin-bottom: 8px;
-  /*border: 3px dashed #7c02a4;*/
+
 }
 
 .constructor-element_pos_bottom {
   border-radius: var(--bottom-constructor-item-border-radius);
   margin: 8px 0 40px 0;
-  /*border: 3px dashed #7c02a4;*/
 }
 
 .constructor-element__row {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.constructor-element_pos_top.is-dragging,
+.constructor-element_pos_bottom.is-dragging {
+  border: 3px dashed #27b700;
 }

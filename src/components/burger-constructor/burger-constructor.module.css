@@ -43,3 +43,13 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.bun-top,
+.bun-bottom {
+  border: 3px dashed transparent;
+}
+
+.is-dragging .bun-top,
+.is-dragging .bun-bottom {
+  border: 3px dashed #27b700;
+}

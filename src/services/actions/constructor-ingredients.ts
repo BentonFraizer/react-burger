@@ -4,7 +4,6 @@ export const ADD_CONSTRUCTOR_INGREDIENT = 'ADD_CONSTRUCTOR_INGREDIENT';
 export const REMOVE_CONSTRUCTOR_INGREDIENT = 'REMOVE_CONSTRUCTOR_INGREDIENT';
 export const GET_CONSTRUCTOR_INGREDIENTS = 'GET_CONSTRUCTOR_INGREDIENTS';
 export const ADD_CONSTRUCTOR_BUN = 'ADD_CONSTRUCTOR_BUN';
-export const REPLACE_CONSTRUCTOR_BUN = 'REPLACE_CONSTRUCTOR_BUN';
 export const GET_CONSTRUCTOR_BUN = 'GET_CONSTRUCTOR_BUN';
 
 export function addConstructorIngredient(ingredient: UniqueIdIngredient, uniqueId:string) {
@@ -30,13 +29,6 @@ export function getConstructorIngredients() {
 export function addConstructorBun(bun: Ingredient) {
   return {
     type: ADD_CONSTRUCTOR_BUN,
-    payload: bun,
-  };
-}
-
-export function replaceConstructorBun(bun: Ingredient) {
-  return {
-    type: REPLACE_CONSTRUCTOR_BUN,
     payload: bun,
   };
 }

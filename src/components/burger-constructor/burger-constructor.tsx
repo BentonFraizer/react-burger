@@ -1,5 +1,6 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useContext, useEffect, useRef } from 'react';
+import { useDrop } from 'react-dnd';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
@@ -9,6 +10,7 @@ import { TotalPriceContext } from '../../services/totalPriceContext';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
+  addConstructorBun,
   getConstructorBun,
   getConstructorIngredients,
   removeConstructorIngredient,
@@ -64,28 +66,52 @@ function BurgerConstructor() {
     dispatch(deleteOrderNumber());
   };
 
-  const handleDeleteIngredientBtnClick = (id: string) => {
+  const handleDeleteIngredientBtnClick = (uniqueId: string) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    dispatch(removeConstructorIngredient(id));
+    dispatch(removeConstructorIngredient(uniqueId));
   };
 
-  // Полностью запутался в типах для контекста поэтому в паре мест пришлось использовать @ts-ignore
-  // хотя знаю, что это очень плохая практика.
+  const [{ canDrop }, dropTargetForTopBun] = useDrop({
+    accept: 'bun',
+    drop(item: Ingredient) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addConstructorBun(item));
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  const [, dropTargetForBottomBun] = useDrop({
+    accept: 'bun',
+    drop(item: Ingredient) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addConstructorBun(item));
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  const isDraggingClass = canDrop ? s['is-dragging'] : '';
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const { totalPrice: totalPrice1 } = totalPrice;
   return (
     <div className={s['burger-constructor']}>
       {bun === null ? <EmptyBun type={'top'} />
-        : <ConstructorElement
-          type='top'
-          isLocked={true}
-          text={bun?.name}
-          price={bun?.price}
-          thumbnail={bun?.image !== '' ? bun?.image : ''}
-          extraClass={'mb-2'}
-        />
+        : <div className={isDraggingClass} ref={dropTargetForTopBun}>
+          <ConstructorElement
+            type='top'
+            isLocked={true}
+            text={bun?.name}
+            price={bun?.price}
+            thumbnail={bun?.image}
+            extraClass={`mb-2 ${s['bun-top']}`}
+          />
+        </div>
       }
       <ul className={s['constructor-elements__wrapper']}>
         {constructorIngredients.length !== 0
@@ -95,21 +121,23 @@ function BurgerConstructor() {
               price={main.price}
               thumbnail={main.image}
               extraClass={`${s['constructor-element']} mt-2 mb-2`}
-              handleClose={() => handleDeleteIngredientBtnClick(main._id)}
+              handleClose={() => handleDeleteIngredientBtnClick(main.uniqueId)}
             />
           </li>)
           : <EmptyFilling />
         }
       </ul>
       {bun === null ? <EmptyBun type='bottom' />
-        : <ConstructorElement
-          type='bottom'
-          isLocked={true}
-          text={bun?.name}
-          price={bun?.price}
-          thumbnail={bun?.image}
-          extraClass={'mt-2 mb-10'}
-        />
+        : <div className={isDraggingClass} ref={dropTargetForBottomBun}>
+          <ConstructorElement
+            type='bottom'
+            isLocked={true}
+            text={bun?.name}
+            price={bun?.price}
+            thumbnail={bun?.image}
+            extraClass={`mt-2 mb-10 ${s['bun-bottom']}`}
+          />
+        </div>
       }
 
       <div className={s['preorder-info']}>

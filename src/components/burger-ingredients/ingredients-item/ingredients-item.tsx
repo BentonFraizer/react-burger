@@ -13,9 +13,10 @@ type IngredientsItemProps = {
 
 function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.Element {
   const { image, name, price } = ingredient;
+  const dragType = ingredient.type === 'bun' ? 'bun' : 'filling';
   const dispatch = useAppDispatch();
   const [{ isDrag }, dragRef] = useDrag({
-    type: 'bun',
+    type: dragType,
     item: ingredient,
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),

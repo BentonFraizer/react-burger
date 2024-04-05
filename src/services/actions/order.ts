@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { APIRoute, BACKEND_URL } from '../../consts';
+import { APIRoute } from '../../consts';
 import { request } from '../../utils/utils';
 import { OrderAction } from '../reducers/order';
 
@@ -8,9 +8,7 @@ export const FETCH_ORDER_NUMBER_SUCCESS = 'FETCH_ORDER_NUMBER_SUCCESS';
 export const FETCH_ORDER_NUMBER_FAILED = 'FETCH_ORDER_NUMBER_FAILED';
 export const DELETE_ORDER_NUMBER = 'DELETE_ORDER_NUMBER';
 
-const orderNumberUrl = `${BACKEND_URL}/${APIRoute.orders}`;
-
-export function getOrderNumber(identifiersForOrder:string[]) {
+export function getOrderNumber(identifiersForOrder: string[]) {
   const orderNumberOptions = {
     method: 'POST',
     headers: {
@@ -25,17 +23,18 @@ export function getOrderNumber(identifiersForOrder:string[]) {
     dispatch({
       type: FETCH_ORDER_NUMBER_REQUEST,
     });
-    request(orderNumberUrl, orderNumberOptions).then((res) => {
+    request(APIRoute.orders, orderNumberOptions).then((res) => {
       if (res && res.success) {
         dispatch({
           type: FETCH_ORDER_NUMBER_SUCCESS,
           payload: res.order.number,
         });
-      } else {
-        dispatch({
-          type: FETCH_ORDER_NUMBER_FAILED,
-        });
       }
+    }).catch((e) => {
+      console.log(e);
+      dispatch({
+        type: FETCH_ORDER_NUMBER_FAILED,
+      });
     });
   };
 }

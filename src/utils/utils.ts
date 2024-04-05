@@ -1,15 +1,32 @@
 // Функция определения нажатия клавиши Escape
 export const isEscKeyPressed = (evt: KeyboardEvent) => evt.key === 'Escape' || evt.key === 'Esc';
-// Функция для проверки ответа сервера на наличие ошибки
-export const checkResponse = (res: Response) => {
+
+// 1 раз объявляем базовый урл
+export const BASE_URL = 'https://norma.nomoreparties.space/api/';
+
+// создаем функцию проверки ответа на `ok`
+const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json();
   }
-  return new Error(`Ошибка ${res.status}`);
+  // не забываем выкидывать ошибку, чтобы она попала в `catch`
+  // eslint-disable-next-line prefer-promise-reject-errors
+  return Promise.reject(`Ошибка ${res.status}`);
 };
 
-// Функция для запроса данных с сервера. Принимает необходимые аргументы для выполнения корректного запроса.
-export const request = async (url: string, options?: RequestInit) => {
-  const res = await fetch(url, options);
-  return checkResponse(res);
+// создаем функцию проверки на `success`
+const checkSuccess = (res: any) => {
+  if (res && res.success) {
+    return res;
+  }
+  // не забываем выкидывать ошибку, чтобы она попала в `catch`
+  // eslint-disable-next-line prefer-promise-reject-errors
+  return Promise.reject(`Ответ не success: ${res}`);
 };
+
+// создаем универсальную фукнцию запроса с проверкой ответа и `success`
+// В вызов приходит `endpoint`(часть урла, которая идет после базового) и опции
+// а также в ней базовый урл сразу прописывается, чтобы не дублировать в каждом запросе
+export const request = (endpoint: string, options?: any) => fetch(`${BASE_URL}${endpoint}`, options)
+  .then(checkResponse)
+  .then(checkSuccess);

@@ -64,7 +64,7 @@ function DraggableConstructorElement({ main, index, onDeleteIngredient }: Dragga
   dragRef(dropRef(sortRef));
 
   return (
-    <li key={main.uniqueId} ref={sortRef} style={style}>
+    <li ref={sortRef} style={style}>
       <ConstructorElement
         text={main.name}
         price={main.price}

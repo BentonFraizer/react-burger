@@ -137,7 +137,6 @@ function BurgerConstructor() {
           {constructorIngredients.map((main, index) => <DraggableConstructorElement
             key={main.uniqueId}
             index={index}
-            id={main.uniqueId}
             main={main}
             onDeleteIngredient={handleDeleteIngredientBtnClick} />)}
         </ul>

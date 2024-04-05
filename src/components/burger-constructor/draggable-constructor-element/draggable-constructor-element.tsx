@@ -9,84 +9,62 @@ import { moveConstructorIngredient } from '../../../services/actions/constructor
 type DraggableConstructorElementProps = {
   main: UniqueIdIngredient;
   index: number;
-  id: string;
   onDeleteIngredient: (main: UniqueIdIngredient) => void;
 }
 
-function DraggableConstructorElement({ main, index, id, onDeleteIngredient }: DraggableConstructorElementProps) {
-  const ref = useRef<HTMLLIElement>(null);
+function DraggableConstructorElement({ main, index, onDeleteIngredient }: DraggableConstructorElementProps) {
+  type ModifiedUniqueIdIngredient = UniqueIdIngredient & { sortIndex: number };
+  // Добавляем индекс элементу для дальнейшей корректной обработки элементов во время сортировки
+  const modifiedMain: ModifiedUniqueIdIngredient = { ...main, sortIndex: index };
+  const sortRef = useRef<HTMLLIElement>(null);
   const dispatch = useAppDispatch();
+  const [, dropRef] = useDrop({
+    accept: 'sort',
+    hover: (item: ModifiedUniqueIdIngredient, monitor) => {
+      const dragIndex = item.sortIndex; // Индекс карточки которую перемещает пользователь
+      const hoverIndex = index; // Индекс карточки, на которую выполняется наведение
 
-  const [, drop] = useDrop<UniqueIdIngredient, void>({
-    accept: 'filling',
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
-    hover(item: UniqueIdIngredient, monitor) {
-      if (!ref.current) {
-        return;
-      }
-      const dragIndex = item.uniqueId;
-      const hoverIndex = index;
-
-      // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
         return;
       }
-
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
-      // Get vertical middle
+      const hoverBoundingRect = sortRef.current?.getBoundingClientRect();
+      if (hoverBoundingRect === undefined) {
+        return;
+      }
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      // Determine mouse position
       const clientOffset = monitor.getClientOffset();
-
-      // Get pixels to the top
       const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-
-      // Dragging downwards
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
-
-      // Dragging upwards
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-
-      // Time to actually perform the action
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       dispatch(moveConstructorIngredient(dragIndex, hoverIndex));
 
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.uniqueId = hoverIndex;
+      // eslint-disable-next-line no-param-reassign
+      item.sortIndex = hoverIndex;
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
-    type: 'filling',
-    item: () => ({ id, index }),
-    collect: (monitor: any) => ({
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'sort',
+    item: () => (modifiedMain),
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  const opacity = isDragging ? 0 : 1;
-  drag(drop(ref));
+  const style = isDragging
+    ? { opacity: 0, transition: 'all 0.3s ease-out' }
+    : { opacity: 1, transition: 'all 0.3s ease-out' };
+
+  dragRef(dropRef(sortRef));
+
   return (
-    <li key={main.uniqueId} ref={ref} style={{ opacity }}>
+    <li key={main.uniqueId} ref={sortRef} style={style}>
       <ConstructorElement
         text={main.name}
         price={main.price}

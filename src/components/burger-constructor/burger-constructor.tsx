@@ -116,6 +116,8 @@ function BurgerConstructor() {
   });
   const isFillingDraggingClass = canFillingDrop ? s['is-dragging'] : '';
 
+  const isMakeOrderBtnDisabled = bun === null || constructorIngredients.length === 0;
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return (
@@ -164,7 +166,12 @@ function BurgerConstructor() {
             <CurrencyIcon type='primary' />
           </div>
         </div>
-        <Button htmlType='button' type='primary' size='medium' onClick={handleMakeOrderBtnClick}>
+        <Button
+          htmlType='button'
+          type='primary'
+          size='medium'
+          onClick={handleMakeOrderBtnClick}
+          disabled={isMakeOrderBtnDisabled}>
           Оформить заказ
         </Button>
       </div>

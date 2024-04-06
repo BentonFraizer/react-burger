@@ -9,19 +9,21 @@ type InitialStateType = {
   ingredients: Ingredient[],
   ingredientsRequest: boolean,
   ingredientsFailed: boolean,
+  ingredientsFailedMessage: string,
 }
 
 const initialState: InitialStateType = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
+  ingredientsFailedMessage: '',
 };
 
 type ActionTypes = typeof FETCH_INGREDIENTS_REQUEST | typeof FETCH_INGREDIENTS_SUCCESS | typeof FETCH_INGREDIENTS_FAILED;
 
 export type IngredientsAction = {
   type: ActionTypes;
-  payload?: Ingredient[];
+  payload?: Ingredient[] | string;
 };
 
 // eslint-disable-next-line default-param-last
@@ -39,6 +41,7 @@ export const ingredientsReducer = (state:InitialStateType = initialState, action
         ingredientsRequest: false,
         ingredients: action.payload,
         ingredientsFailed: false,
+        ingredientsFailedMessage: '',
       };
     }
     case FETCH_INGREDIENTS_FAILED: {
@@ -46,6 +49,7 @@ export const ingredientsReducer = (state:InitialStateType = initialState, action
         ...state,
         ingredientsFailed: true,
         ingredientsRequest: false,
+        ingredientsFailedMessage: action.payload,
       };
     }
     default: {

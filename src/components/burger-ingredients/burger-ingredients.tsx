@@ -19,6 +19,7 @@ function BurgerIngredients() {
 
   const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
+  const { ingredientsFailed, ingredientsFailedMessage } = useAppSelector((state: RootState) => state.ingredients);
 
   if (data === undefined) {
     return null;
@@ -90,7 +91,7 @@ function BurgerIngredients() {
     return groupedIngredients;
   }
 
-  const groupedIngredients = groupIngredientsByType(data);
+  const groupedIngredients = groupIngredientsByType(data as Ingredient[]);
 
   return (
     <div className={s['burger-ingredients']}>
@@ -109,7 +110,7 @@ function BurgerIngredients() {
         </Tab>
       </div>
       <div className={s['ingredients-wrapper']} onScroll={handleScroll} ref={containerRef}>
-        {Object.entries(groupedIngredients).map(([type, ingredients]) => (
+        {!ingredientsFailed ? Object.entries(groupedIngredients).map(([type, ingredients]) => (
           <IngredientsGroup
             key={type}
             type={type}
@@ -117,7 +118,21 @@ function BurgerIngredients() {
             openModal={openModal}
             onGetGroupRef={(ref) => onGetGroupRef(type, ref)}
           />
-        ))}
+        )) : (
+          <>
+            <p className='text text_type_main-default mt-10 mb-5'>
+              Ошибка закрузки ингредиентов.
+            </p>
+            <p className='text text_type_main-default'>
+              Информация об ошибке:
+            </p>
+            <p className='text text_type_main-medium'>
+              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+              {/* @ts-ignore */}
+              <span>{ingredientsFailedMessage}</span>
+            </p>
+          </>
+        )}
       </div>
       {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModalHandler} isModalOpen={isModalOpened}>
         <IngredientDetails />

@@ -11,7 +11,8 @@ import { Ingredient, UniqueIdIngredient } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
-  addConstructorBun, addConstructorIngredient,
+  addConstructorBun,
+  addConstructorIngredient,
   getConstructorBun,
   getConstructorIngredients,
   removeConstructorIngredient,

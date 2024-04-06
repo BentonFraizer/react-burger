@@ -1,10 +1,11 @@
 import {
-  ADD_CONSTRUCTOR_INGREDIENT,
-  REMOVE_CONSTRUCTOR_INGREDIENT,
-  GET_CONSTRUCTOR_INGREDIENTS,
   ADD_CONSTRUCTOR_BUN,
+  ADD_CONSTRUCTOR_INGREDIENT,
   GET_CONSTRUCTOR_BUN,
+  GET_CONSTRUCTOR_INGREDIENTS,
   MOVE_CONSTRUCTOR_INGREDIENT,
+  REMOVE_CONSTRUCTOR_INGREDIENT,
+  CLEAR_CONSTRUCTOR,
 } from '../actions/constructor-ingredients';
 import { Ingredient, UniqueIdIngredient } from '../../types';
 
@@ -33,6 +34,7 @@ type ActionTypes =
   | typeof ADD_CONSTRUCTOR_BUN
   | typeof GET_CONSTRUCTOR_BUN
   | typeof MOVE_CONSTRUCTOR_INGREDIENT
+  | typeof CLEAR_CONSTRUCTOR
 
 export type ConstructorIngredientsAction = {
   type: ActionTypes;
@@ -129,6 +131,17 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
       return {
         ...state,
         constructorIngredients: newCards,
+      };
+    }
+    case CLEAR_CONSTRUCTOR: {
+      return {
+        ...state,
+        bun: null,
+        constructorIngredients: [],
+        counters: {
+          buns: {},
+          ingredients: {},
+        },
       };
     }
     default: {

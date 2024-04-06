@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import { APIRoute } from '../../consts';
 import { request } from '../../utils/utils';
 import { OrderAction } from '../reducers/order';
+import { clearConstructor } from './constructor-ingredients';
 
 export const FETCH_ORDER_NUMBER_REQUEST = 'FETCH_ORDER_NUMBER_REQUEST';
 export const FETCH_ORDER_NUMBER_SUCCESS = 'FETCH_ORDER_NUMBER_SUCCESS';
@@ -29,6 +30,9 @@ export function getOrderNumber(identifiersForOrder: string[]) {
           type: FETCH_ORDER_NUMBER_SUCCESS,
           payload: res.order.number,
         });
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        dispatch(clearConstructor());
       }
     }).catch((e) => {
       console.log(e);

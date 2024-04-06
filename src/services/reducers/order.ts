@@ -9,6 +9,7 @@ type InitialStateType = {
   orderNumber: null | string,
   orderRequest: boolean,
   orderFailed: boolean,
+  orderFailedMessage: string,
   identifiersForOrder: string[],
 }
 
@@ -16,6 +17,7 @@ const initialState: InitialStateType = {
   orderNumber: null,
   orderRequest: false,
   orderFailed: false,
+  orderFailedMessage: '',
   identifiersForOrder: [],
 };
 
@@ -45,6 +47,7 @@ export const orderReducer = (state: InitialStateType = initialState, action: Ord
         orderRequest: false,
         orderNumber: action.payload,
         orderFailed: false,
+        orderFailedMessage: '',
       };
     }
     case FETCH_ORDER_NUMBER_FAILED: {
@@ -52,6 +55,7 @@ export const orderReducer = (state: InitialStateType = initialState, action: Ord
         ...state,
         orderRequest: false,
         orderFailed: true,
+        orderFailedMessage: action.payload,
       };
     }
     case DELETE_ORDER_NUMBER: {

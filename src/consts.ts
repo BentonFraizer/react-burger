@@ -1,4 +1,4 @@
 export const APIRoute = {
   ingredients: 'ingredients',
-  orders: 'orders'
+  orders: 'order'
 };

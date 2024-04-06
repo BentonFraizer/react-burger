@@ -38,6 +38,7 @@ export function getOrderNumber(identifiersForOrder: string[]) {
       console.log(e);
       dispatch({
         type: FETCH_ORDER_NUMBER_FAILED,
+        payload: e,
       });
     });
   };

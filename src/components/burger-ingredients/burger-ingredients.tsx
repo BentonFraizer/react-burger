@@ -126,10 +126,10 @@ function BurgerIngredients() {
           />
         )) : (
           <>
-            <p className='text text_type_main-default mt-10 mb-5'>
+            <p className='text text_type_main-medium mt-10 mb-5'>
               Ошибка закрузки ингредиентов.
             </p>
-            <p className='text text_type_main-default'>
+            <p className='text text_type_main-default mb-3'>
               Информация об ошибке:
             </p>
             <p className='text text_type_main-medium'>

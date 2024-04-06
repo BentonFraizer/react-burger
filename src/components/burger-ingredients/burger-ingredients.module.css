@@ -19,4 +19,5 @@
   scrollbar-gutter: stable both-edges;
   scrollbar-width: thin;
   scrollbar-color: #8585AD #2F2F37;
+  display: inline-block;
 }

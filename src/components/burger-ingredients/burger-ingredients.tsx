@@ -10,6 +10,7 @@ import { getIngredients } from '../../services/actions/ingredients';
 import { RootState } from '../../index';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { deleteIngredientDetails } from '../../services/actions/ingredient-details';
+import Loader from '../loader/loader';
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState('bun');
@@ -19,7 +20,11 @@ function BurgerIngredients() {
 
   const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
-  const { ingredientsFailed, ingredientsFailedMessage } = useAppSelector((state: RootState) => state.ingredients);
+  const {
+    ingredientsFailed,
+    ingredientsFailedMessage,
+    ingredientsRequest,
+  } = useAppSelector((state: RootState) => state.ingredients);
 
   if (data === undefined) {
     return null;
@@ -110,6 +115,7 @@ function BurgerIngredients() {
         </Tab>
       </div>
       <div className={s['ingredients-wrapper']} onScroll={handleScroll} ref={containerRef}>
+        {ingredientsRequest && <div className='mt-20'><Loader /></div>}
         {!ingredientsFailed ? Object.entries(groupedIngredients).map(([type, ingredients]) => (
           <IngredientsGroup
             key={type}

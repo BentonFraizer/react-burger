@@ -1,134 +1,182 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useDrop } from 'react-dnd';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuidv4 } from 'uuid';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
-import { IngredientsContext } from '../../services/ingredientsContext';
-import { generateRandomIngredients, request } from '../../utils/utils';
-import { Ingredient } from '../../types';
-import { TotalPriceContext } from '../../services/totalPriceContext';
-import { APIRoute, BACKEND_URL } from '../../consts';
-import { OrderNumberContext } from '../../services/orderNumberContext';
+import { Ingredient, UniqueIdIngredient } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { RootState } from '../../index';
+import {
+  addConstructorBun,
+  addConstructorIngredient,
+  getConstructorBun,
+  getConstructorIngredients,
+  removeConstructorIngredient,
+} from '../../services/actions/constructor-ingredients';
+import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order';
+import uniqueIdIngredient from '../../types/uniqueIdIngredient';
+import EmptyBun from './empty-bun/empty-bun';
+import EmptyFilling from './empty-filling/empty-filling';
+import DraggableConstructorElement from './draggable-constructor-element/draggable-constructor-element';
 
 function BurgerConstructor() {
-  const { data } = useContext(IngredientsContext);
-  const { totalPrice, totalPriceDispatcher } = useContext(TotalPriceContext);
-  const { setOrderNumber } = useContext(OrderNumberContext);
-  // Код ниже необходим для генерации случайного количества ингредиентов между закреплёнными элементами типа bun
-  const [randomIngredients, setRandomIngredients] = useState<Ingredient[]>([]);
-  const [mains, setMains] = useState<Ingredient[]>([]);
-  const [identifiersForOrder, setIdentifiersForOrder] = useState<string[]>([]);
+  const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
+  const constructorIngredients = useAppSelector(
+    (state: RootState) => state.constructorIngredients.constructorIngredients,
+  ) as uniqueIdIngredient[];
   const isInitialMount = useRef(true);
 
-  useEffect(() => {
-    if (data.length !== 0) {
-      const random = generateRandomIngredients(data, 2, data.length - 1);
-      setRandomIngredients(random);
-    }
-  }, [data]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (randomIngredients.length !== 0) {
-      const exceptBunIngredients = randomIngredients.filter((ingredient) => ingredient.type !== 'bun');
-      setMains(exceptBunIngredients);
-    }
-  }, [randomIngredients]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getConstructorIngredients());
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getConstructorBun());
+  }, [dispatch]);
 
-  const bun = randomIngredients[0];
-
-  useEffect(() => {
-    if (bun !== undefined) {
-      const bunsCost = bun.price * 2;
-      const mainsCost = mains.reduce((acc, cur) => acc + cur.price, 0);
-      totalPriceDispatcher({ type: 'set', payload: bunsCost + mainsCost });
+  const totalPrice = useMemo(() => {
+    if (bun === null && constructorIngredients.length === 0) {
+      return 0;
     }
-  }, [bun, mains]);
+    if (bun === null && constructorIngredients.length !== 0) {
+      return constructorIngredients.reduce((acc, cur) => acc + cur.price, 0);
+    }
+    const bunsCost = bun.price * 2;
+    const mainsCost = constructorIngredients.reduce((acc, cur) => acc + cur.price, 0);
+    return bunsCost + mainsCost;
+  }, [bun, constructorIngredients]);
 
   const { isModalOpened, openModal, closeModal } = useModal();
-
-  const orderNumberUrl = `${BACKEND_URL}/${APIRoute.orders}`;
-  const orderNumberOptions = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ ingredients: identifiersForOrder }),
-  };
-
-  useEffect(() => {
-    if (!isInitialMount.current) {
-      request(orderNumberUrl, orderNumberOptions)
-        .then((receivedData) => setOrderNumber(receivedData.order.number)).catch((error) => {
-          // eslint-disable-next-line
-          console.error('Ошибка получения данных в компоненте BurgerConstructor', error);
-        });
-    }
-  }, [identifiersForOrder]);
 
   const handleMakeOrderBtnClick = () => {
     isInitialMount.current = false;
     openModal();
-    const bunId = [bun._id];
-    const mainsIds = mains.map((main) => main._id);
-    setIdentifiersForOrder([...bunId, ...mainsIds]);
+    const bunId = [bun?._id];
+    const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getOrderNumber([...bunId, ...mainsIds]));
   };
 
-  const handleCloseModalClick = () => {
+  const handleCloseModal = () => {
     closeModal();
-    setOrderNumber(null);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(deleteOrderNumber());
   };
 
-  // Полностью запутался в типах для контекста поэтому в паре мест пришлось использовать @ts-ignore
-  // хотя знаю, что это очень плохая практика.
+  const handleDeleteIngredientBtnClick = (ingredient: UniqueIdIngredient) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(removeConstructorIngredient(ingredient));
+  };
+
+  // Хуки обрабатывают перетаскивание булок из списка ингредиентов в конструктор
+  const [{ canDrop }, dropTargetForTopBun] = useDrop({
+    accept: 'bun',
+    drop(item: Ingredient) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addConstructorBun(item));
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  const [, dropTargetForBottomBun] = useDrop({
+    accept: 'bun',
+    drop(item: Ingredient) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addConstructorBun(item));
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  const isDraggingClass = canDrop ? s['is-dragging'] : '';
+
+  // Хук обрабатывают перетаскивание начинок и соусов из списка ингредиентов в конструктор
+  const [{ canFillingDrop }, dropTargetForFillings] = useDrop({
+    accept: 'filling',
+    drop(item: Ingredient) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(addConstructorIngredient(item, uuidv4()));
+    },
+    collect: (monitor) => ({
+      canFillingDrop: monitor.canDrop(),
+    }),
+  });
+  const isFillingDraggingClass = canFillingDrop ? s['is-dragging'] : '';
+
+  const isMakeOrderBtnDisabled = bun === null || constructorIngredients.length === 0;
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const { totalPrice: totalPrice1 } = totalPrice;
   return (
     <div className={s['burger-constructor']}>
-      <ConstructorElement
-        type='top'
-        isLocked={true}
-        text={bun?.name}
-        price={bun?.price}
-        thumbnail={bun?.image}
-        extraClass={'mb-4'}
-      />
-      <ul className={s['constructor-elements__wrapper']}>
-        {mains.length
-          && mains.map((main) => <li key={main._id}>
-            <ConstructorElement
-              text={main.name}
-              price={main.price}
-              thumbnail={main.image}
-              extraClass={`${s['constructor-element']} mt-4 mb-4`}
-            />
-          </li>)
-        }
-      </ul>
-      <ConstructorElement
-        type='bottom'
-        isLocked={true}
-        text={bun?.name}
-        price={bun?.price}
-        thumbnail={bun?.image}
-        extraClass={'mt-4 mb-10'}
-      />
+      {bun === null ? <EmptyBun type={'top'} />
+        : <div className={isDraggingClass} ref={dropTargetForTopBun}>
+          <ConstructorElement
+            type='top'
+            isLocked={true}
+            text={bun?.name}
+            price={bun?.price}
+            thumbnail={bun?.image}
+            extraClass={`mb-2 ${s['bun-top']}`}
+          />
+        </div>
+      }
+      {constructorIngredients.length !== 0
+        ? <ul className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`} ref={dropTargetForFillings}>
+          {constructorIngredients.map((main, index) => <DraggableConstructorElement
+            key={main.uniqueId}
+            index={index}
+            main={main}
+            onDeleteIngredient={handleDeleteIngredientBtnClick} />)}
+        </ul>
+        : <EmptyFilling />
+      }
+      {bun === null ? <EmptyBun type='bottom' />
+        : <div className={isDraggingClass} ref={dropTargetForBottomBun}>
+          <ConstructorElement
+            type='bottom'
+            isLocked={true}
+            text={bun?.name}
+            price={bun?.price}
+            thumbnail={bun?.image}
+            extraClass={`mt-2 mb-10 ${s['bun-bottom']}`}
+          />
+        </div>
+      }
+
       <div className={s['preorder-info']}>
         <div className={`${s['total-price']} mr-10`}>
           <div className='total-price__value mr-2'>
-            <p className='text text_type_digits-medium'>{totalPrice1}</p>
+            <p className='text text_type_digits-medium'>{totalPrice}</p>
           </div>
           <div className='total-price__icon'>
             <CurrencyIcon type='primary' />
           </div>
         </div>
-        <Button htmlType='button' type='primary' size='medium' onClick={handleMakeOrderBtnClick}>
+        <Button
+          htmlType='button'
+          type='primary'
+          size='medium'
+          onClick={handleMakeOrderBtnClick}
+          disabled={isMakeOrderBtnDisabled}>
           Оформить заказ
         </Button>
       </div>
-      {isModalOpened && <Modal onClose={handleCloseModalClick} isModalOpen={isModalOpened}>
+      {isModalOpened && <Modal onClose={handleCloseModal} isModalOpen={isModalOpened}>
         <OrderDetails />
       </Modal>}
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { Ingredient } from '../../types';
@@ -6,16 +6,75 @@ import IngredientsGroup from './ingredient-group/ingredients-group';
 import { useModal } from '../../hooks/useModal';
 import Modal from '../modal/modal';
 import IngredientDetails from './ingredient-details/ingredient-details';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { getIngredients } from '../../services/actions/ingredients';
+import { RootState } from '../../index';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { deleteIngredientDetails } from '../../services/actions/ingredient-details';
+import Loader from '../loader/loader';
 
 function BurgerIngredients() {
-  const { data } = useContext(IngredientsContext);
-  const [current, setCurrent] = useState('buns');
-  const [currentIngredient, setCurrentIngredient] = useState<Ingredient>();
+  const [current, setCurrent] = useState('bun');
   const { isModalOpened, openModal, closeModal } = useModal();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const onGetCurrentIngredient = (ingredient: Ingredient) => {
-    setCurrentIngredient(ingredient);
+  const dispatch = useAppDispatch();
+  const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
+  const {
+    ingredientsFailed,
+    ingredientsFailedMessage,
+    ingredientsRequest,
+  } = useAppSelector((state: RootState) => state.ingredients);
+
+  if (data === undefined) {
+    return null;
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  const closeModalHandler = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(deleteIngredientDetails());
+    closeModal();
+  };
+
+  // Обработчик, отслеживающий положение групп элементов. Если верхняя часть группы ближе к верху конейнера,
+  // выполняется автоматический выбор соответствующего таба.
+  const handleScroll = () => {
+    if (containerRef.current) {
+      const containerTopCoordinate = containerRef.current.getBoundingClientRect().top;
+      const bunRefTopCoordinate = groupRefs.current.bun?.getBoundingClientRect().top;
+      const mainRefTopCoordinate = groupRefs.current.main?.getBoundingClientRect().top;
+      const sauceRefTopCoordinate = groupRefs.current.sauce?.getBoundingClientRect().top;
+      if (bunRefTopCoordinate && mainRefTopCoordinate && sauceRefTopCoordinate) {
+        const containerBunDifference = Math.abs(containerTopCoordinate - bunRefTopCoordinate);
+        const containerMainDifference = Math.abs(containerTopCoordinate - mainRefTopCoordinate);
+        const containerSauceDifference = Math.abs(containerTopCoordinate - sauceRefTopCoordinate);
+        if (containerBunDifference < containerMainDifference) {
+          setCurrent('bun');
+        } else if (containerMainDifference < containerSauceDifference) {
+          setCurrent('main');
+        } else {
+          setCurrent('sauce');
+        }
+      }
+    }
+  };
+
+  // Обработчик, выполняющий сбор всех вложенных ref из компонента IngredientsGroup
+  const onGetGroupRef = (type: string, ref: HTMLDivElement | null) => {
+    groupRefs.current[type] = ref;
+  };
+
+  // Обработчик нажатия на вкладку. Выполняет скролл до соответствующей группы компонентов
+  const tabClickHandler = (e: string) => {
+    setCurrent(e);
+    groupRefs.current[e]?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // Функция для преобразования входного массива данных в объект для более удобной работы с ним при автоматической отрисовке
@@ -37,7 +96,7 @@ function BurgerIngredients() {
     return groupedIngredients;
   }
 
-  const groupedIngredients = groupIngredientsByType(data);
+  const groupedIngredients = groupIngredientsByType(data as Ingredient[]);
 
   return (
     <div className={s['burger-ingredients']}>
@@ -45,28 +104,44 @@ function BurgerIngredients() {
         Соберите бургер
       </p>
       <div className={s['tabs-wrapper']}>
-        <Tab value='buns' active={current === 'buns'} onClick={setCurrent}>
+        <Tab value='bun' active={current === 'bun'} onClick={(e) => tabClickHandler(e)}>
           Булки
         </Tab>
-        <Tab value='mains' active={current === 'mains'} onClick={setCurrent}>
+        <Tab value='main' active={current === 'main'} onClick={(e) => tabClickHandler(e)}>
           Начинки
         </Tab>
-        <Tab value='sauces' active={current === 'sauces'} onClick={setCurrent}>
+        <Tab value='sauce' active={current === 'sauce'} onClick={(e) => tabClickHandler(e)}>
           Соусы
         </Tab>
       </div>
-      <div className={s['ingredients-wrapper']}>
-        {Object.entries(groupedIngredients).map(([type, ingredients]) => (
+      <div className={s['ingredients-wrapper']} onScroll={handleScroll} ref={containerRef}>
+        {ingredientsRequest && <div className='mt-20'><Loader /></div>}
+        {!ingredientsFailed ? Object.entries(groupedIngredients).map(([type, ingredients]) => (
           <IngredientsGroup
             key={type}
             type={type}
             ingredients={ingredients}
-            getCurrentIngredient={onGetCurrentIngredient}
-            openModal={openModal} />
-        ))}
+            openModal={openModal}
+            onGetGroupRef={(ref) => onGetGroupRef(type, ref)}
+          />
+        )) : (
+          <>
+            <p className='text text_type_main-medium mt-10 mb-5'>
+              Ошибка закрузки ингредиентов.
+            </p>
+            <p className='text text_type_main-default mb-3'>
+              Информация об ошибке:
+            </p>
+            <p className='text text_type_main-medium'>
+              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+              {/* @ts-ignore */}
+              <span>{ingredientsFailedMessage}</span>
+            </p>
+          </>
+        )}
       </div>
-      {isModalOpened && currentIngredient && <Modal title='Детали ингредиента' onClose={closeModal} isModalOpen={isModalOpened}>
-        <IngredientDetails ingredient={currentIngredient} />
+      {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModalHandler} isModalOpen={isModalOpened}>
+        <IngredientDetails />
       </Modal>}
     </div>
   );

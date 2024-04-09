@@ -4,6 +4,7 @@ import { AppRoute } from '../../consts';
 import { MainPage } from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import RegisterPage from '../../pages/register-page/register-page';
+import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
 
 function App(): JSX.Element {
   return (
@@ -12,6 +13,7 @@ function App(): JSX.Element {
         <Route path={AppRoute.main} element={<MainPage />} />
         <Route path={AppRoute.login} element={<LoginPage />} />
         <Route path={AppRoute.register} element={<RegisterPage />} />
+        <Route path={AppRoute.forgotPassword} element={<ForgotPasswordPage />} />
       </Routes>
     </BrowserRouter>
   );

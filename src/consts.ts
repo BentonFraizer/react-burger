@@ -4,11 +4,11 @@ export const APIRoute = {
 };
 
 export const AppRoute = {
-  Main: '/',
+  main: '/',
+  login: '/login',
+  register: '/register',
+  forgotPassword: '/forgot-password',
 
   // Catalog: '/catalog/page_:pageNumber',
   // Product: '/product/:id',
-  // Basket: '/basket',
-  // Offline: '/offline',
-  // FailedOrder: '/failed-order',
 };

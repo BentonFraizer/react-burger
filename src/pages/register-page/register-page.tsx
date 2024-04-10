@@ -19,11 +19,16 @@ function RegisterPage(): JSX.Element {
     setPasswordValue(e.target.value);
   };
 
+  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // здесь планируется написать код для взаимодействия с сервером
+  };
+
   return (
     <div className={s.wrapper}>
       <AppHeader />
       <main className={s.main}>
-        <section className={s.section}>
+        <form onSubmit={(e) => onFormSubmit(e)}>
           <p className='text text_type_main-medium mb-6'>
             Регистрация
           </p>
@@ -60,7 +65,7 @@ function RegisterPage(): JSX.Element {
             Уже зарегистрированы?{' '}
             <Link to={AppRoute.login}>Войти</ Link>
           </p>
-        </section>
+        </form>
       </main>
     </div>
   );

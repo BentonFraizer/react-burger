@@ -13,7 +13,7 @@ function ForgotPasswordPage(): JSX.Element {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // здесь планируется написать код для взаимодействия с севрером
+    // здесь планируется написать код для взаимодействия с сервером
   };
 
   return (

@@ -4,20 +4,18 @@
   justify-content: center;
 }
 
-.section {
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 1240px;
 }
 
-.section button ~ p {
+form button ~ p {
   color: var(--text-inactive-color);
 }
 
-.section a {
+form a {
   color: rgba(76, 76, 255, 1);
   text-decoration: none;
 }

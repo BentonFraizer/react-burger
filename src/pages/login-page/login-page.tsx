@@ -43,7 +43,7 @@ function LoginPage(): JSX.Element {
             icon='ShowIcon'
             extraClass='mb-6'
           />
-          <Button htmlType='button' type='primary' size='medium' extraClass='mb-20'>
+          <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20'>
             Войти
           </Button>
           <p className='text text_type_main-default mb-4'>

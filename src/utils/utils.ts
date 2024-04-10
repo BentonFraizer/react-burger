@@ -1,8 +1,6 @@
+import { BASE_URL } from '../consts';
 // Функция определения нажатия клавиши Escape
 export const isEscKeyPressed = (evt: KeyboardEvent) => evt.key === 'Escape' || evt.key === 'Esc';
-
-// 1 раз объявляем базовый урл
-export const BASE_URL = 'https://norma.nomoreparties.space/api/';
 
 // создаем функцию проверки ответа на `ok`
 const checkResponse = (res: Response) => {

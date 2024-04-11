@@ -1,6 +1,6 @@
 export const APIRoute = {
   ingredients: 'ingredients',
-  orders: 'order',
+  orders: 'orders',
 };
 
 export const AppRoute = {

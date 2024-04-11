@@ -35,21 +35,8 @@ nav {
 .nav-btn {
   display: flex;
   cursor: pointer;
-  color: #8585AD;
   background-color: transparent;
   border: none;
   margin: 0;
   padding: 0;
-}
-
-.nav-btn.active {
-  color: #fff;
-}
-
-.nav-btn svg {
-  fill: #8585AD;
-}
-
-.nav-btn.active svg {
-  fill: #fff;
 }

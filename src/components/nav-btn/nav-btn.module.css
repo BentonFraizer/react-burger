@@ -1,0 +1,19 @@
+a {
+  text-decoration: none;
+}
+
+a:not(.active) svg {
+  fill: #8585AD;
+}
+
+a.active svg {
+  fill: #fff;
+}
+
+a:not(.active) p {
+  color: #8585AD;
+}
+
+a.active p {
+  color: #fff;
+}

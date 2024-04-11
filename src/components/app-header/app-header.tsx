@@ -2,9 +2,9 @@ import { JSX } from 'react';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './app-header.module.css';
 import NavBtn from '../nav-btn/nav-btn';
+import { AppRoute } from '../../consts';
 
 function AppHeader(): JSX.Element {
-  // eslint-disable-next-line max-len
   // Потом сделать переменную состояния с обработкой её в функции getActiveClass. Подставить в NavBtn className
   return (
     <header className={s['app-header']}>
@@ -12,13 +12,20 @@ function AppHeader(): JSX.Element {
         <nav>
           <ul className={s['nav-list']}>
             <li>
-              <NavBtn className={`${s['nav-btn']} ${s.active}`}
-                      icon={<BurgerIcon type='primary' />}>
+              <NavBtn
+                className={`${s['nav-btn']} `}
+                icon={<BurgerIcon type='primary' />}
+                to={AppRoute.main}
+              >
                 Конструктор
               </NavBtn>
             </li>
             <li>
-              <NavBtn className={s['nav-btn']} icon={<ListIcon type='primary' />}>
+              <NavBtn
+                className={s['nav-btn']}
+                icon={<ListIcon type='primary' />}
+                to={AppRoute.ordersList}
+              >
                 Лента заказов
               </NavBtn>
             </li>
@@ -28,7 +35,11 @@ function AppHeader(): JSX.Element {
             <Logo />
           </div>
 
-          <NavBtn className={s['nav-btn']} icon={<ProfileIcon type='primary' />}>
+          <NavBtn
+            className={s['nav-btn']}
+            icon={<ProfileIcon type='primary' />}
+            to={AppRoute.profile}
+          >
             Личный кабинет
           </NavBtn>
         </nav>

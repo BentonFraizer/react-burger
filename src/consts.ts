@@ -9,6 +9,9 @@ export const AppRoute = {
   register: '/register',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
+  // предполагаемое название ленты заказов
+  ordersList: '/orders-list',
+  profile: '/profile',
 
   // Catalog: '/catalog/page_:pageNumber',
   // Product: '/product/:id',

@@ -6,6 +6,8 @@ import LoginPage from '../../pages/login-page/login-page';
 import RegisterPage from '../../pages/register-page/register-page';
 import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
+import OrdersListPage from '../../pages/orders-list-page/orders-list-page';
+import ProfilePage from '../../pages/profile-page/profile-page';
 
 function App(): JSX.Element {
   return (
@@ -15,6 +17,8 @@ function App(): JSX.Element {
       <Route path={AppRoute.register} element={<RegisterPage />} />
       <Route path={AppRoute.forgotPassword} element={<ForgotPasswordPage />} />
       <Route path={AppRoute.resetPassword} element={<ResetPasswordPage />} />
+      <Route path={AppRoute.ordersList} element={<OrdersListPage />} />
+      <Route path={AppRoute.profile} element={<ProfilePage />} />
     </Routes>
   );
 }

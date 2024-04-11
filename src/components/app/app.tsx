@@ -8,6 +8,7 @@ import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
 import OrdersListPage from '../../pages/orders-list-page/orders-list-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
+import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info-page';
 
 function App(): JSX.Element {
   return (
@@ -19,6 +20,7 @@ function App(): JSX.Element {
       <Route path={AppRoute.resetPassword} element={<ResetPasswordPage />} />
       <Route path={AppRoute.ordersList} element={<OrdersListPage />} />
       <Route path={AppRoute.profile} element={<ProfilePage />} />
+      <Route path={'/ingredients/:id'} element={<IngredientInfoPage />} />
     </Routes>
   );
 }

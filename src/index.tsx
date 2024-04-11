@@ -7,6 +7,7 @@ import './index.css';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { thunk } from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
 import App from './components/app/app';
 
 import { rootReducer } from './services/reducers';
@@ -26,7 +27,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </DndProvider>
     </Provider>
   </React.StrictMode>,

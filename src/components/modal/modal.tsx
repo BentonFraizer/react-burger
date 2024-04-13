@@ -9,7 +9,7 @@ type ModalProps = {
   title?: string;
   children: React.ReactNode;
   onClose: () => void;
-  isModalOpen: boolean;
+  isModalOpen?: boolean;
 };
 
 const modalContentEl = document.getElementById('modals') as HTMLElement;

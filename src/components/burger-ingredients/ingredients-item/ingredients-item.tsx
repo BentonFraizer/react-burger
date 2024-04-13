@@ -9,10 +9,9 @@ import { setIngredientDetails } from '../../../services/actions/ingredient-detai
 
 type IngredientsItemProps = {
   ingredient: Ingredient;
-  openModal: () => void;
 };
 
-function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.Element {
+function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   const { image, name, price, type, _id } = ingredient;
   const location = useLocation();
   const dragType = ingredient.type === 'bun' ? 'bun' : 'filling';
@@ -35,7 +34,6 @@ function IngredientsItem({ ingredient, openModal }: IngredientsItemProps): JSX.E
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     dispatch(setIngredientDetails(ingredientData));
-    openModal();
   };
 
   const counterToRender = type === 'bun' ? bunsCounter[_id] : ingredientsCounter[_id];

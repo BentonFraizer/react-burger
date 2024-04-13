@@ -8,9 +8,9 @@ import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
 import OrdersListPage from '../../pages/orders-list-page/orders-list-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
-import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info-page';
 import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
+import AppHeader from '../app-header/app-header';
 
 function App(): JSX.Element {
   const location = useLocation();
@@ -24,9 +24,10 @@ function App(): JSX.Element {
 
   return (
     <>
+      <AppHeader/>
       <Routes location={background || location}>
         <Route path={AppRoute.main} element={<MainPage />} />
-        <Route path={'/ingredients/:id'} element={<IngredientInfoPage />} />
+        <Route path={'/ingredients/:id'} element={<IngredientDetails />} />
         <Route path={AppRoute.login} element={<LoginPage />} />
         <Route path={AppRoute.register} element={<RegisterPage />} />
         <Route path={AppRoute.forgotPassword} element={<ForgotPasswordPage />} />

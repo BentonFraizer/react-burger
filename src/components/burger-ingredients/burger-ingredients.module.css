@@ -22,3 +22,7 @@
   scrollbar-color: #8585AD #2F2F37;
   display: inline-block;
 }
+
+.ingredients-wrapper a:active {
+  text-decoration: none;
+}

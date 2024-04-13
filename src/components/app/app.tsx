@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 import { MainPage } from '../../pages/main-page/main-page';
@@ -11,11 +11,21 @@ import ProfilePage from '../../pages/profile-page/profile-page';
 import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import AppHeader from '../app-header/app-header';
+import { getIngredients } from '../../services/actions/ingredients';
+import { useAppDispatch } from '../../hooks/hooks';
+import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info-page';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state && location.state.background;
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(getIngredients());
+  }, []);
 
   const handleModalClose = () => {
     // Возвращаемся к предыдущему пути при закрытии модалки
@@ -24,10 +34,10 @@ function App(): JSX.Element {
 
   return (
     <>
-      <AppHeader/>
+      <AppHeader />
       <Routes location={background || location}>
         <Route path={AppRoute.main} element={<MainPage />} />
-        <Route path={'/ingredients/:id'} element={<IngredientDetails />} />
+        <Route path={'/ingredients/:id'} element={<IngredientInfoPage />} />
         <Route path={AppRoute.login} element={<LoginPage />} />
         <Route path={AppRoute.register} element={<RegisterPage />} />
         <Route path={AppRoute.forgotPassword} element={<ForgotPasswordPage />} />
@@ -39,7 +49,7 @@ function App(): JSX.Element {
       {background && (
         <Routes>
           <Route
-            path='/ingredients/:ingredientId'
+            path='/ingredients/:id'
             element={
               <Modal title='Детали ингредиента' onClose={handleModalClose}>
                 <IngredientDetails />

@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { Ingredient } from '../../types';
 import IngredientsGroup from './ingredient-group/ingredients-group';
-import { getIngredients } from '../../services/actions/ingredients';
 import { RootState } from '../../index';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useAppSelector } from '../../hooks/hooks';
 import Loader from '../loader/loader';
 
 function BurgerIngredients() {
@@ -13,7 +12,6 @@ function BurgerIngredients() {
   const containerRef = useRef<HTMLDivElement>(null);
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
   const {
     ingredientsFailed,
@@ -24,12 +22,6 @@ function BurgerIngredients() {
   if (data === undefined) {
     return null;
   }
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   // Обработчик, отслеживающий положение групп элементов. Если верхняя часть группы ближе к верху конейнера,
   // выполняется автоматический выбор соответствующего таба.

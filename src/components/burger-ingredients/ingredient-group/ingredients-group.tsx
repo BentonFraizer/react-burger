@@ -1,5 +1,4 @@
 import { JSX, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import s from './ingredient-group.module.css';
 import { Ingredient } from '../../../types';
 import IngredientsItem from '../ingredients-item/ingredients-item';
@@ -26,11 +25,10 @@ function IngredientsGroup({ type, ingredients, openModal, onGetGroupRef }: Ingre
       </div>
       <div className={`${s['ingredient-item__container']} pt-6 pl-4 pr-4 pb-10`}>
         {ingredients.map((ingredient) => (
-          <Link to={`/ingredients/${ingredient._id}`} key={ingredient._id}>
-            <IngredientsItem
-              ingredient={ingredient}
-              openModal={openModal} />
-          </Link>
+          <IngredientsItem
+            key={ingredient._id}
+            ingredient={ingredient}
+            openModal={openModal} />
         ))}
       </div>
     </div>

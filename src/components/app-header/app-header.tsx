@@ -5,7 +5,6 @@ import NavBtn from '../nav-btn/nav-btn';
 import { AppRoute } from '../../consts';
 
 function AppHeader(): JSX.Element {
-  // Потом сделать переменную состояния с обработкой её в функции getActiveClass. Подставить в NavBtn className
   return (
     <header className={s['app-header']}>
       <div className={s.container}>

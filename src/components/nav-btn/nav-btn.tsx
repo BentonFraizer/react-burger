@@ -13,7 +13,7 @@ function NavBtn(props: NavBtnProps) {
   const { className, icon, children, to } = props;
 
   return (
-    <NavLink to={to} className={({ isActive }) => (isActive ? s.active : '')}>
+    <NavLink to={to} className={({ isActive }) => (isActive ? `${s.active} ${s['nav-link']}` : s['nav-link'])}>
       <button className={className}>
         {icon}
         <p className='text text_type_main-default ml-2'>

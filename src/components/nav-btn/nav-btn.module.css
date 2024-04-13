@@ -1,19 +1,19 @@
-a {
+.nav-link {
   text-decoration: none;
 }
 
-a:not(.active) svg {
+.nav-link:not(.active) svg {
   fill: #8585AD;
 }
 
-a.active svg {
+.nav-link.active svg {
   fill: #fff;
 }
 
-a:not(.active) p {
+.nav-link:not(.active) p {
   color: #8585AD;
 }
 
-a.active p {
+.nav-link.active p {
   color: #fff;
 }

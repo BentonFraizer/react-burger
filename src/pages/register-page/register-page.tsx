@@ -2,7 +2,8 @@ import React, { JSX } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import s from './register-page.module.css';
-import { AppRoute } from '../../consts';
+import { APIRoute, AppRoute } from '../../consts';
+import { request } from '../../utils/api';
 
 function RegisterPage(): JSX.Element {
   const [nameValue, setNameValue] = React.useState('');
@@ -20,7 +21,20 @@ function RegisterPage(): JSX.Element {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // здесь планируется написать код для взаимодействия с сервером
+    const newUserData = {
+      email: emailValue,
+      password: passwordValue,
+      name: nameValue,
+    };
+    const registerRequest = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUserData),
+    };
+    request(APIRoute.register, registerRequest).then((data) => console.log('register info', data));
   };
 
   return (

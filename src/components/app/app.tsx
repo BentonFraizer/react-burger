@@ -37,7 +37,7 @@ function App(): JSX.Element {
       <AppHeader />
       <Routes location={background || location}>
         <Route path={AppRoute.main} element={<MainPage />} />
-        <Route path={'/ingredients/:id'} element={<IngredientInfoPage />} />
+        <Route path={AppRoute.ingredient} element={<IngredientInfoPage />} />
         <Route path={AppRoute.login} element={<LoginPage />} />
         <Route path={AppRoute.register} element={<RegisterPage />} />
         <Route path={AppRoute.forgotPassword} element={<ForgotPasswordPage />} />

@@ -1,12 +1,15 @@
 export const APIRoute = {
   ingredients: 'ingredients',
   orders: 'orders',
+  register: 'auth/register',
+  authToken: 'auth/token',
 };
 
 export const AppRoute = {
   main: '/',
   login: '/login',
   register: '/register',
+  ingredient: '/ingredients/:id',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   // предполагаемое название ленты заказов

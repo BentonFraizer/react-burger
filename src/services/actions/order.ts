@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { APIRoute } from '../../consts';
-import { request } from '../../utils/utils';
+import { request } from '../../utils/api';
 import { OrderAction } from '../reducers/order';
 import { clearConstructor } from './constructor-ingredients';
 

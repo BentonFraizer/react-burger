@@ -1,9 +1,10 @@
 import { JSX } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/hooks';
+import { AppRoute } from '../../consts';
 
 type ProtectedRouteElementProps = {
-  onlyUnAuth: boolean,
+  onlyUnAuth?: boolean,
   component: JSX.Element
 }
 
@@ -25,7 +26,7 @@ const ProtectedRouteElement = ({ onlyUnAuth = false, component }: ProtectedRoute
   if (onlyUnAuth && user) {
     // Пользователь авторизован, но роут предназначен для неавторизованного пользователя
     // Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
-    const { from } = location.state || { from: { pathname: '/' } };
+    const { from } = location.state || { from: { pathname: AppRoute.main } };
     return <Navigate to={from} />;
   }
 

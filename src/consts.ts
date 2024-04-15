@@ -3,6 +3,7 @@ export const APIRoute = {
   orders: 'orders',
   register: 'auth/register',
   authToken: 'auth/token',
+  getUser: 'auth/user'
 };
 
 export const AppRoute = {

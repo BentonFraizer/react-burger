@@ -14,6 +14,8 @@ import AppHeader from '../app-header/app-header';
 import { getIngredients } from '../../services/actions/ingredients';
 import { useAppDispatch } from '../../hooks/hooks';
 import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info-page';
+import { checkUserAuth } from '../../services/actions/user';
+import { OnlyAuth } from '../protected-route-element/protected-route-element';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -26,6 +28,12 @@ function App(): JSX.Element {
     // @ts-ignore
     dispatch(getIngredients());
   }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(checkUserAuth());
+  });
 
   const handleModalClose = () => {
     // Возвращаемся к предыдущему пути при закрытии модалки
@@ -43,7 +51,7 @@ function App(): JSX.Element {
         <Route path={AppRoute.forgotPassword} element={<ForgotPasswordPage />} />
         <Route path={AppRoute.resetPassword} element={<ResetPasswordPage />} />
         <Route path={AppRoute.ordersList} element={<OrdersListPage />} />
-        <Route path={AppRoute.profile} element={<ProfilePage />} />
+        <Route path={AppRoute.profile} element={<OnlyAuth component={<ProfilePage />} />} />
       </Routes>
 
       {background && (

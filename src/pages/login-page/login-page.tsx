@@ -2,11 +2,16 @@ import React, { JSX } from 'react';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import s from './login-page.module.css';
-import { AppRoute } from '../../consts';
+import { APIRoute, AppRoute } from '../../consts';
+import { request } from '../../utils/api';
+import { Register } from '../../types';
+import { setUser } from '../../services/actions/user';
+import { useAppDispatch } from '../../hooks/hooks';
 
 function LoginPage(): JSX.Element {
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
+  const dispatch = useAppDispatch();
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(e.target.value);
   };
@@ -16,7 +21,26 @@ function LoginPage(): JSX.Element {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // здесь планируется написать код для взаимодействия с сервером
+    const registeredUserData = {
+      email: emailValue,
+      password: passwordValue,
+    };
+    const loginRequest = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registeredUserData),
+    };
+    request(APIRoute.login, loginRequest).then((data: Register) => {
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(setUser(data.user));
+    })
+      .catch((err) => console.log('Ошибка авторизации: ', err));
   };
 
   return (

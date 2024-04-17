@@ -35,10 +35,6 @@ const ProtectedRouteElement = ({ onlyUnAuth = false, component }: ProtectedRoute
   }
 
   // !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
-  if (!onlyUnAuth && user) {
-    const { from } = location.state || { from: { pathname: AppRoute.main } };
-    return <Navigate to={from} />;
-  }
 
   return component;
 };

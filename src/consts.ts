@@ -1,9 +1,11 @@
 export const APIRoute = {
   ingredients: 'ingredients',
   orders: 'orders',
-  register: 'auth/register',
-  authToken: 'auth/token',
-  getUser: 'auth/user'
+  login: 'auth/login', // Эндпоинт для авторизации пользователя
+  register: 'auth/register', // Эндпоинт для регистрации пользователя
+  logout: 'auth/logout', // Эндпоинт для выхода из системы
+  authToken: 'auth/token', // Эндпоинт для обновления токена
+  getUser: 'auth/user',
 };
 
 export const AppRoute = {

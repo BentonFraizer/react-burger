@@ -34,6 +34,7 @@ function LoginPage(): JSX.Element {
           extraClass='mb-6'
         />
         <PasswordInput
+          autoComplete='off'
           onChange={onPasswordChange}
           value={passwordValue}
           name='password'

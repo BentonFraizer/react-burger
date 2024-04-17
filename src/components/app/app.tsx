@@ -26,14 +26,14 @@ function App(): JSX.Element {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    dispatch(getIngredients());
+    dispatch(checkUserAuth());
   }, []);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    dispatch(checkUserAuth());
-  });
+    dispatch(getIngredients());
+  }, []);
 
   const handleModalClose = () => {
     // Возвращаемся к предыдущему пути при закрытии модалки

@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 import s from './register-page.module.css';
 import { APIRoute, AppRoute } from '../../consts';
 import { request } from '../../utils/api';
+import { setUser } from '../../services/actions/user';
+import { useAppDispatch } from '../../hooks/hooks';
+import { Register } from '../../types';
 
 function RegisterPage(): JSX.Element {
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
+  const dispatch = useAppDispatch();
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameValue(e.target.value);
   };
@@ -34,7 +38,14 @@ function RegisterPage(): JSX.Element {
       },
       body: JSON.stringify(newUserData),
     };
-    request(APIRoute.register, registerRequest).then((data) => console.log('register info', data));
+    request(APIRoute.register, registerRequest).then((data: Register) => {
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(setUser(data.user));
+    })
+      .catch((err) => console.log('Ошибка регистрации: ', err));
   };
 
   return (
@@ -63,6 +74,7 @@ function RegisterPage(): JSX.Element {
           extraClass='mb-6'
         />
         <PasswordInput
+          autoComplete='off'
           onChange={onPasswordChange}
           value={passwordValue}
           name='password'

@@ -18,6 +18,7 @@ export const AppRoute = {
   // предполагаемое название ленты заказов
   ordersList: '/orders-list',
   profile: '/profile',
+  profileOrders: '/profile/orders',
 
   // Catalog: '/catalog/page_:pageNumber',
   // Product: '/product/:id',

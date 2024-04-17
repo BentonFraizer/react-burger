@@ -51,7 +51,9 @@ function App(): JSX.Element {
         <Route path={AppRoute.forgotPassword} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
         <Route path={AppRoute.resetPassword} element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
         <Route path={AppRoute.ordersList} element={<OrdersListPage />} />
-        <Route path={AppRoute.profile} element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path={AppRoute.profile} element={<OnlyAuth component={<ProfilePage />} />}>
+          <Route path='orders' element={<div>Раздел "История заказов" в разработке.</div>} />
+        </Route>
       </Routes>
 
       {background && (

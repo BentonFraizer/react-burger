@@ -39,7 +39,7 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   const counterToRender = type === 'bun' ? bunsCounter[_id] : ingredientsCounter[_id];
 
   return (
-    <Link to={`/ingredients/${_id}`} state={{ background: location }}>
+    <Link to={`/ingredients/${_id}`} state={{ background: location }} className={s['ingredient-link']}>
       <div className={s['ingredient-item']} onClick={() => handleIngredientItemClick(ingredient)} ref={dragRef} style={style}>
         <div className={`${s['ingredient-item__img']} mb-1`}>
           <img src={image} alt={name} />

@@ -1,18 +1,43 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import s from './forgot-password-page.module.css';
-import { AppRoute } from '../../consts';
+import { APIRoute, AppRoute } from '../../consts';
+import { request } from '../../utils/api';
 
 function ForgotPasswordPage(): JSX.Element {
+  const navigate = useNavigate();
   const [emailValue, setEmailValue] = React.useState('');
+
+  // Если вспомогательный флаг не установлен, то пользователь не сможет попасть на страницу reset-password.
+  // Таким образом, ни с какой другой страницы, кроме forgot-page, войти на страницу reset-password войти будет нельзя.
+  useEffect(() => {
+    localStorage.setItem('resetPassword', 'true');
+  }, []);
+
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(e.target.value);
   };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // здесь планируется написать код для взаимодействия с сервером
+    const forgotPasswordData = {
+      email: emailValue,
+    };
+    const forgotPasswordOptions = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(forgotPasswordData),
+    };
+    request(APIRoute.passwordReset, forgotPasswordOptions).then((res) => {
+      if (res.success === true) {
+        navigate(AppRoute.resetPassword);
+      }
+    })
+      .catch((err) => console.log('Ошибка отправки e-mail: ', err));
   };
 
   return (

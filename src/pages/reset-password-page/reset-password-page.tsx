@@ -1,18 +1,31 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import s from './reset-password-page.module.css';
 import { AppRoute } from '../../consts';
 
 function ResetPasswordPage(): JSX.Element {
+  const navigate = useNavigate();
   const [passwordValue, setPasswordValue] = React.useState('');
-  const [codeValue, setcodeValue] = React.useState('');
+  const [codeValue, setCodeValue] = React.useState('');
+  const isResetPasswordInstalled = localStorage.getItem('resetPassword');
+
+  // Если переход выполнен не со страницы forgot-password (т.е. флаг 'resetPassword' не равен 'true') переадресуем пользователя
+  // на страницу '/login'. В противном случае остаёмся на странице и продолжаем процесс восстановления пароля.
+  useEffect(() => {
+    if (isResetPasswordInstalled !== 'true') {
+      navigate(AppRoute.login);
+    }
+
+    localStorage.removeItem('resetPassword');
+  }, []);
+
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordValue(e.target.value);
   };
 
   const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setcodeValue(e.target.value);
+    setCodeValue(e.target.value);
   };
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {

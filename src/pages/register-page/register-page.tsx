@@ -30,7 +30,7 @@ function RegisterPage(): JSX.Element {
       password: passwordValue,
       name: nameValue,
     };
-    const registerRequest = {
+    const registerOptions = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -38,7 +38,7 @@ function RegisterPage(): JSX.Element {
       },
       body: JSON.stringify(newUserData),
     };
-    request(APIRoute.register, registerRequest).then((data: Register) => {
+    request(APIRoute.register, registerOptions).then((data: Register) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

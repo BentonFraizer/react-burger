@@ -1,12 +1,16 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './profile-page.module.css';
 import {
+  APIRoute,
   // APIRoute,
-  AppRoute
+  AppRoute,
 } from '../../consts';
+import { request } from '../../utils/api';
+import { setUser } from '../../services/actions/user';
+import { useAppDispatch } from '../../hooks/hooks';
 // import { useAppDispatch } from '../../hooks/hooks';
 // import { request } from '../../utils/api';
 // import { Register } from '../../types';
@@ -14,6 +18,8 @@ import {
 
 function ProfilePage() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
@@ -54,6 +60,28 @@ function ProfilePage() {
     //     dispatch(setUser(data.user));
     //   })
     //     .catch((err) => console.log('Ошибка регистрации: ', err));
+  };
+
+  const handleLogout = () => {
+    const logoutRequest = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+    };
+    request(APIRoute.logout, logoutRequest).then((res) => {
+      if (res.success === true) {
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('accessToken');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        dispatch(setUser(null));
+        navigate(AppRoute.login);
+      }
+    })
+      .catch((err) => console.log('Ошибка выхода из системы: ', err));
   };
 
   const form = <form onSubmit={(e) => onFormSubmit(e)}>
@@ -110,7 +138,7 @@ function ProfilePage() {
                 История заказов
               </Button>
             </Link>
-            <Button htmlType='button' type='secondary' size='medium'>
+            <Button htmlType='button' type='secondary' size='medium' onClick={handleLogout}>
               Выход
             </Button>
             <p className="text text_type_main-default">

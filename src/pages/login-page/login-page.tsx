@@ -25,7 +25,7 @@ function LoginPage(): JSX.Element {
       email: emailValue,
       password: passwordValue,
     };
-    const loginRequest = {
+    const loginOptions = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -33,7 +33,7 @@ function LoginPage(): JSX.Element {
       },
       body: JSON.stringify(registeredUserData),
     };
-    request(APIRoute.login, loginRequest).then((data: Register) => {
+    request(APIRoute.login, loginOptions).then((data: Register) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

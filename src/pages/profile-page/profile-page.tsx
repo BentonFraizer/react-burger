@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './profile-page.module.css';
 import {
@@ -18,7 +18,6 @@ import { useAppDispatch } from '../../hooks/hooks';
 
 function ProfilePage() {
   const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
@@ -78,7 +77,6 @@ function ProfilePage() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         dispatch(setUser(null));
-        navigate(AppRoute.login);
       }
     })
       .catch((err) => console.log('Ошибка выхода из системы: ', err));

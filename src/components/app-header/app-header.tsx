@@ -3,8 +3,12 @@ import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-dev
 import s from './app-header.module.css';
 import NavBtn from '../nav-btn/nav-btn';
 import { AppRoute } from '../../consts';
+import { useAppSelector } from '../../hooks/hooks';
+import { User } from '../../types';
 
 function AppHeader(): JSX.Element {
+  const userName = useAppSelector((state) => state.user.user) as User;
+
   return (
     <header className={s['app-header']}>
       <div className={s.container}>
@@ -39,7 +43,7 @@ function AppHeader(): JSX.Element {
             icon={<ProfileIcon type='primary' />}
             to={AppRoute.profile}
           >
-            Личный кабинет
+            {userName === null ? 'Личный кабинет' : String(userName.name)}
           </NavBtn>
         </nav>
       </div>

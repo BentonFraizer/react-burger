@@ -2,7 +2,8 @@ import React, { JSX, useEffect } from 'react';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import s from './reset-password-page.module.css';
-import { AppRoute } from '../../consts';
+import { APIRoute, AppRoute } from '../../consts';
+import { request } from '../../utils/api';
 
 function ResetPasswordPage(): JSX.Element {
   const navigate = useNavigate();
@@ -30,7 +31,24 @@ function ResetPasswordPage(): JSX.Element {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // здесь планируется написать код для взаимодействия с сервером
+    const resetPasswordData = {
+      password: passwordValue,
+      token: codeValue,
+    };
+    const resetPasswordOptions = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(resetPasswordData),
+    };
+    request(APIRoute.passwordResetReset, resetPasswordOptions).then((res) => {
+      if (res.success === true) {
+        navigate(AppRoute.login);
+      }
+    })
+      .catch((err) => console.log('Ошибка восствновления пароля: ', err));
   };
 
   return (

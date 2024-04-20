@@ -3,7 +3,7 @@ import s from './main-page.module.css';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 
-export function MainPage(): JSX.Element {
+function MainPage(): JSX.Element {
   return (
     <main className={s.main}>
       <section className={s.section}>
@@ -13,3 +13,5 @@ export function MainPage(): JSX.Element {
     </main>
   );
 }
+
+export default MainPage;

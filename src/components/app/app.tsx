@@ -1,7 +1,7 @@
 import React, { JSX, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../consts';
-import { MainPage } from '../../pages/main-page/main-page';
+import MainPage from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import RegisterPage from '../../pages/register-page/register-page';
 import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
@@ -16,6 +16,7 @@ import { useAppDispatch } from '../../hooks/hooks';
 import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info-page';
 import { checkUserAuth } from '../../services/actions/user';
 import { OnlyForAuth, OnlyForUnAuth } from '../protected-route/protected-route';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -54,6 +55,7 @@ function App(): JSX.Element {
         <Route path={AppRoute.profile} element={<OnlyForAuth component={<ProfilePage />} />}>
           <Route path='orders' element={<div>Раздел "История заказов" в разработке.</div>} />
         </Route>
+        <Route path={AppRoute.notFound} element={<NotFoundPage/>}/>
       </Routes>
 
       {background && (

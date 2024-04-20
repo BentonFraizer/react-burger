@@ -21,6 +21,7 @@ export const AppRoute = {
   ordersList: '/orders-list',
   profile: '/profile',
   profileOrders: '/profile/orders',
+  notFound: '*',
 };
 
 // базовый url

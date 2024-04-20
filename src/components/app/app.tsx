@@ -15,7 +15,7 @@ import { getIngredients } from '../../services/actions/ingredients';
 import { useAppDispatch } from '../../hooks/hooks';
 import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info-page';
 import { checkUserAuth } from '../../services/actions/user';
-import { OnlyAuth, OnlyUnAuth } from '../protected-route-element/protected-route-element';
+import { OnlyForAuth, OnlyForUnAuth } from '../protected-route/protected-route';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -46,12 +46,12 @@ function App(): JSX.Element {
       <Routes location={background || location}>
         <Route path={AppRoute.main} element={<MainPage />} />
         <Route path={AppRoute.ingredient} element={<IngredientInfoPage />} />
-        <Route path={AppRoute.login} element={<OnlyUnAuth component={<LoginPage />} />} />
-        <Route path={AppRoute.register} element={<OnlyUnAuth component={<RegisterPage />} />} />
-        <Route path={AppRoute.forgotPassword} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
-        <Route path={AppRoute.resetPassword} element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
+        <Route path={AppRoute.login} element={<OnlyForUnAuth component={<LoginPage />} />} />
+        <Route path={AppRoute.register} element={<OnlyForUnAuth component={<RegisterPage />} />} />
+        <Route path={AppRoute.forgotPassword} element={<OnlyForUnAuth component={<ForgotPasswordPage />} />} />
+        <Route path={AppRoute.resetPassword} element={<OnlyForUnAuth component={<ResetPasswordPage />} />} />
         <Route path={AppRoute.ordersList} element={<OrdersListPage />} />
-        <Route path={AppRoute.profile} element={<OnlyAuth component={<ProfilePage />} />}>
+        <Route path={AppRoute.profile} element={<OnlyForAuth component={<ProfilePage />} />}>
           <Route path='orders' element={<div>Раздел "История заказов" в разработке.</div>} />
         </Route>
       </Routes>

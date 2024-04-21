@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import s from './login-page.module.css';
 import { AppRoute } from '../../consts';
 import { login } from '../../services/actions/user';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import Loader from '../../components/loader/loader';
 
 function LoginPage(): JSX.Element {
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
+  const isLoginRequest = useAppSelector((state) => state.user.loginRequest);
   const dispatch = useAppDispatch();
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(e.target.value);
@@ -50,8 +52,8 @@ function LoginPage(): JSX.Element {
           icon='ShowIcon'
           extraClass='mb-6'
         />
-        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20'>
-          Войти
+        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20' disabled={isLoginRequest}>
+          {isLoginRequest ? <Loader small={true}/> : 'Войти'}
         </Button>
         <p className='text text_type_main-default mb-4'>
           Вы - новый пользователь?{' '}

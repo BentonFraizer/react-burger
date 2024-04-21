@@ -1,13 +1,15 @@
-import React, { JSX, useEffect } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import s from './forgot-password-page.module.css';
 import { APIRoute, AppRoute } from '../../consts';
 import { request } from '../../utils/api';
+import Loader from '../../components/loader/loader';
 
 function ForgotPasswordPage(): JSX.Element {
   const navigate = useNavigate();
   const [emailValue, setEmailValue] = React.useState('');
+  const [isRequesting, setIsRequesting] = useState(false);
 
   // Если вспомогательный флаг не установлен, то пользователь не сможет попасть на страницу reset-password.
   // Таким образом, ни с какой другой страницы, кроме forgot-page, войти на страницу reset-password войти будет нельзя.
@@ -21,6 +23,7 @@ function ForgotPasswordPage(): JSX.Element {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsRequesting(true);
     const forgotPasswordData = {
       email: emailValue,
     };
@@ -34,10 +37,14 @@ function ForgotPasswordPage(): JSX.Element {
     };
     request(APIRoute.passwordReset, forgotPasswordOptions).then((res) => {
       if (res.success === true) {
+        setIsRequesting(false);
         navigate(AppRoute.resetPassword);
       }
     })
-      .catch((err) => console.log('Ошибка отправки e-mail: ', err));
+      .catch((err) => {
+        setIsRequesting(false);
+        console.log('Ошибка отправки e-mail: ', err);
+      });
   };
 
   return (
@@ -54,8 +61,8 @@ function ForgotPasswordPage(): JSX.Element {
           isIcon={false}
           extraClass='mb-6'
         />
-        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20'>
-          Восстановить
+        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20' disabled={isRequesting}>
+          {isRequesting ? <Loader small={true} /> : 'Восстановить'}
         </Button>
         <p className='text text_type_main-default'>
           Вспомнили пароль?{' '}

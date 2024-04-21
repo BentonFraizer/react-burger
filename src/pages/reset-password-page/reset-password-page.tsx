@@ -1,14 +1,16 @@
-import React, { JSX, useEffect } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import s from './reset-password-page.module.css';
 import { APIRoute, AppRoute } from '../../consts';
 import { request } from '../../utils/api';
+import Loader from '../../components/loader/loader';
 
 function ResetPasswordPage(): JSX.Element {
   const navigate = useNavigate();
   const [passwordValue, setPasswordValue] = React.useState('');
   const [codeValue, setCodeValue] = React.useState('');
+  const [isRequesting, setIsRequesting] = useState(false);
   const isResetPasswordInstalled = localStorage.getItem('resetPassword');
 
   // Если переход выполнен не со страницы forgot-password (т.е. флаг 'resetPassword' не равен 'true') переадресуем пользователя
@@ -31,6 +33,7 @@ function ResetPasswordPage(): JSX.Element {
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsRequesting(true);
     const resetPasswordData = {
       password: passwordValue,
       token: codeValue,
@@ -45,10 +48,14 @@ function ResetPasswordPage(): JSX.Element {
     };
     request(APIRoute.passwordResetReset, resetPasswordOptions).then((res) => {
       if (res.success === true) {
+        setIsRequesting(false);
         navigate(AppRoute.login);
       }
     })
-      .catch((err) => console.log('Ошибка восствновления пароля: ', err));
+      .catch((err) => {
+        setIsRequesting(false);
+        console.log('Ошибка восствновления пароля: ', err);
+      });
   };
 
   return (
@@ -76,8 +83,8 @@ function ResetPasswordPage(): JSX.Element {
           size='default'
           extraClass='mb-6'
         />
-        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20'>
-          Сохранить
+        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20' disabled={isRequesting}>
+          {isRequesting ? <Loader small={true} /> : 'Сохранить'}
         </Button>
         <p className='text text_type_main-default'>
           Вспомнили пароль?{' '}

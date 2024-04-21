@@ -2,6 +2,9 @@ import {
   FETCH_LOGIN_FAILED,
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
+  FETCH_LOGOUT_FAILED,
+  FETCH_LOGOUT_REQUEST,
+  FETCH_LOGOUT_SUCCESS,
   FETCH_REGISTER_FAILED,
   FETCH_REGISTER_REQUEST,
   FETCH_REGISTER_SUCCESS,
@@ -22,6 +25,8 @@ type InitialStateType = {
   loginFailed: boolean,
   registerRequest: boolean,
   registerFailed: boolean,
+  logoutRequest: boolean,
+  logoutFailed: boolean,
 };
 
 const initialState: InitialStateType = {
@@ -33,6 +38,8 @@ const initialState: InitialStateType = {
   loginFailed: false,
   registerRequest: false,
   registerFailed: false,
+  logoutRequest: false,
+  logoutFailed: false,
 };
 
 type ActionTypes =
@@ -46,7 +53,10 @@ type ActionTypes =
   | typeof FETCH_LOGIN_FAILED
   | typeof FETCH_REGISTER_REQUEST
   | typeof FETCH_REGISTER_SUCCESS
-  | typeof FETCH_REGISTER_FAILED;
+  | typeof FETCH_REGISTER_FAILED
+  | typeof FETCH_LOGOUT_REQUEST
+  | typeof FETCH_LOGOUT_SUCCESS
+  | typeof FETCH_LOGOUT_FAILED;
 
 export type UserAction = {
   type: ActionTypes;
@@ -130,6 +140,28 @@ export const userReducer = (state: InitialStateType = initialState, action: User
         ...state,
         registerRequest: false,
         registerFailed: true,
+      };
+    }
+    // logout
+    case FETCH_LOGOUT_REQUEST: {
+      return {
+        ...state,
+        logoutRequest: true,
+        logoutFailed: false,
+      };
+    }
+    case FETCH_LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        logoutRequest: false,
+        logoutFailed: false,
+      };
+    }
+    case FETCH_LOGOUT_FAILED: {
+      return {
+        ...state,
+        logoutRequest: false,
+        logoutFailed: true,
       };
     }
 

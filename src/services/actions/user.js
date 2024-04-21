@@ -14,6 +14,10 @@ export const FETCH_LOGIN_FAILED = 'FETCH_LOGIN_FAILED';
 export const FETCH_REGISTER_REQUEST = 'FETCH_REGISTER_REQUEST';
 export const FETCH_REGISTER_SUCCESS = 'FETCH_REGISTER_SUCCESS';
 export const FETCH_REGISTER_FAILED = 'FETCH_REGISTER_FAILED';
+// выход из системы
+export const FETCH_LOGOUT_REQUEST = 'FETCH_LOGOUT_REQUEST';
+export const FETCH_LOGOUT_SUCCESS = 'FETCH_LOGOUT_SUCCESS';
+export const FETCH_LOGOUT_FAILED = 'FETCH_LOGOUT_FAILED';
 
 export function setAuthChecked(value) {
   return {
@@ -142,6 +146,42 @@ export function register(dataForRegister) {
         console.log('Ошибка регистрации: ', err);
         dispatch({
           type: FETCH_REGISTER_FAILED,
+        });
+      });
+  };
+}
+
+export function logout() {
+  const logoutRequest = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+  };
+  // eslint-disable-next-line func-names
+  return function (dispatch) {
+    dispatch({
+      type: FETCH_LOGOUT_REQUEST,
+    });
+    request(APIRoute.logout, logoutRequest)
+      .then((res) => {
+        if (res.success === true) {
+          dispatch({
+            type: FETCH_LOGOUT_SUCCESS,
+          });
+          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('accessToken');
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          dispatch(setUser(null));
+        }
+      })
+      .catch((err) => {
+        console.log('Ошибка выхода из системы: ', err);
+        dispatch({
+          type: FETCH_LOGOUT_FAILED,
         });
       });
   };

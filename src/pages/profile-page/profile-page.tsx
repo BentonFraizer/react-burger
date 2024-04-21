@@ -3,13 +3,8 @@ import { Outlet } from 'react-router';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './profile-page.module.css';
-import {
-  APIRoute,
-  // APIRoute,
-  AppRoute,
-} from '../../consts';
-import { request } from '../../utils/api';
-import { setUser } from '../../services/actions/user';
+import { AppRoute } from '../../consts';
+import { logout } from '../../services/actions/user';
 import { useAppDispatch } from '../../hooks/hooks';
 // import { useAppDispatch } from '../../hooks/hooks';
 // import { request } from '../../utils/api';
@@ -62,24 +57,9 @@ function ProfilePage() {
   };
 
   const handleLogout = () => {
-    const logoutRequest = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
-    };
-    request(APIRoute.logout, logoutRequest).then((res) => {
-      if (res.success === true) {
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('accessToken');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        dispatch(setUser(null));
-      }
-    })
-      .catch((err) => console.log('Ошибка выхода из системы: ', err));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(logout());
   };
 
   const form = <form onSubmit={(e) => onFormSubmit(e)}>

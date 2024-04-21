@@ -1,4 +1,13 @@
-import { FETCH_USER_FAILED, FETCH_USER_REQUEST, FETCH_USER_SUCCESS, SET_AUTH_CHECKED, SET_USER } from '../actions/user';
+import {
+  FETCH_LOGIN_FAILED,
+  FETCH_LOGIN_REQUEST,
+  FETCH_LOGIN_SUCCESS,
+  FETCH_USER_FAILED,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  SET_AUTH_CHECKED,
+  SET_USER,
+} from '../actions/user';
 import { User } from '../../types';
 
 type InitialStateType = {
@@ -6,6 +15,8 @@ type InitialStateType = {
   userRequest: boolean,
   userFailed: boolean,
   isAuthChecked: boolean,
+  loginRequest: boolean,
+  loginFailed: boolean,
 };
 
 const initialState: InitialStateType = {
@@ -13,14 +24,19 @@ const initialState: InitialStateType = {
   userRequest: false,
   userFailed: false,
   isAuthChecked: false,
+  loginRequest: false,
+  loginFailed: false,
 };
 
 type ActionTypes =
- typeof SET_AUTH_CHECKED
+  typeof SET_AUTH_CHECKED
   | typeof SET_USER
   | typeof FETCH_USER_REQUEST
   | typeof FETCH_USER_SUCCESS
-  | typeof FETCH_USER_FAILED;
+  | typeof FETCH_USER_FAILED
+  | typeof FETCH_LOGIN_REQUEST
+  | typeof FETCH_LOGIN_SUCCESS
+  | typeof FETCH_LOGIN_FAILED;
 
 export type UserAction = {
   type: ActionTypes;
@@ -59,6 +75,27 @@ export const userReducer = (state: InitialStateType = initialState, action: User
         ...state,
         userRequest: false,
         userFailed: true,
+      };
+    }
+    // login
+    case FETCH_LOGIN_REQUEST: {
+      return {
+        ...state,
+        loginRequest: true,
+      };
+    }
+    case FETCH_LOGIN_SUCCESS: {
+      return {
+        ...state,
+        loginRequest: false,
+        loginFailed: false,
+      };
+    }
+    case FETCH_LOGIN_FAILED: {
+      return {
+        ...state,
+        loginRequest: false,
+        loginFailed: true,
       };
     }
 

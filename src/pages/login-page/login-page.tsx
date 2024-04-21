@@ -2,10 +2,8 @@ import React, { JSX } from 'react';
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import s from './login-page.module.css';
-import { APIRoute, AppRoute } from '../../consts';
-import { request } from '../../utils/api';
-import { Register } from '../../types';
-import { setUser } from '../../services/actions/user';
+import { AppRoute } from '../../consts';
+import { login } from '../../services/actions/user';
 import { useAppDispatch } from '../../hooks/hooks';
 
 function LoginPage(): JSX.Element {
@@ -25,22 +23,9 @@ function LoginPage(): JSX.Element {
       email: emailValue,
       password: passwordValue,
     };
-    const loginOptions = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(registeredUserData),
-    };
-    request(APIRoute.login, loginOptions).then((data: Register) => {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      dispatch(setUser(data.user));
-    })
-      .catch((err) => console.log('Ошибка авторизации: ', err));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(login(registeredUserData));
   };
 
   return (

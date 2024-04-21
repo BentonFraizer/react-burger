@@ -5,7 +5,8 @@ import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-de
 import s from './profile-page.module.css';
 import { AppRoute } from '../../consts';
 import { logout } from '../../services/actions/user';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import LoaderLayout from '../../components/loader-layout/loader-layout';
 // import { useAppDispatch } from '../../hooks/hooks';
 // import { request } from '../../utils/api';
 // import { Register } from '../../types';
@@ -17,6 +18,7 @@ function ProfilePage() {
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
+  const isLogoutRequest = useAppSelector((state) => state.user.logoutRequest);
   // const dispatch = useAppDispatch();
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameValue(e.target.value);
@@ -132,6 +134,7 @@ function ProfilePage() {
           </div>
         </div>
       </section>
+      {isLogoutRequest && <LoaderLayout />}
     </main>
   );
 }

@@ -3,11 +3,12 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useDrop } from 'react-dnd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useModal } from '../../hooks/useModal';
-import { Ingredient, UniqueIdIngredient } from '../../types';
+import { Ingredient, UniqueIdIngredient, User } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { RootState } from '../../index';
 import {
@@ -22,12 +23,16 @@ import uniqueIdIngredient from '../../types/uniqueIdIngredient';
 import EmptyBun from './empty-bun/empty-bun';
 import EmptyFilling from './empty-filling/empty-filling';
 import DraggableConstructorElement from './draggable-constructor-element/draggable-constructor-element';
+import { AppRoute } from '../../consts';
 
 function BurgerConstructor() {
+  const navigate = useNavigate();
   const bun = useAppSelector((state: RootState) => state.constructorIngredients.bun) as Ingredient;
+  const user = useAppSelector((state) => state.user.user) as User;
   const constructorIngredients = useAppSelector(
     (state: RootState) => state.constructorIngredients.constructorIngredients,
   ) as uniqueIdIngredient[];
+  const isRequesting = useAppSelector((state) => state.order.orderRequest);
   const isInitialMount = useRef(true);
 
   const dispatch = useAppDispatch();
@@ -56,13 +61,17 @@ function BurgerConstructor() {
   const { isModalOpened, openModal, closeModal } = useModal();
 
   const handleMakeOrderBtnClick = () => {
-    isInitialMount.current = false;
-    openModal();
-    const bunId = [bun?._id];
-    const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    dispatch(getOrderNumber([...bunId, ...mainsIds]));
+    if (user === null) {
+      navigate(AppRoute.login);
+    } else {
+      isInitialMount.current = false;
+      openModal();
+      const bunId = [bun?._id];
+      const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(getOrderNumber([...bunId, ...mainsIds]));
+    }
   };
 
   const handleCloseModal = () => {
@@ -176,7 +185,10 @@ function BurgerConstructor() {
           Оформить заказ
         </Button>
       </div>
-      {isModalOpened && <Modal onClose={handleCloseModal} isModalOpen={isModalOpened}>
+      {isModalOpened && <Modal
+        title={isRequesting ? 'Оформляем заказ...' : ''}
+        onClose={handleCloseModal}
+        isModalOpen={isModalOpened}>
         <OrderDetails />
       </Modal>}
     </div>

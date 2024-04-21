@@ -10,6 +10,10 @@ export const FETCH_USER_FAILED = 'FETCH_USER_FAILED';
 export const FETCH_LOGIN_REQUEST = 'FETCH_LOGIN_REQUEST';
 export const FETCH_LOGIN_SUCCESS = 'FETCH_LOGIN_SUCCESS';
 export const FETCH_LOGIN_FAILED = 'FETCH_LOGIN_FAILED';
+// регистрация
+export const FETCH_REGISTER_REQUEST = 'FETCH_REGISTER_REQUEST';
+export const FETCH_REGISTER_SUCCESS = 'FETCH_REGISTER_SUCCESS';
+export const FETCH_REGISTER_FAILED = 'FETCH_REGISTER_FAILED';
 
 export function setAuthChecked(value) {
   return {
@@ -89,21 +93,56 @@ export function login(dataForLogin) {
     dispatch({
       type: FETCH_LOGIN_REQUEST,
     });
-    return request(APIRoute.login, loginOptions).then((data) => {
-      dispatch({
-        type: FETCH_LOGIN_SUCCESS,
+    return request(APIRoute.login, loginOptions)
+      .then((data) => {
+        dispatch({
+          type: FETCH_LOGIN_SUCCESS,
+        });
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        dispatch(setUser(data.user));
+      })
+      .catch((err) => {
+        console.log('Ошибка авторизации: ', err);
+        dispatch({
+          type: FETCH_LOGIN_FAILED,
+        });
       });
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      dispatch(setUser(data.user));
-    }).catch((err) => {
-      console.log('Ошибка авторизации: ', err);
-      dispatch({
-        type: FETCH_LOGIN_FAILED,
-        payload: err,
-      });
+  };
+}
+
+export function register(dataForRegister) {
+  const registerOptions = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(dataForRegister),
+  };
+  // eslint-disable-next-line func-names
+  return function (dispatch) {
+    dispatch({
+      type: FETCH_REGISTER_REQUEST,
     });
+    request(APIRoute.register, registerOptions)
+      .then((data) => {
+        dispatch({
+          type: FETCH_REGISTER_SUCCESS,
+        });
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        dispatch(setUser(data.user));
+      })
+      .catch((err) => {
+        console.log('Ошибка регистрации: ', err);
+        dispatch({
+          type: FETCH_REGISTER_FAILED,
+        });
+      });
   };
 }

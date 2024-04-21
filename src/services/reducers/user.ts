@@ -2,6 +2,9 @@ import {
   FETCH_LOGIN_FAILED,
   FETCH_LOGIN_REQUEST,
   FETCH_LOGIN_SUCCESS,
+  FETCH_REGISTER_FAILED,
+  FETCH_REGISTER_REQUEST,
+  FETCH_REGISTER_SUCCESS,
   FETCH_USER_FAILED,
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
@@ -17,6 +20,8 @@ type InitialStateType = {
   isAuthChecked: boolean,
   loginRequest: boolean,
   loginFailed: boolean,
+  registerRequest: boolean,
+  registerFailed: boolean,
 };
 
 const initialState: InitialStateType = {
@@ -26,6 +31,8 @@ const initialState: InitialStateType = {
   isAuthChecked: false,
   loginRequest: false,
   loginFailed: false,
+  registerRequest: false,
+  registerFailed: false,
 };
 
 type ActionTypes =
@@ -36,7 +43,10 @@ type ActionTypes =
   | typeof FETCH_USER_FAILED
   | typeof FETCH_LOGIN_REQUEST
   | typeof FETCH_LOGIN_SUCCESS
-  | typeof FETCH_LOGIN_FAILED;
+  | typeof FETCH_LOGIN_FAILED
+  | typeof FETCH_REGISTER_REQUEST
+  | typeof FETCH_REGISTER_SUCCESS
+  | typeof FETCH_REGISTER_FAILED;
 
 export type UserAction = {
   type: ActionTypes;
@@ -60,6 +70,7 @@ export const userReducer = (state: InitialStateType = initialState, action: User
       return {
         ...state,
         userRequest: true,
+        userFailed: false,
       };
     }
     case FETCH_USER_SUCCESS: {
@@ -82,6 +93,7 @@ export const userReducer = (state: InitialStateType = initialState, action: User
       return {
         ...state,
         loginRequest: true,
+        loginFailed: false,
       };
     }
     case FETCH_LOGIN_SUCCESS: {
@@ -96,6 +108,28 @@ export const userReducer = (state: InitialStateType = initialState, action: User
         ...state,
         loginRequest: false,
         loginFailed: true,
+      };
+    }
+    // register
+    case FETCH_REGISTER_REQUEST: {
+      return {
+        ...state,
+        registerRequest: true,
+        registerFailed: false,
+      };
+    }
+    case FETCH_REGISTER_SUCCESS: {
+      return {
+        ...state,
+        registerRequest: false,
+        registerFailed: false,
+      };
+    }
+    case FETCH_REGISTER_FAILED: {
+      return {
+        ...state,
+        registerRequest: false,
+        registerFailed: true,
       };
     }
 

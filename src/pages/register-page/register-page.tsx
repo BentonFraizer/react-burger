@@ -2,16 +2,16 @@ import React, { JSX } from 'react';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import s from './register-page.module.css';
-import { APIRoute, AppRoute } from '../../consts';
-import { request } from '../../utils/api';
-import { setUser } from '../../services/actions/user';
-import { useAppDispatch } from '../../hooks/hooks';
-import { Register } from '../../types';
+import { AppRoute } from '../../consts';
+import { register } from '../../services/actions/user';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import Loader from '../../components/loader/loader';
 
 function RegisterPage(): JSX.Element {
   const [nameValue, setNameValue] = React.useState('');
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
+  const isRegisterRequest = useAppSelector((state) => state.user.registerRequest);
   const dispatch = useAppDispatch();
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameValue(e.target.value);
@@ -30,22 +30,9 @@ function RegisterPage(): JSX.Element {
       password: passwordValue,
       name: nameValue,
     };
-    const registerOptions = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newUserData),
-    };
-    request(APIRoute.register, registerOptions).then((data: Register) => {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      dispatch(setUser(data.user));
-    })
-      .catch((err) => console.log('Ошибка регистрации: ', err));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    dispatch(register(newUserData));
   };
 
   return (
@@ -81,8 +68,8 @@ function RegisterPage(): JSX.Element {
           icon='ShowIcon'
           extraClass='mb-6'
         />
-        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20'>
-          Зарегистрироваться
+        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20' disabled={isRegisterRequest}>
+          {isRegisterRequest ? <Loader small={true}/> : 'Зарегистрироваться'}
         </Button>
         <p className='text text_type_main-default'>
           Уже зарегистрированы?{' '}

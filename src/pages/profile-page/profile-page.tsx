@@ -1,25 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './profile-page.module.css';
-import { AppRoute } from '../../consts';
-import { logout } from '../../services/actions/user';
+import { APIRoute, AppRoute } from '../../consts';
+import { logout, setUser } from '../../services/actions/user';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import LoaderLayout from '../../components/loader-layout/loader-layout';
-// import { useAppDispatch } from '../../hooks/hooks';
-// import { request } from '../../utils/api';
-// import { Register } from '../../types';
-// import { setUser } from '../../services/actions/user';
+import { Register, User } from '../../types';
+import { fetchWithRefresh } from '../../utils/api';
+import Loader from '../../components/loader/loader';
+
+const SAVE_BTN_STYLES = {
+  width: 166,
+  display: 'flex',
+  justifyContent: 'center',
+};
 
 function ProfilePage() {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const [nameValue, setNameValue] = React.useState('');
-  const [emailValue, setEmailValue] = React.useState('');
-  const [passwordValue, setPasswordValue] = React.useState('');
   const isLogoutRequest = useAppSelector((state) => state.user.logoutRequest);
-  // const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user) as User;
+  const [nameValue, setNameValue] = React.useState(user.name);
+  const [emailValue, setEmailValue] = React.useState(user.email);
+  const [passwordValue, setPasswordValue] = React.useState('');
+  const [isRequesting, setIsRequesting] = useState(false);
+  const emptyPassword = '';
+  const isInputsHaveChanges = user.name !== nameValue || user.email !== emailValue || emptyPassword !== passwordValue;
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameValue(e.target.value);
   };
@@ -30,32 +38,41 @@ function ProfilePage() {
     setPasswordValue(e.target.value);
   };
 
+  const onFormReset = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNameValue(user.name);
+    setEmailValue(user.email);
+    setPasswordValue(emptyPassword);
+  };
+
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Код ниже не валидный. Здесь необходимо переделать логику на:
-    // получение и подстановку данных
-    // и на изменение данных (при отмене вернуть старые (взять из хранилища), при сохранении - отправить на сервер)
-    //   const newUserData = {
-    //     email: emailValue,
-    //     password: passwordValue,
-    //     name: nameValue,
-    //   };
-    //   const registerRequest = {
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(newUserData),
-    //   };
-    //   request(APIRoute.register, registerRequest).then((data: Register) => {
-    //     localStorage.setItem('accessToken', data.accessToken);
-    //     localStorage.setItem('refreshToken', data.refreshToken);
-    //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //     // @ts-ignore
-    //     dispatch(setUser(data.user));
-    //   })
-    //     .catch((err) => console.log('Ошибка регистрации: ', err));
+    setIsRequesting(true);
+    const updatedUserData = {
+      name: nameValue,
+      email: emailValue,
+      password: passwordValue,
+    };
+    const refreshRequest = {
+      method: 'PATCH',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        authorization: localStorage.getItem('accessToken'),
+      },
+      body: JSON.stringify(updatedUserData),
+    };
+    fetchWithRefresh(APIRoute.getUser, refreshRequest).then((data: Register) => {
+      setPasswordValue(emptyPassword);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(setUser(data.user));
+      setIsRequesting(false);
+    })
+      .catch((err) => {
+        setIsRequesting(false);
+        console.log('Ошибка обновления данных: ', err);
+      });
   };
 
   const handleLogout = () => {
@@ -64,7 +81,7 @@ function ProfilePage() {
     dispatch(logout());
   };
 
-  const form = <form onSubmit={(e) => onFormSubmit(e)}>
+  const form = <form onSubmit={(e) => onFormSubmit(e)} onReset={(e) => onFormReset(e)}>
     <Input
       type='text'
       placeholder='Имя'
@@ -92,15 +109,16 @@ function ProfilePage() {
       icon='EditIcon'
       extraClass='mb-6'
     />
-    {/* // возможно первую кнопку тоже необходимо реализовать htmlType='submit' или вообще htmlType='reset' */}
-    <div className={s.buttons}>
-      <Button htmlType='button' type='secondary' size='medium'>
-        Отмена
-      </Button>
-      <Button htmlType='submit' type='primary' size='medium'>
-        Сохранить
-      </Button>
-    </div>
+    {
+      isInputsHaveChanges && <div className={s.buttons}>
+        <Button htmlType='reset' type='secondary' size='medium'>
+          Отмена
+        </Button>
+        <Button htmlType='submit' type='primary' size='medium' style={SAVE_BTN_STYLES} disabled={isRequesting}>
+          {isRequesting ? <Loader small={true} /> : 'Сохранить'}
+        </Button>
+      </div>
+    }
   </form>;
 
   return (
@@ -121,7 +139,7 @@ function ProfilePage() {
             <Button htmlType='button' type='secondary' size='medium' onClick={handleLogout}>
               Выход
             </Button>
-            <p className="text text_type_main-default">
+            <p className='text text_type_main-default'>
               В этом разделе вы можете изменить свои персональные данные
             </p>
           </div>

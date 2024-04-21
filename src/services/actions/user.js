@@ -1,4 +1,4 @@
-import { request } from '../../utils/api';
+import { fetchWithRefresh, request } from '../../utils/api';
 import { APIRoute } from '../../consts';
 
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
@@ -37,6 +37,7 @@ export function getUser() {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      authorization: localStorage.getItem('accessToken'),
     },
   };
 
@@ -45,7 +46,7 @@ export function getUser() {
     dispatch({
       type: FETCH_USER_REQUEST,
     });
-    return request(APIRoute.getUser, getUserOptions)
+    return fetchWithRefresh(APIRoute.getUser, getUserOptions)
       .then((res) => {
         if (res && res.success) {
           dispatch({
@@ -53,13 +54,13 @@ export function getUser() {
             payload: res.user,
           });
         }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch({
+          type: FETCH_USER_FAILED,
+        });
       });
-    // .catch((e) => {
-    //   console.log(e);
-    //   dispatch({
-    //     type: FETCH_USER_FAILED,
-    //   });
-    // });
   };
 }
 

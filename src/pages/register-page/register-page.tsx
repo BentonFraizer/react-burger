@@ -6,29 +6,26 @@ import { AppRoute } from '../../consts';
 import { register } from '../../services/actions/user';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Loader from '../../components/loader/loader';
+import useForm from '../../hooks/useForm';
 
 function RegisterPage(): JSX.Element {
-  const [nameValue, setNameValue] = React.useState('');
-  const [emailValue, setEmailValue] = React.useState('');
-  const [passwordValue, setPasswordValue] = React.useState('');
   const isRegisterRequest = useAppSelector((state) => state.user.registerRequest);
   const dispatch = useAppDispatch();
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNameValue(e.target.value);
+
+  const initialFormValues = {
+    name: '',
+    email: '',
+    password: '',
   };
-  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailValue(e.target.value);
-  };
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordValue(e.target.value);
-  };
+
+  const { values, handleChange } = useForm(initialFormValues);
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newUserData = {
-      email: emailValue,
-      password: passwordValue,
-      name: nameValue,
+      name: values.name,
+      email: values.email,
+      password: values.password,
     };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -44,8 +41,8 @@ function RegisterPage(): JSX.Element {
         <Input
           type='text'
           placeholder='Имя'
-          onChange={onNameChange}
-          value={nameValue}
+          onChange={handleChange}
+          value={values.name}
           name='name'
           error={false}
           errorText='Ошибка'
@@ -53,8 +50,8 @@ function RegisterPage(): JSX.Element {
           extraClass='mb-6'
         />
         <EmailInput
-          onChange={onEmailChange}
-          value={emailValue}
+          onChange={handleChange}
+          value={values.email}
           name='email'
           placeholder='E-mail'
           isIcon={false}
@@ -62,14 +59,14 @@ function RegisterPage(): JSX.Element {
         />
         <PasswordInput
           autoComplete='off'
-          onChange={onPasswordChange}
-          value={passwordValue}
+          onChange={handleChange}
+          value={values.password}
           name='password'
           icon='ShowIcon'
           extraClass='mb-6'
         />
         <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20' disabled={isRegisterRequest}>
-          {isRegisterRequest ? <Loader small={true}/> : 'Зарегистрироваться'}
+          {isRegisterRequest ? <Loader small={true} /> : 'Зарегистрироваться'}
         </Button>
         <p className='text text_type_main-default'>
           Уже зарегистрированы?{' '}

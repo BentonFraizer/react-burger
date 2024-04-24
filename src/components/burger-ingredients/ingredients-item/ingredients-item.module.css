@@ -3,9 +3,14 @@
   width: 100%;
   max-width: 272px;
   cursor: pointer;
+  color: #fff;
 }
 
 .ingredient-item__price {
   display: flex;
   justify-content: center;
+}
+
+.ingredient-link {
+  text-decoration: none;
 }

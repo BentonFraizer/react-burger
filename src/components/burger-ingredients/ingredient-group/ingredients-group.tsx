@@ -6,11 +6,10 @@ import IngredientsItem from '../ingredients-item/ingredients-item';
 type IngredientGroupProps = {
   type: string;
   ingredients: Ingredient[];
-  openModal: () => void;
   onGetGroupRef: (ref: HTMLDivElement | null) => void;
 };
 
-function IngredientsGroup({ type, ingredients, openModal, onGetGroupRef }: IngredientGroupProps): JSX.Element {
+function IngredientsGroup({ type, ingredients, onGetGroupRef }: IngredientGroupProps): JSX.Element {
   const groupTitle = { bun: 'Булки', sauce: 'Соусы', main: 'Начинки' }[type];
   const ingredientRef = useRef<HTMLDivElement>(null);
 
@@ -20,7 +19,7 @@ function IngredientsGroup({ type, ingredients, openModal, onGetGroupRef }: Ingre
 
   return (
     <div className={s['ingredients-group']} ref={ingredientRef}>
-      <div className={s['ingredients-group__title']} >
+      <div className={s['ingredients-group__title']}>
         <p className='text text_type_main-medium'>{groupTitle}</p>
       </div>
       <div className={`${s['ingredient-item__container']} pt-6 pl-4 pr-4 pb-10`}>
@@ -28,7 +27,7 @@ function IngredientsGroup({ type, ingredients, openModal, onGetGroupRef }: Ingre
           <IngredientsItem
             key={ingredient._id}
             ingredient={ingredient}
-            openModal={openModal} />
+          />
         ))}
       </div>
     </div>

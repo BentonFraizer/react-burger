@@ -3,6 +3,7 @@
   width: 100%;
   max-width: 600px;
   padding: 100px 8px 0;
+  text-align: center;
 }
 
 .constructor-elements__wrapper {
@@ -19,20 +20,6 @@
   margin: 0;
   border: 3px solid transparent;
   border-radius: 10px;
-}
-
-.constructor-element {
-  position: relative;
-}
-
-.constructor-element:before {
-  content: url('/src/images/icons/dnd-dots.svg');
-  position: absolute;
-  height: 100%;
-  top: 0;
-  left: -22px;
-  display: flex;
-  align-items: center;
 }
 
 .total-price {

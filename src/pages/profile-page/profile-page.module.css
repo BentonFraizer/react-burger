@@ -1,0 +1,53 @@
+.main {
+  height: calc(100vh - 88px);
+  display: flex;
+  justify-content: center;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1240px;
+}
+
+.profile {
+  width: 100%;
+  max-width: 860px;
+  margin-top: 120px;
+  display: flex;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  margin-right: 60px;
+  width: 320px;
+}
+
+.left a:nth-child(2) + button {
+  margin-bottom: 80px;
+}
+
+.left p {
+  color: rgba(133, 133, 173, 1);
+  opacity: 0.4;
+}
+
+.left button {
+  padding-left: 0;
+  text-align: left;
+  font-size: 24px;
+  height: 64px;
+  color: rgba(133, 133, 173, 1);
+}
+
+.active button {
+  color: #fff;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}

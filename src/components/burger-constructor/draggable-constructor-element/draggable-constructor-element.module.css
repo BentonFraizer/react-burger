@@ -1,3 +1,13 @@
 .constructor-element {
   position: relative;
 }
+
+.constructor-element:before {
+  content: url('/src/images/icons/dnd-dots.svg');
+  position: absolute;
+  height: 80px;
+  top: 0;
+  left: -22px;
+  display: flex;
+  align-items: center;
+}

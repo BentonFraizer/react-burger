@@ -3,10 +3,12 @@ import { ingredientsReducer } from './ingredients';
 import { constructorReducer } from './constructor-ingredients';
 import { ingredientDetailsReducer } from './ingredient-details';
 import { orderReducer } from './order';
+import { userReducer } from './user';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   constructorIngredients: constructorReducer,
   ingredientDetails: ingredientDetailsReducer,
   order: orderReducer,
+  user: userReducer,
 });

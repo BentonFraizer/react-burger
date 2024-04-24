@@ -1,0 +1,19 @@
+.nav-link {
+  text-decoration: none;
+}
+
+.nav-link:not(.active) svg {
+  fill: #8585AD;
+}
+
+.nav-link.active svg {
+  fill: #fff;
+}
+
+.nav-link:not(.active) p {
+  color: #8585AD;
+}
+
+.nav-link.active p {
+  color: #fff;
+}

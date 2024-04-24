@@ -1,0 +1,21 @@
+.main {
+  height: calc(100vh - 88px);
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+form button ~ p {
+  color: var(--text-inactive-color);
+}
+
+form a {
+  color: rgba(76, 76, 255, 1);
+  text-decoration: none;
+}

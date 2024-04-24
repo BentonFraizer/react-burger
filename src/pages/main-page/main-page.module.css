@@ -1,7 +1,3 @@
-.app {
-  text-align: center;
-}
-
 .main {
   height: calc(100vh - 88px);
   display: flex;

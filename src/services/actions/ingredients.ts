@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { request } from '../../utils/utils';
+import { request } from '../../utils/api';
 import { IngredientsAction } from '../reducers/ingredients';
 import { APIRoute } from '../../consts';
 

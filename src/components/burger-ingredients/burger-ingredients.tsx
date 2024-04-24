@@ -1,24 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import s from './burger-ingredients.module.css';
 import { Ingredient } from '../../types';
 import IngredientsGroup from './ingredient-group/ingredients-group';
-import { useModal } from '../../hooks/useModal';
-import Modal from '../modal/modal';
-import IngredientDetails from './ingredient-details/ingredient-details';
-import { getIngredients } from '../../services/actions/ingredients';
 import { RootState } from '../../index';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { deleteIngredientDetails } from '../../services/actions/ingredient-details';
+import { useAppSelector } from '../../hooks/hooks';
 import Loader from '../loader/loader';
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState('bun');
-  const { isModalOpened, openModal, closeModal } = useModal();
   const containerRef = useRef<HTMLDivElement>(null);
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.ingredients.ingredients);
   const {
     ingredientsFailed,
@@ -29,19 +22,6 @@ function BurgerIngredients() {
   if (data === undefined) {
     return null;
   }
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    dispatch(getIngredients());
-  }, [dispatch]);
-
-  const closeModalHandler = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    dispatch(deleteIngredientDetails());
-    closeModal();
-  };
 
   // Обработчик, отслеживающий положение групп элементов. Если верхняя часть группы ближе к верху конейнера,
   // выполняется автоматический выбор соответствующего таба.
@@ -121,7 +101,6 @@ function BurgerIngredients() {
             key={type}
             type={type}
             ingredients={ingredients}
-            openModal={openModal}
             onGetGroupRef={(ref) => onGetGroupRef(type, ref)}
           />
         )) : (
@@ -140,9 +119,6 @@ function BurgerIngredients() {
           </>
         )}
       </div>
-      {isModalOpened && <Modal title='Детали ингредиента' onClose={closeModalHandler} isModalOpen={isModalOpened}>
-        <IngredientDetails />
-      </Modal>}
     </div>
   );
 }

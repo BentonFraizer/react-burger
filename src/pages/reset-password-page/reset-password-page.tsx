@@ -5,11 +5,10 @@ import s from './reset-password-page.module.css';
 import { APIRoute, AppRoute } from '../../consts';
 import { request } from '../../utils/api';
 import Loader from '../../components/loader/loader';
+import useForm from '../../hooks/useForm';
 
 function ResetPasswordPage(): JSX.Element {
   const navigate = useNavigate();
-  const [passwordValue, setPasswordValue] = React.useState('');
-  const [codeValue, setCodeValue] = React.useState('');
   const [isRequesting, setIsRequesting] = useState(false);
   const isResetPasswordInstalled = localStorage.getItem('resetPassword');
 
@@ -23,20 +22,19 @@ function ResetPasswordPage(): JSX.Element {
     localStorage.removeItem('resetPassword');
   }, []);
 
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordValue(e.target.value);
+  const initialFormValues = {
+    password: '',
+    token: '',
   };
 
-  const onCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCodeValue(e.target.value);
-  };
+  const { values, handleChange } = useForm(initialFormValues);
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRequesting(true);
     const resetPasswordData = {
-      password: passwordValue,
-      token: codeValue,
+      password: values.password,
+      token: values.token,
     };
     const resetPasswordOptions = {
       method: 'POST',
@@ -66,8 +64,8 @@ function ResetPasswordPage(): JSX.Element {
         </p>
         <PasswordInput
           placeholder='Введите новый пароль'
-          onChange={onPasswordChange}
-          value={passwordValue}
+          onChange={handleChange}
+          value={values.password}
           name='password'
           icon='ShowIcon'
           extraClass='mb-6'
@@ -75,9 +73,9 @@ function ResetPasswordPage(): JSX.Element {
         <Input
           type='text'
           placeholder='Введите код из письма'
-          onChange={onCodeChange}
-          value={codeValue}
-          name='name'
+          onChange={handleChange}
+          value={values.token}
+          name='token'
           error={false}
           errorText='Ошибка'
           size='default'

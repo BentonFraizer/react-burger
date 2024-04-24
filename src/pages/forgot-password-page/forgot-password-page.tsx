@@ -5,10 +5,10 @@ import s from './forgot-password-page.module.css';
 import { APIRoute, AppRoute } from '../../consts';
 import { request } from '../../utils/api';
 import Loader from '../../components/loader/loader';
+import useForm from '../../hooks/useForm';
 
 function ForgotPasswordPage(): JSX.Element {
   const navigate = useNavigate();
-  const [emailValue, setEmailValue] = React.useState('');
   const [isRequesting, setIsRequesting] = useState(false);
 
   // Если вспомогательный флаг не установлен, то пользователь не сможет попасть на страницу reset-password.
@@ -17,15 +17,16 @@ function ForgotPasswordPage(): JSX.Element {
     localStorage.setItem('resetPassword', 'true');
   }, []);
 
-  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailValue(e.target.value);
+  const initialFormValue = {
+    email: '',
   };
 
+  const { values, handleChange } = useForm(initialFormValue);
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRequesting(true);
     const forgotPasswordData = {
-      email: emailValue,
+      email: values.email,
     };
     const forgotPasswordOptions = {
       method: 'POST',
@@ -54,8 +55,8 @@ function ForgotPasswordPage(): JSX.Element {
           Восстановление пароля
         </p>
         <EmailInput
-          onChange={onEmailChange}
-          value={emailValue}
+          onChange={handleChange}
+          value={values.email}
           name='email'
           placeholder='Укажите e-mail'
           isIcon={false}

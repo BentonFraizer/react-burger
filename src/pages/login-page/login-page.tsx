@@ -6,24 +6,26 @@ import { AppRoute } from '../../consts';
 import { login } from '../../services/actions/user';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Loader from '../../components/loader/loader';
+import useForm from '../../hooks/useForm';
 
 function LoginPage(): JSX.Element {
-  const [emailValue, setEmailValue] = React.useState('');
-  const [passwordValue, setPasswordValue] = React.useState('');
   const isLoginRequest = useAppSelector((state) => state.user.loginRequest);
   const dispatch = useAppDispatch();
-  const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailValue(e.target.value);
+
+  // Инициализация состояния значений полей ввода
+  const initialFormValues = {
+    email: '',
+    password: ''
   };
-  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordValue(e.target.value);
-  };
+
+  // Использование кастомного хука useForm
+  const { values, handleChange } = useForm(initialFormValues);
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const registeredUserData = {
-      email: emailValue,
-      password: passwordValue,
+      email: values.email,
+      password: values.password,
     };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -37,8 +39,8 @@ function LoginPage(): JSX.Element {
           Вход
         </p>
         <EmailInput
-          onChange={onEmailChange}
-          value={emailValue}
+          onChange={handleChange}
+          value={values.email}
           name='email'
           placeholder='E-mail'
           isIcon={false}
@@ -46,8 +48,8 @@ function LoginPage(): JSX.Element {
         />
         <PasswordInput
           autoComplete='off'
-          onChange={onPasswordChange}
-          value={passwordValue}
+          onChange={handleChange}
+          value={values.password}
           name='password'
           icon='ShowIcon'
           extraClass='mb-6'

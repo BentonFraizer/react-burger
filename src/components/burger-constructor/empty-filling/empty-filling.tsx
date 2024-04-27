@@ -1,6 +1,5 @@
 import { JSX } from 'react';
 import { useDrop } from 'react-dnd';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import s from './empty-filling.module.css';
 import { Ingredient } from '../../../types';

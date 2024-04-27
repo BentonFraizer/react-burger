@@ -23,7 +23,7 @@ function BurgerIngredients() {
     return null;
   }
 
-  // Обработчик, отслеживающий положение групп элементов. Если верхняя часть группы ближе к верху конейнера,
+  // Обработчик, отслеживающий положение групп элементов. Если верхняя часть группы ближе к верху контейнера,
   // выполняется автоматический выбор соответствующего таба.
   const handleScroll = () => {
     if (containerRef.current) {
@@ -106,15 +106,13 @@ function BurgerIngredients() {
         )) : (
           <>
             <p className='text text_type_main-medium mt-10 mb-5'>
-              Ошибка закрузки ингредиентов.
+              Ошибка загрузки ингредиентов.
             </p>
             <p className='text text_type_main-default mb-3'>
               Информация об ошибке:
             </p>
             <p className='text text_type_main-medium'>
-              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-              {/* @ts-ignore */}
-              <span>{ingredientsFailedMessage}</span>
+              <span>{ingredientsFailedMessage as string}</span>
             </p>
           </>
         )}

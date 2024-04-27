@@ -1,7 +1,6 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useDrop } from 'react-dnd';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import s from './burger-constructor.module.css';
@@ -127,9 +126,6 @@ function BurgerConstructor() {
   const isFillingDraggingClass = canFillingDrop ? s['is-dragging'] : '';
 
   const isMakeOrderBtnDisabled = bun === null || constructorIngredients.length === 0;
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   return (
     <div className={s['burger-constructor']}>
       {bun === null ? <EmptyBun type={'top'} />

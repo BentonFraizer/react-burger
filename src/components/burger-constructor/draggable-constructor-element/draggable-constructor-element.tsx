@@ -40,7 +40,7 @@ function DraggableConstructorElement({ main, index, onDeleteIngredient }: Dragga
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      dispatch(moveConstructorIngredient(String(dragIndex), String(hoverIndex)));
+      dispatch(moveConstructorIngredient(dragIndex, hoverIndex));
 
       // eslint-disable-next-line no-param-reassign
       item.sortIndex = hoverIndex;

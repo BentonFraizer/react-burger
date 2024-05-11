@@ -108,8 +108,6 @@ export function login(dataForLogin: { email: string, password: string }) {
         });
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         dispatch(setUser(data.user));
       })
       .catch((err) => {
@@ -142,8 +140,6 @@ export function register(dataForRegister: { name: string, email: string, passwor
         });
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         dispatch(setUser(data.user));
       })
       .catch((err) => {
@@ -177,8 +173,6 @@ export function logout() {
           });
           localStorage.removeItem('refreshToken');
           localStorage.removeItem('accessToken');
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           dispatch(setUser(null));
         }
       })

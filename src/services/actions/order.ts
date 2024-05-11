@@ -30,8 +30,6 @@ export function getOrderNumber(identifiersForOrder: string[]) {
           type: FETCH_ORDER_NUMBER_SUCCESS,
           payload: res.order.number,
         });
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         dispatch(clearConstructor());
       }
     }).catch((e) => {

@@ -41,7 +41,7 @@ export function getConstructorBun() {
   };
 }
 
-export function moveConstructorIngredient(dragIndex: string, hoverIndex: string) {
+export function moveConstructorIngredient(dragIndex: number, hoverIndex: number) {
   return {
     type: MOVE_CONSTRUCTOR_INGREDIENT,
     payload: { dragIndex, hoverIndex },

@@ -8,8 +8,6 @@ export const GET_CONSTRUCTOR_BUN = 'GET_CONSTRUCTOR_BUN';
 export const MOVE_CONSTRUCTOR_INGREDIENT = 'MOVE_CONSTRUCTOR_INGREDIENT';
 export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 
-// прошу проверяющего разработчика сориентировать каким образом корректно вывести типы для action,
-// чтобы по всему коду не пришлось использовать инструкцию @ts-ignore
 export function addConstructorIngredient(ingredient: UniqueIdIngredient, uniqueId: string) {
   return {
     type: ADD_CONSTRUCTOR_INGREDIENT,

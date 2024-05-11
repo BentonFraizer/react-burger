@@ -124,8 +124,6 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
       const dragCard = state.constructorIngredients[dragIndex];
       const newCards = [...state.constructorIngredients];
       newCards.splice(dragIndex, 1);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       newCards.splice(hoverIndex, 0, dragCard);
 
       return {

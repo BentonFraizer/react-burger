@@ -25,14 +25,10 @@ function App(): JSX.Element {
   const background = location.state && location.state.background;
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(checkUserAuth());
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(getIngredients());
   }, []);
 

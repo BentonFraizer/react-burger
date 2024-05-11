@@ -58,14 +58,12 @@ function ProfilePage() {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        authorization: localStorage.getItem('accessToken'),
+        authorization: localStorage.getItem('accessToken') as string,
       },
       body: JSON.stringify(updatedUserData),
     };
     fetchWithRefresh(APIRoute.getUser, refreshRequest).then((data: Register) => {
       setPasswordValue(emptyPassword);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(setUser(data.user));
       setIsRequesting(false);
     })
@@ -76,8 +74,6 @@ function ProfilePage() {
   };
 
   const handleLogout = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(logout());
   };
 

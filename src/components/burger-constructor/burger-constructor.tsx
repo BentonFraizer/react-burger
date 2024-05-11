@@ -37,11 +37,7 @@ function BurgerConstructor() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(getConstructorIngredients());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(getConstructorBun());
   }, [dispatch]);
 
@@ -67,22 +63,16 @@ function BurgerConstructor() {
       openModal();
       const bunId = [bun?._id];
       const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(getOrderNumber([...bunId, ...mainsIds]));
     }
   };
 
   const handleCloseModal = () => {
     closeModal();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(deleteOrderNumber());
   };
 
   const handleDeleteIngredientBtnClick = (ingredient: UniqueIdIngredient) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(removeConstructorIngredient(ingredient));
   };
 
@@ -90,8 +80,6 @@ function BurgerConstructor() {
   const [{ canDrop }, dropTargetForTopBun] = useDrop({
     accept: 'bun',
     drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(addConstructorBun(item));
     },
     collect: (monitor) => ({
@@ -101,8 +89,6 @@ function BurgerConstructor() {
   const [, dropTargetForBottomBun] = useDrop({
     accept: 'bun',
     drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(addConstructorBun(item));
     },
     collect: (monitor) => ({
@@ -114,9 +100,7 @@ function BurgerConstructor() {
   // Хук обрабатывают перетаскивание начинок и соусов из списка ингредиентов в конструктор
   const [{ canFillingDrop }, dropTargetForFillings] = useDrop({
     accept: 'filling',
-    drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    drop(item: UniqueIdIngredient) {
       dispatch(addConstructorIngredient(item, uuidv4()));
     },
     collect: (monitor) => ({

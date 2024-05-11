@@ -16,8 +16,6 @@ function IngredientDetails(): JSX.Element | null {
   useEffect(() => {
     if (filteredIngredient) {
       setCurrentIngredient(filteredIngredient);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(setIngredientDetails(filteredIngredient));
     }
   }, [dispatch, filteredIngredient]);

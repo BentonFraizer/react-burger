@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import s from './empty-filling.module.css';
-import { Ingredient } from '../../../types';
+import { UniqueIdIngredient } from '../../../types';
 import { addConstructorIngredient } from '../../../services/actions/constructor-ingredients';
 import { useAppDispatch } from '../../../hooks/hooks';
 
@@ -11,9 +11,7 @@ function EmptyFilling(): JSX.Element {
 
   const [{ canDrop }, dropTarget] = useDrop({
     accept: 'filling',
-    drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    drop(item: UniqueIdIngredient) {
       dispatch(addConstructorIngredient(item, uuidv4()));
     },
     collect: (monitor) => ({

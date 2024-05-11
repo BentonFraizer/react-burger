@@ -1,5 +1,8 @@
+import { Dispatch } from 'react';
 import { fetchWithRefresh, request } from '../../utils/api';
 import { APIRoute } from '../../consts';
+import { User } from '../../types';
+import { UserAction } from '../reducers/user';
 
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
@@ -19,14 +22,14 @@ export const FETCH_LOGOUT_REQUEST = 'FETCH_LOGOUT_REQUEST';
 export const FETCH_LOGOUT_SUCCESS = 'FETCH_LOGOUT_SUCCESS';
 export const FETCH_LOGOUT_FAILED = 'FETCH_LOGOUT_FAILED';
 
-export function setAuthChecked(value) {
+export function setAuthChecked(value: boolean) {
   return {
     type: SET_AUTH_CHECKED,
     payload: value,
   };
 }
 
-export const setUser = (user) => ({
+export const setUser = (user: User | null) => ({
   type: SET_USER,
   payload: user,
 });
@@ -37,12 +40,12 @@ export function getUser() {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      authorization: localStorage.getItem('accessToken'),
+      authorization: localStorage.getItem('accessToken') as string,
     },
   };
 
   // eslint-disable-next-line func-names
-  return function (dispatch) {
+  return function (dispatch: Dispatch<UserAction>) {
     dispatch({
       type: FETCH_USER_REQUEST,
     });
@@ -66,7 +69,7 @@ export function getUser() {
 
 export function checkUserAuth() {
   // eslint-disable-next-line func-names
-  return function (dispatch) {
+  return function (dispatch: any) {
     if (localStorage.getItem('accessToken')) {
       dispatch(getUser())
         .catch(() => {
@@ -84,7 +87,7 @@ export function checkUserAuth() {
   };
 }
 
-export function login(dataForLogin) {
+export function login(dataForLogin: { email: string, password: string }) {
   const loginOptions = {
     method: 'POST',
     headers: {
@@ -94,7 +97,7 @@ export function login(dataForLogin) {
     body: JSON.stringify(dataForLogin),
   };
   // eslint-disable-next-line func-names
-  return function (dispatch) {
+  return function (dispatch: Dispatch<UserAction>) {
     dispatch({
       type: FETCH_LOGIN_REQUEST,
     });
@@ -118,7 +121,7 @@ export function login(dataForLogin) {
   };
 }
 
-export function register(dataForRegister) {
+export function register(dataForRegister: { name: string, email: string, password: string }) {
   const registerOptions = {
     method: 'POST',
     headers: {
@@ -128,7 +131,7 @@ export function register(dataForRegister) {
     body: JSON.stringify(dataForRegister),
   };
   // eslint-disable-next-line func-names
-  return function (dispatch) {
+  return function (dispatch: Dispatch<UserAction>) {
     dispatch({
       type: FETCH_REGISTER_REQUEST,
     });
@@ -162,7 +165,7 @@ export function logout() {
     body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
   };
   // eslint-disable-next-line func-names
-  return function (dispatch) {
+  return function (dispatch: Dispatch<UserAction>) {
     dispatch({
       type: FETCH_LOGOUT_REQUEST,
     });

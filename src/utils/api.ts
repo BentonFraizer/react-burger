@@ -17,7 +17,7 @@ const checkSuccess = (res: any) => {
 // создаем универсальную фукнцию запроса с проверкой ответа и `success`
 // В вызов приходит `endpoint`(часть урла, которая идет после базового) и опции
 // а также в ней базовый урл сразу прописывается, чтобы не дублировать в каждом запросе
-export const request = (endpoint: string, options?: any) => fetch(`${BASE_URL}${endpoint}`, options)
+export const request = (endpoint: string, options?: RequestInit) => fetch(`${BASE_URL}${endpoint}`, options)
   .then(checkResponse)
   .then(checkSuccess);
 
@@ -32,7 +32,9 @@ export const refreshToken = () => fetch(`${BASE_URL}${APIRoute.authToken}`, {
   }),
 }).then(checkResponse);
 
-export const fetchWithRefresh = async (url: string, options?: any) => {
+type ExtendedHeadersInit = HeadersInit & { authorization?: string };
+
+export const fetchWithRefresh = async (url: string, options?: RequestInit & { headers?: ExtendedHeadersInit }) => {
   try {
     const res = await fetch(`${BASE_URL}${url}`, options);
     return await checkResponse(res);
@@ -44,8 +46,10 @@ export const fetchWithRefresh = async (url: string, options?: any) => {
       }
       localStorage.setItem('refreshToken', refreshData.refreshToken);
       localStorage.setItem('accessToken', refreshData.accessToken);
-      // eslint-disable-next-line no-param-reassign
-      options.headers.authorization = refreshData.accessToken;
+      if (options && options.headers) {
+        // eslint-disable-next-line no-param-reassign
+        options.headers.authorization = refreshData.accessToken;
+      }
       const res = await fetch(url, options); // повторяем запрос
       return checkResponse(res);
       // eslint-disable-next-line no-else-return

@@ -1,0 +1,29 @@
+.main {
+  height: calc(100vh - 88px);
+  display: flex;
+  justify-content: center;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1240px;
+}
+
+.left {
+  width: 100%;
+  max-width: 603px;
+}
+
+.cards__wrapper {
+  width: inherit;
+  background-color: #3f3f4b;
+  height: calc(100vh - 252px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  display: inline-block;
+  padding: 0 8px 0 0;
+}

@@ -17,8 +17,7 @@ export const AppRoute = {
   ingredient: '/ingredients/:id',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
-  // предполагаемое название ленты заказов
-  ordersList: '/orders-list',
+  allOrders: '/feed',
   profile: '/profile',
   profileOrders: '/profile/orders',
   notFound: '*',

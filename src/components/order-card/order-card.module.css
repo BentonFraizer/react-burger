@@ -1,0 +1,66 @@
+.order__card {
+  width: 100%;
+  padding: 24px;
+  background-color: #1C1C21;
+  border-radius: 40px;
+  margin-bottom: 16px;
+}
+
+.order__card:last-child {
+  margin-bottom: 0;
+}
+
+.order__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.order__created-date {
+  color: #8585AD;
+}
+
+.order__title {
+  margin-bottom: 24px;
+}
+
+.order__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ingredients__icons {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.order__price {
+  display: flex;
+}
+
+/* Стили для уменьшенных изображений ингредиентов */
+.ingredient__preview {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  padding: 6px 12px;
+  background-image: linear-gradient(63deg, #801AB3 0%, #4C4CFF 100%);
+  background-origin: border-box;
+  box-shadow: inset 0 100vw #1C1C21;
+  border: 2px solid transparent;
+  margin-left: -15px;
+}
+
+.ingredient__preview:last-child {
+  margin-left: 0;
+}
+
+.ingredient__preview img {
+  position: absolute;
+  top: 6px;
+  left: -19px;
+  width: 100px;
+}

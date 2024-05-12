@@ -27,7 +27,7 @@ function AppHeader(): JSX.Element {
               <NavBtn
                 className={s['nav-btn']}
                 icon={<ListIcon type='primary' />}
-                to={AppRoute.ordersList}
+                to={AppRoute.allOrders}
               >
                 Лента заказов
               </NavBtn>

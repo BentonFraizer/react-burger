@@ -6,7 +6,7 @@ import LoginPage from '../../pages/login-page/login-page';
 import RegisterPage from '../../pages/register-page/register-page';
 import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
-import OrdersListPage from '../../pages/orders-list-page/orders-list-page';
+import AllOrdersPage from '../../pages/all-orders-page/all-orders-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
@@ -47,17 +47,17 @@ function App(): JSX.Element {
         <Route path={AppRoute.register} element={<OnlyForUnAuth component={<RegisterPage />} />} />
         <Route path={AppRoute.forgotPassword} element={<OnlyForUnAuth component={<ForgotPasswordPage />} />} />
         <Route path={AppRoute.resetPassword} element={<OnlyForUnAuth component={<ResetPasswordPage />} />} />
-        <Route path={AppRoute.ordersList} element={<OrdersListPage />} />
+        <Route path={AppRoute.allOrders} element={<AllOrdersPage />} />
         <Route path={AppRoute.profile} element={<OnlyForAuth component={<ProfilePage />} />}>
           <Route path='orders' element={<div>Раздел "История заказов" в разработке.</div>} />
         </Route>
-        <Route path={AppRoute.notFound} element={<NotFoundPage/>}/>
+        <Route path={AppRoute.notFound} element={<NotFoundPage />} />
       </Routes>
 
       {background && (
         <Routes>
           <Route
-            path='/ingredients/:id'
+            path={AppRoute.ingredient}
             element={
               <Modal title='Детали ингредиента' onClose={handleModalClose}>
                 <IngredientDetails />

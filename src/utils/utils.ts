@@ -28,7 +28,10 @@ export const getOrderPrice = (allIngredients: Ingredient[], order: Order): numbe
 };
 
 // Функция для добавления разделителя (пробела) для больших чисел
-export const separateNumbers = (priceToCheck: number): string => {
+export const separateNumbers = (priceToCheck: number | null): string | null => {
+  if (priceToCheck === null) {
+    return null;
+  }
   const MIN_VALUE_TO_SEPARATE_ZEROS = 1000;
   if (priceToCheck < MIN_VALUE_TO_SEPARATE_ZEROS) {
     return String(priceToCheck);

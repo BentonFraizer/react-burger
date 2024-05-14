@@ -81,3 +81,7 @@
 .middle {
   margin-bottom: 60px;
 }
+
+.middle p:last-child {
+  height: 120px;
+}

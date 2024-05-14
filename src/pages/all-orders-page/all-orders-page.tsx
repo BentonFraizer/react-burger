@@ -100,7 +100,7 @@ function AllOrdersPage() {
               Выполнено за всё время:
             </p>
             <p className='text text_type_digits-large'>
-              {separateNumbers(pageInfo !== undefined ? pageInfo?.total : 0)}
+              {separateNumbers(pageInfo !== undefined ? pageInfo?.total : null)}
             </p>
           </div>
           <div className={s.bottom}>

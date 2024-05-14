@@ -26,3 +26,58 @@
   display: inline-block;
   padding: 0 8px 0 0;
 }
+
+.right {
+  width: 100%;
+  max-width: 580px;
+  margin-top: 100px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.done {
+  width: 100%;
+  max-width: 272px;
+}
+
+.done__orders-numbers {
+  height: 153px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  display: flex;
+  color: #00CCCC;
+}
+
+.orders__numbers-column {
+  margin-right: 12px;
+}
+
+.orders__numbers-column:last-child {
+  margin-right: 0;
+}
+
+.orders__numbers-column p:last-child {
+  margin-bottom: 0;
+}
+
+.in__process {
+  width: 100%;
+  max-width: 272px;
+}
+
+.in__process-numbers {
+  height: 153px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  display: flex;
+}
+
+.middle {
+  margin-bottom: 60px;
+}

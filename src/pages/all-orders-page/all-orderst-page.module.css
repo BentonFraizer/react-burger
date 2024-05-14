@@ -18,7 +18,6 @@
 
 .cards__wrapper {
   width: inherit;
-  background-color: #3f3f4b;
   height: calc(100vh - 252px);
   overflow-y: auto;
   overflow-x: hidden;

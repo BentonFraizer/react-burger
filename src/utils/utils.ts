@@ -26,3 +26,15 @@ export const getOrderPrice = (allIngredients: Ingredient[], order: Order): numbe
   });
   return cost;
 };
+
+// Функция для добавления разделителя (пробела) для больших чисел
+export const separateNumbers = (priceToCheck: number): string => {
+  const MIN_VALUE_TO_SEPARATE_ZEROS = 1000;
+  if (priceToCheck < MIN_VALUE_TO_SEPARATE_ZEROS) {
+    return String(priceToCheck);
+  }
+
+  const parts = priceToCheck.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return parts.join(' ');
+};

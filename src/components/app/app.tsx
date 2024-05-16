@@ -17,6 +17,8 @@ import IngredientInfoPage from '../../pages/ingredient-info-page/ingredient-info
 import { checkUserAuth } from '../../services/actions/user';
 import { OnlyForAuth, OnlyForUnAuth } from '../protected-route/protected-route';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import OrderPage from '../../pages/order-page/order-page';
+import OrderDetails from '../order-details/order-details';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -48,6 +50,7 @@ function App(): JSX.Element {
         <Route path={AppRoute.forgotPassword} element={<OnlyForUnAuth component={<ForgotPasswordPage />} />} />
         <Route path={AppRoute.resetPassword} element={<OnlyForUnAuth component={<ResetPasswordPage />} />} />
         <Route path={AppRoute.allOrders} element={<AllOrdersPage />} />
+        <Route path={AppRoute.order} element={<OrderPage />}/>
         <Route path={AppRoute.profile} element={<OnlyForAuth component={<ProfilePage />} />}>
           <Route path='orders' element={<div>Раздел "История заказов" в разработке.</div>} />
         </Route>
@@ -61,6 +64,14 @@ function App(): JSX.Element {
             element={
               <Modal title='Детали ингредиента' onClose={handleModalClose}>
                 <IngredientDetails />
+              </ Modal>
+            }
+          />
+          <Route
+            path={AppRoute.order}
+            element={
+              <Modal onClose={handleModalClose}>
+                <OrderDetails />
               </ Modal>
             }
           />

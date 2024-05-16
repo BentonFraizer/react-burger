@@ -18,7 +18,7 @@ export const getIngredientImages = (allIngredients: Ingredient[], order: Order):
 // Функция получения стоимости заказа
 export const getOrderPrice = (allIngredients: Ingredient[], order: Order): number => {
   let cost = 0;
-  order.ingredients.forEach((ingredientId) => {
+  order?.ingredients.forEach((ingredientId) => {
     const currentIngredient = allIngredients.find((ingredient) => ingredient._id === ingredientId);
     if (currentIngredient) {
       cost += currentIngredient.price;

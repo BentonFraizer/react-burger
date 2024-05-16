@@ -1,10 +1,10 @@
 import React, { JSX } from 'react';
-import s from './order-details.module.css';
+import s from './order-status.module.css';
 import doneIcon from '../../images/icons/done.svg';
 import { useAppSelector } from '../../hooks/hooks';
 import Loader from '../loader/loader';
 
-function OrderDetails(): JSX.Element {
+function OrderStatus(): JSX.Element {
   const { orderNumber, orderRequest, orderFailed, orderFailedMessage } = useAppSelector((state) => state.order);
 
   let content;
@@ -54,4 +54,4 @@ function OrderDetails(): JSX.Element {
   return <div className={s['order-details']}>{content}</div>;
 }
 
-export default OrderDetails;
+export default OrderStatus;

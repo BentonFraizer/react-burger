@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
+import OrderStatus from '../order-status/order-status';
 import { useModal } from '../../hooks/useModal';
 import { Ingredient, UniqueIdIngredient, User } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -169,7 +169,7 @@ function BurgerConstructor() {
         title={isRequesting ? 'Оформляем заказ...' : ''}
         onClose={handleCloseModal}
         isModalOpen={isModalOpened}>
-        <OrderDetails />
+        <OrderStatus />
       </Modal>}
     </div>
   );

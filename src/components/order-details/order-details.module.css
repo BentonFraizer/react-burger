@@ -1,0 +1,57 @@
+.order {
+  width: 640px;
+  color: #F2F2F3;
+}
+
+.order__number {
+  text-align: center;
+}
+
+.order__status {
+  color: #00CCCC;
+}
+
+.order__ingredients {
+  height: 312px;
+  padding-right: 24px;
+  margin-bottom: 40px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.ingredient:last-child {
+  margin-bottom: 0;
+}
+
+.ingredient__img {
+  margin-right: 16px;
+}
+
+.ingredient__name {
+  flex: 1;
+}
+
+.ingredient__cost {
+  display: flex;
+}
+
+.order__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order__time {
+  color: #8585AD;
+}
+
+.order__total {
+  display: flex;
+}

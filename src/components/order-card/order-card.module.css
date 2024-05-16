@@ -1,3 +1,8 @@
+.order__link {
+  color: #fff;
+  text-decoration: none;
+}
+
 .order__card {
   width: 100%;
   padding: 24px;

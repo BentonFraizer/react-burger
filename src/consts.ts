@@ -18,6 +18,7 @@ export const AppRoute = {
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
   allOrders: '/feed',
+  order: '/feed/:id',
   profile: '/profile',
   profileOrders: '/profile/orders',
   notFound: '*',

@@ -1,8 +1,7 @@
-import { Dispatch } from 'react';
 import { APIRoute } from '../../consts';
 import { request } from '../../utils/api';
-import { OrderAction } from '../reducers/order';
 import { clearConstructor } from './constructor-ingredients';
+import { AppDispatch } from '../../index';
 
 export const FETCH_ORDER_NUMBER_REQUEST = 'FETCH_ORDER_NUMBER_REQUEST';
 export const FETCH_ORDER_NUMBER_SUCCESS = 'FETCH_ORDER_NUMBER_SUCCESS';
@@ -20,7 +19,7 @@ export function getOrderNumber(identifiersForOrder: string[]) {
   };
 
   // eslint-disable-next-line func-names
-  return function (dispatch: Dispatch<OrderAction>) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FETCH_ORDER_NUMBER_REQUEST,
     });

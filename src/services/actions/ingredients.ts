@@ -1,7 +1,6 @@
-import { Dispatch } from 'react';
 import { request } from '../../utils/api';
-import { IngredientsAction } from '../reducers/ingredients';
 import { APIRoute } from '../../consts';
+import { AppDispatch } from '../../index';
 
 export const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS_REQUEST';
 export const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS';
@@ -9,7 +8,7 @@ export const FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED';
 
 export function getIngredients() {
   // eslint-disable-next-line func-names
-  return function (dispatch: Dispatch<IngredientsAction>) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FETCH_INGREDIENTS_REQUEST,
     });

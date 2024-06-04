@@ -1,8 +1,7 @@
-import { Dispatch } from 'react';
 import { fetchWithRefresh, request } from '../../utils/api';
 import { APIRoute } from '../../consts';
 import { User } from '../../types';
-import { UserAction } from '../reducers/user';
+import { AppDispatch } from '../../index';
 
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';
@@ -45,7 +44,7 @@ export function getUser() {
   };
 
   // eslint-disable-next-line func-names
-  return function (dispatch: Dispatch<UserAction>) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FETCH_USER_REQUEST,
     });
@@ -69,7 +68,7 @@ export function getUser() {
 
 export function checkUserAuth() {
   // eslint-disable-next-line func-names
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     if (localStorage.getItem('accessToken')) {
       dispatch(getUser())
         .catch(() => {
@@ -97,7 +96,7 @@ export function login(dataForLogin: { email: string, password: string }) {
     body: JSON.stringify(dataForLogin),
   };
   // eslint-disable-next-line func-names
-  return function (dispatch: Dispatch<UserAction>) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FETCH_LOGIN_REQUEST,
     });
@@ -129,7 +128,7 @@ export function register(dataForRegister: { name: string, email: string, passwor
     body: JSON.stringify(dataForRegister),
   };
   // eslint-disable-next-line func-names
-  return function (dispatch: Dispatch<UserAction>) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FETCH_REGISTER_REQUEST,
     });
@@ -161,7 +160,7 @@ export function logout() {
     body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
   };
   // eslint-disable-next-line func-names
-  return function (dispatch: Dispatch<UserAction>) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FETCH_LOGOUT_REQUEST,
     });

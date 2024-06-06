@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import s from './order-details.module.css';
 import { IngredientPreview } from '../ingredient-preview/ingredient-preview';
 import { Ingredient, Order } from '../../types';
-import { getOrderPrice } from '../../utils/utils';
+import { countOccurrences, getOrderPrice } from '../../utils/utils';
 import { useAppSelector } from '../../hooks/hooks';
 
 function OrderDetails(): JSX.Element {
@@ -31,6 +31,20 @@ function OrderDetails(): JSX.Element {
     setOrderInfo(orders.find((order: Order) => order._id === id));
   }, [orders]);
 
+  // Поскольку вложенный тернарный оператор является не корректным решением со стороны ESLint
+  // Реализован такой вариант получения значения для поля status
+  let orderStatus;
+
+  if (orderInfo?.status === 'done') {
+    orderStatus = 'Выполнен';
+  } else if (orderInfo?.status === 'pending') {
+    orderStatus = 'Готовится';
+  } else {
+    orderStatus = 'Отменен';
+  }
+
+  const occurrences = countOccurrences(orderInfo?.ingredients);
+
   return (
     <div className={s.order} style={style}>
       <div className={s.order__number}>
@@ -43,7 +57,7 @@ function OrderDetails(): JSX.Element {
       </div>
       <div className={s.order__status}>
         <p className='text text_type_main-default mb-15'>
-          {orderInfo?.status === 'done' ? 'Выполнен' : 'В работе'}
+          {orderStatus}
         </p>
       </div>
       <div className={s.order__content}>
@@ -52,25 +66,38 @@ function OrderDetails(): JSX.Element {
         </p>
       </div>
       <div className={s.order__ingredients}>
-        <div className={s.ingredient}>
-          <div className={s.ingredient__img}>
-            <IngredientPreview imageSrc={'https://code.s3.yandex.net/react/code/bun-02.png'} />
-          </div>
-          <div className={s.ingredient__name}>
-            <p className='text text_type_main-default'>
-              Флюоресцентная булка R2-D3
-            </p>
-          </div>
-          <div className={s.ingredient__cost}>
-            <div className='ingredient__amount'>
-              <p className='text text_type_digits-default mr-2'>1 x</p>
-            </div>
-            <div className='ingredient__price'>
-              <p className='text text_type_digits-default mr-2'>300</p>
-            </div>
-            <CurrencyIcon type='primary' />
-          </div>
-        </div>
+
+        {
+          Object.entries(occurrences).map(([key, value]) => {
+            const currentIngredient = (ingredients as Ingredient[]).find((item) => key === item._id);
+            if (!currentIngredient) {
+              return null;
+            }
+
+            return (
+              <div className={s.ingredient} key={key}>
+                <div className={s.ingredient__img}>
+                  <IngredientPreview imageSrc={currentIngredient.image} />
+                </div>
+                <div className={s.ingredient__name}>
+                  <p className='text text_type_main-default'>
+                    {currentIngredient.name}
+                  </p>
+                </div>
+                <div className={s.ingredient__cost}>
+                  <div className='ingredient__amount'>
+                    <p className='text text_type_digits-default mr-2'>{value} x</p>
+                  </div>
+                  <div className='ingredient__price'>
+                    <p className='text text_type_digits-default mr-2'>{currentIngredient.price}</p>
+                  </div>
+                  <CurrencyIcon type='primary' />
+                </div>
+              </div>
+            );
+          })
+        }
+
       </div>
       <div className={s.order__info}>
         <div className={s.order__time}>

@@ -41,3 +41,17 @@ export const separateNumbers = (priceToCheck: number | null): string | null => {
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   return parts.join(' ');
 };
+
+// Функция для подсчета количества вхождений в массиве. Т.е. преобразовывает массив строк в объект, где ключом является
+// идентификатор ингредиента, а значением - количество раз, которое этот идентификатор встречается в массиве
+type CountOccurrencesResult = { [key: string]: number };
+export const countOccurrences = (arr: string[] | undefined): CountOccurrencesResult => {        // eslint-disable-line
+  if (arr === undefined) {
+    return {};
+  }
+
+  return arr.reduce((acc: CountOccurrencesResult, ingredientId: string) => {
+    acc[ingredientId] = (acc[ingredientId] || 0) + 1;
+    return acc;
+  }, {});
+};

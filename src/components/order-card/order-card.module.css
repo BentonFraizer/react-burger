@@ -1,6 +1,12 @@
 .order__link {
   color: #fff;
   text-decoration: none;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.order__link:last-child {
+  margin-bottom: 0;
 }
 
 .order__card {
@@ -8,11 +14,6 @@
   padding: 24px;
   background-color: #1C1C21;
   border-radius: 40px;
-  margin-bottom: 16px;
-}
-
-.order__card:last-child {
-  margin-bottom: 0;
 }
 
 .order__info {

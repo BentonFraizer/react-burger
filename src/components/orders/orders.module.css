@@ -1,0 +1,8 @@
+.orders {
+  height: 870px;
+  width: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  padding-right: 5px;
+}

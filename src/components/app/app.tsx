@@ -19,6 +19,8 @@ import { OnlyForAuth, OnlyForUnAuth } from '../protected-route/protected-route';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import OrderPage from '../../pages/order-page/order-page';
 import OrderDetails from '../order-details/order-details';
+import Orders from '../orders/orders';
+import UserForm from '../user-form/user-form';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -50,10 +52,12 @@ function App(): JSX.Element {
         <Route path={AppRoute.forgotPassword} element={<OnlyForUnAuth component={<ForgotPasswordPage />} />} />
         <Route path={AppRoute.resetPassword} element={<OnlyForUnAuth component={<ResetPasswordPage />} />} />
         <Route path={AppRoute.allOrders} element={<AllOrdersPage />} />
-        <Route path={AppRoute.order} element={<OrderPage />}/>
+        <Route path={AppRoute.order} element={<OrderPage />} />
         <Route path={AppRoute.profile} element={<OnlyForAuth component={<ProfilePage />} />}>
-          <Route path='orders' element={<div>Раздел "История заказов" в разработке.</div>} />
+          <Route index element={<UserForm />} />
+          <Route path={AppRoute.profileOrders} element={<Orders />} />
         </Route>
+        <Route path={AppRoute.profileOrder} element={<OnlyForAuth component={<OrderPage />} />} />
         <Route path={AppRoute.notFound} element={<NotFoundPage />} />
       </Routes>
 
@@ -73,6 +77,15 @@ function App(): JSX.Element {
               <Modal onClose={handleModalClose}>
                 <OrderDetails />
               </ Modal>
+            }
+          />
+          <Route
+            path={AppRoute.profileOrder}
+            element={
+              <OnlyForAuth component={
+                <Modal onClose={handleModalClose}>
+                  <OrderDetails />
+                </ Modal>} />
             }
           />
         </Routes>

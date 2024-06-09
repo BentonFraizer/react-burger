@@ -21,6 +21,7 @@ export const AppRoute = {
   order: '/feed/:id',
   profile: '/profile',
   profileOrders: '/profile/orders',
+  profileOrder: '/profile/orders/:id',
   notFound: '*',
 };
 

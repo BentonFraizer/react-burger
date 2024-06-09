@@ -23,7 +23,7 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
   const extraIngredientsCount = images.length >= 6 ? images.length - MAX_INGREDIENTS_PREVIEWS_COUNT : images.length;
 
   return (
-    <Link to={`/feed/${_id}`} state={{ background: location }} className={s.order__link}>
+    <Link to={`${location.pathname}/${_id}`} state={{ background: location }} className={s.order__link}>
       <div className={s.order__card}>
         <div className={s.order__info}>
           <div className='order__number'>

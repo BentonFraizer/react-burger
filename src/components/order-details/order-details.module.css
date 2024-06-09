@@ -55,3 +55,11 @@
 .order__total {
   display: flex;
 }
+
+.white {
+  color: #FFF;
+}
+
+.light__blue {
+  color: #00CCCC;
+}

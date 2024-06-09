@@ -36,11 +36,11 @@ function OrderDetails(): JSX.Element {
   let orderStatus;
 
   if (orderInfo?.status === 'done') {
-    orderStatus = 'Выполнен';
+    orderStatus = { text: 'Выполнен', style: s.light__blue };
   } else if (orderInfo?.status === 'pending') {
-    orderStatus = 'Готовится';
+    orderStatus = { text: 'Готовится', style: s.white };
   } else {
-    orderStatus = 'Отменен';
+    orderStatus = { text: 'Создан', style: s.white };
   }
 
   const occurrences = countOccurrences(orderInfo?.ingredients);
@@ -56,8 +56,8 @@ function OrderDetails(): JSX.Element {
         </p>
       </div>
       <div className={s.order__status}>
-        <p className='text text_type_main-default mb-15'>
-          {orderStatus}
+        <p className={`text text_type_main-default mb-15 ${orderStatus?.style}`}>
+          {orderStatus?.text}
         </p>
       </div>
       <div className={s.order__content}>

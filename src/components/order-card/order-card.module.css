@@ -28,7 +28,7 @@
 }
 
 .order__title {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .order__details {
@@ -44,4 +44,12 @@
 
 .order__price {
   display: flex;
+}
+
+.white {
+  color: #FFF;
+}
+
+.light__blue {
+  color: #00CCCC;
 }

@@ -20,6 +20,20 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
   const { number, createdAt, name, _id } = orderInfo;
   const images = getIngredientImages(ingredients as Ingredient[], orderInfo).reverse();
 
+  // Поскольку вложенный тернарный оператор является не корректным решением со стороны ESLint
+  // Реализован такой вариант получения значения для поля status
+  let orderStatus;
+
+  if (orderInfo?.status === 'done') {
+    orderStatus = { text: 'Выполнен', style: s.light__blue };
+  } else if (orderInfo?.status === 'pending') {
+    orderStatus = { text: 'Готовится', style: s.white };
+  } else {
+    orderStatus = { text: 'Создан', style: s.white };
+  }
+
+  const isLocationOrders = location.pathname === '/profile/orders';
+
   const extraIngredientsCount = images.length >= 6 ? images.length - MAX_INGREDIENTS_PREVIEWS_COUNT : images.length;
 
   return (
@@ -36,10 +50,17 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
           </div>
         </div>
         <div className={s.order__title}>
-          <p className='text text_type_main-medium'>
+          <p className={`text text_type_main-medium ${!isLocationOrders && 'mb-6'}`}>
             {name}
           </p>
         </div>
+        {isLocationOrders
+          ? <div className={s.order__status}>
+            <p className={`text text_type_main-default mb-6 ${orderStatus?.style}`}>
+              {orderStatus?.text}
+            </p>
+          </div> : null}
+
         <div className={s.order__details}>
           <div className={s.ingredients__icons}>
             {images.length <= MAX_INGREDIENTS_PREVIEWS_COUNT

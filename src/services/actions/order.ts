@@ -1,7 +1,7 @@
 import { APIRoute } from '../../consts';
 import { request } from '../../utils/api';
 import { clearConstructor } from './constructor-ingredients';
-import { AppDispatch } from '../../index';
+import { AppDispatch } from '../types';
 
 export const FETCH_ORDER_NUMBER_REQUEST = 'FETCH_ORDER_NUMBER_REQUEST';
 export const FETCH_ORDER_NUMBER_SUCCESS = 'FETCH_ORDER_NUMBER_SUCCESS';
@@ -14,6 +14,7 @@ export function getOrderNumber(identifiersForOrder: string[]) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('accessToken') as string
     },
     body: JSON.stringify({ ingredients: identifiersForOrder }),
   };

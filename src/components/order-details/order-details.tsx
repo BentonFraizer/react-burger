@@ -6,18 +6,21 @@ import s from './order-details.module.css';
 import { IngredientPreview } from '../ingredient-preview/ingredient-preview';
 import { Ingredient, Order } from '../../types';
 import { countOccurrences, getOrderPrice } from '../../utils/utils';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { FEED_DELETE_ORDER_NUMBER } from '../../services/actions/ws-feed';
 
 function OrderDetails(): JSX.Element {
+  const dispatch = useAppDispatch();
   const [orders, setOrders] = useState<Order[]>([]);
   const [orderInfo, setOrderInfo] = useState<Order>();
   const location = useLocation();
   const background = location.state && location.state.background;
   const style = !background ? { marginTop: 122 } : { marginTop: 0 };
   const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { feedOrderNumber } = useAppSelector((state) => state.feed);
   const { id } = useParams();
   const getCardsData = async () => {
-    const response = await fetch('http://localhost:3001/norma.nomoreparties.space/orders/all');
+    const response = await fetch(`https://norma.nomoreparties.space/api/orders/${feedOrderNumber}`);
     return response.json();
   };
 
@@ -25,6 +28,11 @@ function OrderDetails(): JSX.Element {
     getCardsData().then((data) => {
       setOrders(data.orders);
     });
+
+    return () => {
+      // todo очистка выполняется уже на этапе рендера компонета, ПОЧЕМУ?
+      dispatch({ type: FEED_DELETE_ORDER_NUMBER });
+    };
   }, []);
 
   useEffect(() => {

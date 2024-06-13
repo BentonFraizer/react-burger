@@ -4,9 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { Link, useLocation } from 'react-router-dom';
 import s from './order-card.module.css';
 import { Ingredient, Order } from '../../types';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { IngredientPreview } from '../ingredient-preview/ingredient-preview';
 import { getIngredientImages, getOrderPrice } from '../../utils/utils';
+import { FEED_SET_ORDER_NUMBER } from '../../services/actions/ws-feed';
 
 type OrderCardProps = {
   orderInfo: Order;
@@ -15,6 +16,7 @@ type OrderCardProps = {
 const MAX_INGREDIENTS_PREVIEWS_COUNT = 6;
 
 function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const { ingredients } = useAppSelector((state) => state.ingredients);
   const location = useLocation();
   const { number, createdAt, name, _id } = orderInfo;
@@ -36,8 +38,16 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
 
   const extraIngredientsCount = images.length >= 6 ? images.length - MAX_INGREDIENTS_PREVIEWS_COUNT : images.length;
 
+  const handleSetOrderNumber = (currentOrderNumber: number) => {
+    dispatch({ type: FEED_SET_ORDER_NUMBER, payload: currentOrderNumber });
+  };
+
   return (
-    <Link to={`${location.pathname}/${_id}`} state={{ background: location }} className={s.order__link}>
+    <Link
+      to={`${location.pathname}/${_id}`}
+      state={{ background: location }}
+      className={s.order__link}
+      onClick={() => handleSetOrderNumber(number)}>
       <div className={s.order__card}>
         <div className={s.order__info}>
           <div className='order__number'>

@@ -27,3 +27,6 @@ export const AppRoute = {
 
 // базовый url
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
+
+// url для получения заказов всех пользователей на странице "Лента заказов"
+export const wsFeedUrl = 'wss://norma.nomoreparties.space/orders/all';

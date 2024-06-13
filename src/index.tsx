@@ -5,20 +5,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import './normalize.css';
 import './index.css';
 import { Provider } from 'react-redux';
-import { thunk } from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
-import { configureStore } from '@reduxjs/toolkit';
 import App from './components/app/app';
-
-import { rootReducer } from './services/reducers';
-
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
-});
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+import { store } from './services/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

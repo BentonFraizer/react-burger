@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import s from './all-orderst-page.module.css';
 import OrderCard from '../../components/order-card/order-card';
-import { AllOrdersResponse, Order } from '../../types';
+import { Order } from '../../types';
 import { separateNumbers } from '../../utils/utils';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { wsFeedInit, wsFeedClose } from '../../services/actions/ws-feed';
 
 function AllOrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [pageInfo, setPageInfo] = useState<AllOrdersResponse>();
-  const getCardsData = async () => {
-    const response = await fetch('http://localhost:3001/norma.nomoreparties.space/orders/all');
-    return response.json();
-  };
+  const dispatch = useAppDispatch();
+  const { connectionState, total, totalToday } = useAppSelector((state) => state.feed);
+  const orders = useAppSelector((state) => state.feed?.allOrders) as Order[];
 
   useEffect(() => {
-    getCardsData().then((data) => {
-      setOrders(data.orders);
-      setPageInfo(data);
-    });
-  }, []);
+    if (connectionState === 'closed') {
+      dispatch(wsFeedInit());
+    }
+
+    return () => {
+      if (connectionState === 'opened') {
+        dispatch(wsFeedClose());
+      }
+    };
+  }, [dispatch, connectionState]);
 
   // Функция для получения номерос заказов в зависимости от значения свойства статус
   const separateOrdersByStatus = (ordersForSeparate: Order[]) => {
@@ -100,7 +104,7 @@ function AllOrdersPage() {
               Выполнено за всё время:
             </p>
             <p className='text text_type_digits-large'>
-              {separateNumbers(pageInfo !== undefined ? pageInfo?.total : null)}
+              {separateNumbers(total)}
             </p>
           </div>
           <div className={s.bottom}>
@@ -108,7 +112,7 @@ function AllOrdersPage() {
               Выполнено за сегодня:
             </p>
             <p className='text text_type_digits-large'>
-              {pageInfo?.totalToday}
+              {totalToday}
             </p>
           </div>
         </div>

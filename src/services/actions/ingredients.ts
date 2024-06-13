@@ -1,6 +1,6 @@
 import { request } from '../../utils/api';
 import { APIRoute } from '../../consts';
-import { AppDispatch } from '../../index';
+import { AppDispatch } from '../types';
 
 export const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS_REQUEST';
 export const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS';

@@ -9,7 +9,7 @@ import OrderStatus from '../order-status/order-status';
 import { useModal } from '../../hooks/useModal';
 import { Ingredient, UniqueIdIngredient, User } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { RootState } from '../../index';
+import { RootState } from '../../services/types';
 import {
   addConstructorBun,
   addConstructorIngredient,

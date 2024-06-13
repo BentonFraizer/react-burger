@@ -1,7 +1,7 @@
 import { fetchWithRefresh, request } from '../../utils/api';
 import { APIRoute } from '../../consts';
 import { User } from '../../types';
-import { AppDispatch } from '../../index';
+import { AppDispatch } from '../types';
 
 export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 export const SET_USER = 'SET_USER';

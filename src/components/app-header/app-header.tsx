@@ -1,5 +1,6 @@
 import { JSX } from 'react';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 import s from './app-header.module.css';
 import NavBtn from '../nav-btn/nav-btn';
 import { AppRoute } from '../../consts';
@@ -35,7 +36,9 @@ function AppHeader(): JSX.Element {
           </ul>
 
           <div className={s['logo-wrapper']}>
-            <Logo />
+            <Link to={AppRoute.main}>
+              <Logo />
+            </Link>
           </div>
 
           <NavBtn

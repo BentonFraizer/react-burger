@@ -120,29 +120,25 @@ function AllOrdersPage() {
             <p className='text text_type_main-medium'>
               Выполнено за всё время:
             </p>
-            <p className='text text_type_digits-large'>
-              {
-                connectionState !== 'opened'
-                  ? <div className={`${s.loader__wrapper} ${s.left}`}>
-                    <Loader />
-                  </div>
-                  : separateNumbers(total)
-              }
-            </p>
+            {
+              connectionState !== 'opened'
+                ? <div className={`${s.loader__wrapper} ${s.left}`}>
+                  <Loader />
+                </div>
+                : <p className='text text_type_digits-large'>{separateNumbers(total)}</p>
+            }
           </div>
           <div className={s.bottom}>
             <p className='text text_type_main-medium'>
               Выполнено за сегодня:
             </p>
-            <p className='text text_type_digits-large'>
-              {
-                connectionState !== 'opened'
-                  ? <div className={`${s.loader__wrapper} ${s.left}`}>
-                    <Loader />
-                  </div>
-                  : totalToday
-              }
-            </p>
+            {
+              connectionState !== 'opened'
+                ? <div className={`${s.loader__wrapper} ${s.left}`}>
+                  <Loader />
+                </div>
+                : <p className='text text_type_digits-large'>{totalToday}</p>
+            }
           </div>
         </div>
       </section>

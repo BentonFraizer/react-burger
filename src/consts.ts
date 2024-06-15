@@ -1,6 +1,7 @@
 export const APIRoute = {
   ingredients: 'ingredients',
   orders: 'orders',
+  allOrders: 'orders/all',
   login: 'auth/login', // Эндпоинт для авторизации пользователя
   register: 'auth/register', // Эндпоинт для регистрации пользователя
   logout: 'auth/logout', // Эндпоинт для выхода из системы

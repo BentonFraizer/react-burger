@@ -1,83 +1,15 @@
-import type { Dispatch, Middleware, MiddlewareAPI } from 'redux';
-
-import type {
-  AppActions,
-  // AppActions,
-  // TWSStoreActions,
-  // IMessage,
-  AppDispatch,
-  RootState,
-  WSStoreFeedActions,
-  // IMessageResponse
-} from '../types';
-import type { Order } from '../../types';
+import type { Middleware } from 'redux';
+import type { WSStoreFeedActions } from '../types';
 import { refreshToken } from '../../utils/api';
 
 type TWSStoreActions = WSStoreFeedActions;
 
-// eslint-disable-next-line arrow-body-style
-// export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Middleware => {
-//   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
-//     let socket: WebSocket | null = null;
-//
-//     return (next) => (action: AppActions) => {
-//       const { dispatch,
-//         // getState
-//       } = store;
-//       const { type } = action;
-//       const { wsInit, wsClose, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-//       // const { user } = getState().user;
-//       // const token = localStorage.getItem('accessToken'); // todo проверить есть ли токен
-//       // console.log('token', token);
-//       console.log('in middleWare');
-//
-//       // todo подумать над этим моментом. На feed могут переходить все пользователи. И авторизованные, и нет.
-//       if (type === wsInit) {
-//         console.log('type', type);
-//         dispatch({ type: wsInit });
-//         socket = new WebSocket(wsUrl);
-//       }
-//
-//       if (socket) {
-//         socket.onopen = (event) => {
-//           dispatch({ type: onOpen, payload: event });
-//         };
-//
-//         socket.onerror = (event) => {
-//           dispatch({ type: onError, payload: event });
-//         };
-//         //
-//         // socket.onmessage = (event) => {
-//         //   const { data } = event;
-//         //   const parsedData: Order = JSON.parse(data);
-//         //   dispatch({ type: onMessage, payload: parsedData });
-//         // };
-//
-//         // socket.onclose = (event) => {
-//         //   dispatch({ type: onClose, payload: event });
-//         //   if (socket !== null) {
-//         //     socket.close();
-//         //   }
-//         // };
-//
-//         // if (type === wsSendMessage) {
-//         //   const { payload } = action;
-//         //   const message = { ...(payload as IMessage), token };
-//         //   socket.send(JSON.stringify(message));
-//         // }
-//       }
-//
-//       next(action);
-//     };
-//   }) as Middleware;
-// };
-
 const RECONNECT_PERIOD = 3000;
 
-export const socketMiddlewareWithReconnect:any = (
+export const socketMiddlewareWithReconnect = (
   wsActions: TWSStoreActions,
   withTokenRefresh = false,
-): Middleware<AppDispatch, RootState> => (store) => {
+): Middleware => (store) => {
   const {
     wsInit,
     wsClose,
@@ -94,14 +26,11 @@ export const socketMiddlewareWithReconnect:any = (
 
   return (next) => (action) => {
     const { dispatch } = store;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { type, payload } = action;
+    const type = typeof action === 'object' && action && 'type' in action ? action.type : undefined;
+    const payload = typeof action === 'object' && action && 'payload' in action ? action.payload : undefined;
 
     if (type === wsInit) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      url = action.payload;
+      url = payload as string;
       socket = new WebSocket(url);
       isConnected = true;
       socket.onopen = () => {

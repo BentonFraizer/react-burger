@@ -4,6 +4,7 @@ import s from './ingredient-details.module.css';
 import { Ingredient } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { setIngredientDetails } from '../../../services/actions/ingredient-details';
+import Loader from '../../loader/loader';
 
 function IngredientDetails(): JSX.Element | null {
   const { id } = useParams();
@@ -20,8 +21,16 @@ function IngredientDetails(): JSX.Element | null {
     }
   }, [dispatch, filteredIngredient]);
 
+  if (!currentIngredient) {
+    return (
+      <div className={s.loader__wrapper}>
+        <Loader />
+      </div>
+    );
+  }
+
   return (currentIngredient ? <div className={s['ingredient-details']}>
-      <div className='ingredient-image mb-4'>
+      <div className={`${s['ingredient-image']} mb-4`}>
         <img src={currentIngredient.image_large} alt='внешний вид ингредиента' />
       </div>
       <div className='ingredient-name mb-8'>

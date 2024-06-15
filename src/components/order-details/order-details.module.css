@@ -63,3 +63,11 @@
 .light__blue {
   color: #00CCCC;
 }
+
+.loader__wrapper {
+  height: 621px;
+  width: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -12,26 +12,22 @@ import Loader from '../loader/loader';
 import { request } from '../../utils/api';
 
 function OrderDetails(): JSX.Element {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [orderInfo, setOrderInfo] = useState<Order>();
+  const [order, setOrder] = useState<Order>();
   const location = useLocation();
   const background = location.state && location.state.background;
   const style = !background ? { marginTop: 122 } : { marginTop: 0 };
   const { ingredients } = useAppSelector((state) => state.ingredients);
-  const { id } = useParams();
-  const getCardsData = async () => request(APIRoute.allOrders);
+  const { number } = useParams();
+
+  const getCardInfo = async () => request(`${APIRoute.orders}/${number}`);
 
   useEffect(() => {
-    getCardsData().then((data) => {
-      setOrders(data.orders);
+    getCardInfo().then((data) => {
+      setOrder(data.orders[0]);
     });
   }, []);
 
-  useEffect(() => {
-    setOrderInfo(orders.find((order: Order) => order._id === id));
-  }, [orders]);
-
-  if (!orderInfo) {
+  if (!order) {
     return (
       <div className={s.loader__wrapper}>
         <Loader />
@@ -39,33 +35,27 @@ function OrderDetails(): JSX.Element {
     );
   }
 
-  // Поскольку вложенный тернарный оператор является не корректным решением со стороны ESLint
-  // Реализован такой вариант получения значения для поля status
-  let orderStatus;
+  const orderStatus = {
+    done: { text: 'Выполнен', style: s.light__blue },
+    pending: { text: 'Готовится', style: s.white },
+    created: { text: 'Создан', style: s.white },
+  } as const;
 
-  if (orderInfo?.status === 'done') {
-    orderStatus = { text: 'Выполнен', style: s.light__blue };
-  } else if (orderInfo?.status === 'pending') {
-    orderStatus = { text: 'Готовится', style: s.white };
-  } else {
-    orderStatus = { text: 'Создан', style: s.white };
-  }
-
-  const occurrences = countOccurrences(orderInfo?.ingredients);
+  const occurrences = countOccurrences(order?.ingredients);
 
   return (
     <div className={s.order} style={style}>
       <div className={s.order__number}>
-        <p className='text text_type_digits-default mb-10'>#{orderInfo?.number}</p>
+        <p className='text text_type_digits-default mb-10'>#{order?.number}</p>
       </div>
       <div className={s.order__name}>
         <p className='text text_type_main-medium mb-3'>
-          {orderInfo?.name}
+          {order?.name}
         </p>
       </div>
       <div className={s.order__status}>
-        <p className={`text text_type_main-default mb-15 ${orderStatus?.style}`}>
-          {orderStatus?.text}
+        <p className={`text text_type_main-default mb-15 ${orderStatus[order.status].style}`}>
+          {orderStatus[order.status].text}
         </p>
       </div>
       <div className={s.order__content}>
@@ -110,11 +100,11 @@ function OrderDetails(): JSX.Element {
       <div className={s.order__info}>
         <div className={s.order__time}>
           <p className='text text_type_main-default'>
-            <FormattedDate date={new Date(orderInfo?.createdAt as Date)} />
+            <FormattedDate date={new Date(order?.createdAt as Date)} />
           </p>
         </div>
         <div className={s.order__total}>
-          <p className='text text_type_digits-default mr-2'>{getOrderPrice(ingredients as Ingredient[], orderInfo as Order)}</p>
+          <p className='text text_type_digits-default mr-2'>{getOrderPrice(ingredients as Ingredient[], order as Order)}</p>
           <CurrencyIcon type='primary' />
         </div>
       </div>

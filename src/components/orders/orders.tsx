@@ -1,26 +1,30 @@
-import React, { JSX, useEffect, useState } from 'react';
-import { Order } from '../../types';
+import React, { JSX, useEffect } from 'react';
 import s from './orders.module.css';
 import OrderCard from '../order-card/order-card';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { wsUserOrdersClose, wsUserOrdersInit } from '../../services/actions/ws-user-orders';
 
 function Orders(): JSX.Element {
-  const [personalOrders, setPersonalOrders] = useState<Order[]>([]);
-
-  const getCardsData = async () => {
-    const response = await fetch('http://localhost:3001/norma.nomoreparties.space/orders');
-    return response.json();
-  };
+  const dispatch = useAppDispatch();
+  const { connectionState } = useAppSelector((state) => state.userOrders);
+  const { userOrders } = useAppSelector((state) => state.userOrders);
 
   useEffect(() => {
-    getCardsData().then((data) => {
-      setPersonalOrders(data.orders);
-    });
-  }, []);
+    if (connectionState === 'closed') {
+      dispatch(wsUserOrdersInit());
+    }
+
+    return () => {
+      if (connectionState === 'opened') {
+        dispatch(wsUserOrdersClose());
+      }
+    };
+  }, [dispatch, connectionState]);
 
   return (
     <div className={s.orders}>
       {
-        personalOrders.map((order) => (
+        userOrders?.map((order) => (
           <OrderCard key={order._id} orderInfo={order} />
         ))
       }

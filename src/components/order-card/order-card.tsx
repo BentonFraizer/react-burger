@@ -17,7 +17,7 @@ const MAX_INGREDIENTS_PREVIEWS_COUNT = 6;
 function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
   const { ingredients } = useAppSelector((state) => state.ingredients);
   const location = useLocation();
-  const { number, createdAt, name, _id } = orderInfo;
+  const { number, createdAt, name } = orderInfo;
   const images = getIngredientImages(ingredients as Ingredient[], orderInfo).reverse();
   const orderStatus = {
     done: { text: 'Выполнен', style: s.light__blue },
@@ -29,7 +29,7 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
 
   const extraIngredientsCount = images.length >= 6 ? images.length - MAX_INGREDIENTS_PREVIEWS_COUNT : images.length;
   return (
-    <Link to={`${location.pathname}/${_id}`} state={{ background: location }} className={s.order__link}>
+    <Link to={`${location.pathname}/${number}`} state={{ background: location }} className={s.order__link}>
       <div className={s.order__card}>
         <div className={s.order__info}>
           <div className='order__number'>

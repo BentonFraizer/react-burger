@@ -19,18 +19,11 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
   const location = useLocation();
   const { number, createdAt, name, _id } = orderInfo;
   const images = getIngredientImages(ingredients as Ingredient[], orderInfo).reverse();
-
-  // Поскольку вложенный тернарный оператор является не корректным решением со стороны ESLint
-  // Реализован такой вариант получения значения для поля status
-  let orderStatus;
-
-  if (orderInfo?.status === 'done') {
-    orderStatus = { text: 'Выполнен', style: s.light__blue };
-  } else if (orderInfo?.status === 'pending') {
-    orderStatus = { text: 'Готовится', style: s.white };
-  } else {
-    orderStatus = { text: 'Создан', style: s.white };
-  }
+  const orderStatus = {
+    done: { text: 'Выполнен', style: s.light__blue },
+    pending: { text: 'Готовится', style: s.white },
+    created: { text: 'Создан', style: s.white },
+  } as const;
 
   const isLocationOrders = location.pathname === '/profile/orders';
 
@@ -55,8 +48,8 @@ function OrderCard({ orderInfo }: OrderCardProps): JSX.Element {
         </div>
         {isLocationOrders
           ? <div className={s.order__status}>
-            <p className={`text text_type_main-default mb-6 ${orderStatus?.style}`}>
-              {orderStatus?.text}
+            <p className={`text text_type_main-default mb-6 ${orderStatus[orderInfo.status].style}`}>
+              {orderStatus[orderInfo.status].text}
             </p>
           </div> : null}
 

@@ -63,7 +63,7 @@ function BurgerConstructor() {
       openModal();
       const bunId = [bun?._id];
       const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
-      dispatch(getOrderNumber([...bunId, ...mainsIds]));
+      dispatch(getOrderNumber([...bunId, ...bunId, ...mainsIds]));
     }
   };
 

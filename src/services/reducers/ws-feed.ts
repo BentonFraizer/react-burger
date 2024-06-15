@@ -4,10 +4,8 @@ import {
   FEED_CONNECTION_ERROR,
   FEED_CONNECTION_INIT,
   FEED_CONNECTION_SUCCESS,
-  FEED_DELETE_ORDER_NUMBER,
   FEED_GET_MESSAGE,
-  FEED_SEND_MESSAGE,
-  FEED_SET_ORDER_NUMBER,
+  FEED_SEND_MESSAGE
 } from '../actions/ws-feed';
 import AllOrdersResponse from '../../types/all-orders-response';
 
@@ -36,9 +34,7 @@ type ActionTypes =
   | typeof FEED_CONNECTION_CLOSED
   | typeof FEED_GET_MESSAGE
   | typeof FEED_SEND_MESSAGE
-  | typeof FEED_CONNECTION_ERROR
-  | typeof FEED_SET_ORDER_NUMBER
-  | typeof FEED_DELETE_ORDER_NUMBER;
+  | typeof FEED_CONNECTION_ERROR;
 
 export type WSFeedsAction = {
   type: ActionTypes;
@@ -95,18 +91,6 @@ export const feedReducer = (state: InitialStateType = initialState, action: WSFe
       return {
         ...state,
         error: 'WebSocket /feed route error'
-      };
-    }
-    case FEED_SET_ORDER_NUMBER: {
-      return {
-        ...state,
-        feedOrderNumber: action.payload
-      };
-    }
-    case FEED_DELETE_ORDER_NUMBER: {
-      return {
-        ...state,
-        feedOrderNumber: null
       };
     }
 

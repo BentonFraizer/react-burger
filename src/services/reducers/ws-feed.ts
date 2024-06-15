@@ -7,7 +7,7 @@ import {
   FEED_GET_MESSAGE,
   FEED_SEND_MESSAGE
 } from '../actions/ws-feed';
-import AllOrdersResponse from '../../types/all-orders-response';
+import { AllOrdersResponse } from '../../types';
 
 type InitialStateType = {
   allOrders: AllOrdersResponse[],
@@ -60,7 +60,7 @@ export const feedReducer = (state: InitialStateType = initialState, action: WSFe
     case FEED_SEND_MESSAGE: {
       return {
         ...state,
-        // не нашел применение. Удалить позднее, если так и не пригодился case
+        // оставил для примера и дальнейшего использования в работе
       };
     }
     case FEED_CONNECTION_SUCCESS: {
@@ -90,7 +90,7 @@ export const feedReducer = (state: InitialStateType = initialState, action: WSFe
     case FEED_CONNECTION_ERROR: {
       return {
         ...state,
-        error: 'WebSocket /feed route error'
+        error: 'WebSocket "/feed" route error'
       };
     }
 

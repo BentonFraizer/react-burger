@@ -24,16 +24,14 @@ export const FEED_SEND_MESSAGE = 'FEED_SEND_MESSAGE';
 
 // Инициализация открытия ws соединения
 export function wsFeedInit() {
-  // eslint-disable-next-line func-names
-  return function (dispatch: AppDispatch) {
+  return (dispatch: AppDispatch) => {
     dispatch({ type: FEED_CONNECTION_INIT, payload: wsFeedUrl });
   };
 }
 
-// Инициализация закрытия ws соединеня
+// Инициализация закрытия ws соединения
 export function wsFeedClose() {
-  // eslint-disable-next-line func-names
-  return function (dispatch: AppDispatch) {
+  return (dispatch: AppDispatch) => {
     dispatch({ type: FEED_CONNECTION_CLOSE });
   };
 }

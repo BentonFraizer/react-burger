@@ -85,3 +85,15 @@
 .middle p:last-child {
   height: 120px;
 }
+
+.loader__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader__wrapper.left {
+  justify-content: flex-start;
+}

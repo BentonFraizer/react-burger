@@ -21,3 +21,7 @@
 .order-text .text:last-child {
   color: #8585AD;
 }
+
+.order-icon {
+  height: 124px;
+}

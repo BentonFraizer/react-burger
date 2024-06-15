@@ -5,6 +5,7 @@ import { Order } from '../../types';
 import { separateNumbers } from '../../utils/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { wsFeedInit, wsFeedClose } from '../../services/actions/ws-feed';
+import Loader from '../../components/loader/loader';
 
 function AllOrdersPage() {
   const dispatch = useAppDispatch();
@@ -69,9 +70,13 @@ function AllOrdersPage() {
           </p>
           <div className={s.cards__wrapper}>
             {
-              orders.map((order) => (
-                <OrderCard key={order._id} orderInfo={order} />
-              ))
+              connectionState !== 'opened'
+                ? <div className={s.loader__wrapper}>
+                  <Loader />
+                </div>
+                : orders.map((order) => (
+                  <OrderCard key={order._id} orderInfo={order} />
+                ))
             }
           </div>
         </div>
@@ -85,7 +90,13 @@ function AllOrdersPage() {
                 </p>
               </div>
               <div className={s['done__orders-numbers']}>
-                {renderColumns(ordersNumbersDone)}
+                {
+                  connectionState !== 'opened'
+                    ? <div className={s.loader__wrapper}>
+                      <Loader />
+                    </div>
+                    : renderColumns(ordersNumbersDone)
+                }
               </div>
             </div>
             <div className={s.in__process}>
@@ -95,7 +106,13 @@ function AllOrdersPage() {
                 </p>
               </div>
               <div className={s['in__process-numbers']}>
-                {renderColumns(ordersNumbersPending.reverse())}
+                {
+                  connectionState !== 'opened'
+                    ? <div className={s.loader__wrapper}>
+                      <Loader />
+                    </div>
+                    : renderColumns(ordersNumbersPending.reverse())
+                }
               </div>
             </div>
           </div>
@@ -104,7 +121,13 @@ function AllOrdersPage() {
               Выполнено за всё время:
             </p>
             <p className='text text_type_digits-large'>
-              {separateNumbers(total)}
+              {
+                connectionState !== 'opened'
+                  ? <div className={`${s.loader__wrapper} ${s.left}`}>
+                    <Loader />
+                  </div>
+                  : separateNumbers(total)
+              }
             </p>
           </div>
           <div className={s.bottom}>
@@ -112,7 +135,13 @@ function AllOrdersPage() {
               Выполнено за сегодня:
             </p>
             <p className='text text_type_digits-large'>
-              {totalToday}
+              {
+                connectionState !== 'opened'
+                  ? <div className={`${s.loader__wrapper} ${s.left}`}>
+                    <Loader />
+                  </div>
+                  : totalToday
+              }
             </p>
           </div>
         </div>

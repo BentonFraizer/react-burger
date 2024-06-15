@@ -37,8 +37,8 @@ export const socketMiddlewareWithReconnect = (
         dispatch({ type: onOpen });
       };
 
-      socket.onerror = (event) => {
-        dispatch({ type: onError, payload: event });
+      socket.onerror = () => {
+        dispatch({ type: onError });
       };
 
       socket.onmessage = (event) => {

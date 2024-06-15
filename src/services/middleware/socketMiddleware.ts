@@ -1,8 +1,8 @@
 import type { Middleware } from 'redux';
-import type { WSStoreFeedActions } from '../types';
+import type { WSStoreFeedActions, WSStoreUserOrdersActions } from '../types';
 import { refreshToken } from '../../utils/api';
 
-type TWSStoreActions = WSStoreFeedActions;
+type TWSStoreActions = WSStoreFeedActions | WSStoreUserOrdersActions;
 
 const RECONNECT_PERIOD = 3000;
 

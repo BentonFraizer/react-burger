@@ -1,14 +1,17 @@
 import { JSX, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import s from './ingredient-details.module.css';
 import { Ingredient } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { setIngredientDetails } from '../../../services/actions/ingredient-details';
 import Loader from '../../loader/loader';
+import { isEscKeyPressed } from '../../../utils/utils';
 
 function IngredientDetails(): JSX.Element | null {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { ingredients } = useAppSelector((state) => state.ingredients);
 
   const filteredIngredient = (ingredients as Ingredient[]).find((item) => item._id === id);
@@ -20,6 +23,20 @@ function IngredientDetails(): JSX.Element | null {
       dispatch(setIngredientDetails(filteredIngredient));
     }
   }, [dispatch, filteredIngredient]);
+
+  useEffect(() => {
+    const handleEscKeyPress = (e: KeyboardEvent) => {
+      if (isEscKeyPressed(e)) {
+        navigate(-1);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleEscKeyPress);
+    };
+  }, []);
 
   if (!currentIngredient) {
     return (

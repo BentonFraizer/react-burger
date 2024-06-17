@@ -168,7 +168,7 @@ function BurgerConstructor() {
       {isModalOpened && <Modal
         title={isRequesting ? 'Оформляем заказ...' : ''}
         onClose={handleCloseModal}
-        isModalOpen={isModalOpened}>
+      >
         <OrderStatus />
       </Modal>}
     </div>

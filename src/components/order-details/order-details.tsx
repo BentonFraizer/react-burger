@@ -1,11 +1,11 @@
 import { JSX, useEffect, useState } from 'react';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useParams } from 'react-router';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import s from './order-details.module.css';
 import { IngredientPreview } from '../ingredient-preview/ingredient-preview';
 import { Ingredient, Order } from '../../types';
-import { countOccurrences, getOrderPrice, isEscKeyPressed } from '../../utils/utils';
+import { countOccurrences, getOrderPrice } from '../../utils/utils';
 import { useAppSelector } from '../../hooks/hooks';
 import { APIRoute } from '../../consts';
 import Loader from '../loader/loader';
@@ -14,7 +14,6 @@ import { request } from '../../utils/api';
 function OrderDetails(): JSX.Element {
   const [order, setOrder] = useState<Order>();
   const location = useLocation();
-  const navigate = useNavigate();
   const background = location.state && location.state.background;
   const style = !background ? { marginTop: 122 } : { marginTop: 0 };
   const { ingredients } = useAppSelector((state) => state.ingredients);
@@ -26,20 +25,6 @@ function OrderDetails(): JSX.Element {
     getCardInfo().then((data) => {
       setOrder(data.orders[0]);
     });
-  }, []);
-
-  useEffect(() => {
-    const handleEscKeyPress = (e: KeyboardEvent) => {
-      if (isEscKeyPressed(e)) {
-        navigate(-1);
-      }
-    };
-
-    window.addEventListener('keydown', handleEscKeyPress);
-
-    return () => {
-      window.removeEventListener('keydown', handleEscKeyPress);
-    };
   }, []);
 
   if (!order) {

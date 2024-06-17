@@ -9,12 +9,11 @@ type ModalProps = {
   title?: string;
   children: React.ReactNode;
   onClose: () => void;
-  isModalOpen?: boolean;
 };
 
 const modalContentEl = document.getElementById('modals') as HTMLElement;
 
-function Modal({ title, children, onClose, isModalOpen }: ModalProps): JSX.Element {
+function Modal({ title, children, onClose }: ModalProps): JSX.Element {
   const handleCloseBtnClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClose();
@@ -26,15 +25,12 @@ function Modal({ title, children, onClose, isModalOpen }: ModalProps): JSX.Eleme
         onClose();
       }
     };
-
-    if (isModalOpen) {
-      window.addEventListener('keydown', handleEscKeyPress);
-    }
+    window.addEventListener('keydown', handleEscKeyPress);
 
     return () => {
       window.removeEventListener('keydown', handleEscKeyPress);
     };
-  }, [isModalOpen]);
+  }, [onClose]);
 
   return (
     createPortal(
@@ -47,7 +43,7 @@ function Modal({ title, children, onClose, isModalOpen }: ModalProps): JSX.Eleme
                 {title}
               </p>
               <div className={s['close-btn']} onClick={handleCloseBtnClick}>
-                <CloseIcon type="primary" />
+                <CloseIcon type='primary' />
               </div>
             </div>
             <div className={s['modal-content__wrapper']}>

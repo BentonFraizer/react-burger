@@ -40,8 +40,6 @@ function DraggableConstructorElement({ main, index, onDeleteIngredient }: Dragga
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(moveConstructorIngredient(dragIndex, hoverIndex));
 
       // eslint-disable-next-line no-param-reassign

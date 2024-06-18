@@ -31,8 +31,6 @@ function IngredientsItem({ ingredient }: IngredientsItemProps): JSX.Element {
   };
 
   const handleIngredientItemClick = (ingredientData: Ingredient) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(setIngredientDetails(ingredientData));
   };
 

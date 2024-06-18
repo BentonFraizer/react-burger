@@ -1,6 +1,7 @@
 export const APIRoute = {
   ingredients: 'ingredients',
   orders: 'orders',
+  allOrders: 'orders/all', // Эндпоинт для получения заказов всех пользователей на странице "Лента заказов"
   login: 'auth/login', // Эндпоинт для авторизации пользователя
   register: 'auth/register', // Эндпоинт для регистрации пользователя
   logout: 'auth/logout', // Эндпоинт для выхода из системы
@@ -17,12 +18,19 @@ export const AppRoute = {
   ingredient: '/ingredients/:id',
   forgotPassword: '/forgot-password',
   resetPassword: '/reset-password',
-  // предполагаемое название ленты заказов
-  ordersList: '/orders-list',
+  allOrders: '/feed',
+  order: '/feed/:number',
   profile: '/profile',
   profileOrders: '/profile/orders',
+  profileOrder: '/profile/orders/:number',
   notFound: '*',
 };
 
 // базовый url
 export const BASE_URL = 'https://norma.nomoreparties.space/api/';
+
+// url для получения заказов всех пользователей на странице "Лента заказов"
+export const wsFeedUrl = 'wss://norma.nomoreparties.space/orders/all';
+
+// url для получения заказов залогиненного пользователя во вкладке личного кабинета "История зазказов"
+export const wsUserOrdersUrl = 'wss://norma.nomoreparties.space/orders';

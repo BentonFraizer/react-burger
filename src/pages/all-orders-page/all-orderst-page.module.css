@@ -1,0 +1,99 @@
+.main {
+  height: calc(100vh - 88px);
+  display: flex;
+  justify-content: center;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1240px;
+}
+
+.left {
+  width: 100%;
+  max-width: 603px;
+}
+
+.cards__wrapper {
+  width: inherit;
+  height: calc(100vh - 252px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  display: inline-block;
+  padding: 0 8px 0 0;
+}
+
+.right {
+  width: 100%;
+  max-width: 580px;
+  margin-top: 100px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.done {
+  width: 100%;
+  max-width: 272px;
+}
+
+.done__orders-numbers {
+  height: 153px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  display: flex;
+  color: #00CCCC;
+}
+
+.orders__numbers-column {
+  margin-right: 12px;
+}
+
+.orders__numbers-column:last-child {
+  margin-right: 0;
+}
+
+.orders__numbers-column p:last-child {
+  margin-bottom: 0;
+}
+
+.in__process {
+  width: 100%;
+  max-width: 272px;
+}
+
+.in__process-numbers {
+  height: 153px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #8585AD #2F2F37;
+  display: flex;
+}
+
+.middle {
+  margin-bottom: 60px;
+}
+
+.middle p:last-child {
+  height: 120px;
+}
+
+.loader__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader__wrapper.left {
+  justify-content: flex-start;
+}

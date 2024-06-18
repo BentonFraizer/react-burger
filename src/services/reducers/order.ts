@@ -28,7 +28,7 @@ type ActionTypes =
   | typeof DELETE_ORDER_NUMBER;
 
 export type OrderAction = {
-  type: ActionTypes;
+  type: ActionTypes | string;
   payload?: string | string[];
 };
 

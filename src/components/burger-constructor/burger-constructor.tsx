@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import s from './burger-constructor.module.css';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
+import OrderStatus from '../order-status/order-status';
 import { useModal } from '../../hooks/useModal';
 import { Ingredient, UniqueIdIngredient, User } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { RootState } from '../../index';
+import { RootState } from '../../services/types';
 import {
   addConstructorBun,
   addConstructorIngredient,
@@ -37,11 +37,7 @@ function BurgerConstructor() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(getConstructorIngredients());
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(getConstructorBun());
   }, [dispatch]);
 
@@ -67,22 +63,16 @@ function BurgerConstructor() {
       openModal();
       const bunId = [bun?._id];
       const mainsIds = constructorIngredients.map((ingredient) => ingredient._id);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      dispatch(getOrderNumber([...bunId, ...mainsIds]));
+      dispatch(getOrderNumber([...bunId, ...bunId, ...mainsIds]));
     }
   };
 
   const handleCloseModal = () => {
     closeModal();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(deleteOrderNumber());
   };
 
   const handleDeleteIngredientBtnClick = (ingredient: UniqueIdIngredient) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     dispatch(removeConstructorIngredient(ingredient));
   };
 
@@ -90,8 +80,6 @@ function BurgerConstructor() {
   const [{ canDrop }, dropTargetForTopBun] = useDrop({
     accept: 'bun',
     drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(addConstructorBun(item));
     },
     collect: (monitor) => ({
@@ -101,8 +89,6 @@ function BurgerConstructor() {
   const [, dropTargetForBottomBun] = useDrop({
     accept: 'bun',
     drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(addConstructorBun(item));
     },
     collect: (monitor) => ({
@@ -114,9 +100,7 @@ function BurgerConstructor() {
   // Хук обрабатывают перетаскивание начинок и соусов из списка ингредиентов в конструктор
   const [{ canFillingDrop }, dropTargetForFillings] = useDrop({
     accept: 'filling',
-    drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+    drop(item: UniqueIdIngredient) {
       dispatch(addConstructorIngredient(item, uuidv4()));
     },
     collect: (monitor) => ({
@@ -133,7 +117,7 @@ function BurgerConstructor() {
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={bun?.name}
+            text={`${bun?.name} (верх)`}
             price={bun?.price}
             thumbnail={bun?.image}
             extraClass={`mb-2 ${s['bun-top']}`}
@@ -155,7 +139,7 @@ function BurgerConstructor() {
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={bun?.name}
+            text={`${bun?.name} (низ)`}
             price={bun?.price}
             thumbnail={bun?.image}
             extraClass={`mt-2 mb-10 ${s['bun-bottom']}`}
@@ -184,8 +168,8 @@ function BurgerConstructor() {
       {isModalOpened && <Modal
         title={isRequesting ? 'Оформляем заказ...' : ''}
         onClose={handleCloseModal}
-        isModalOpen={isModalOpened}>
-        <OrderDetails />
+      >
+        <OrderStatus />
       </Modal>}
     </div>
   );

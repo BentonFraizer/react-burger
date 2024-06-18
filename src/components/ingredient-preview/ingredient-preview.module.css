@@ -1,0 +1,42 @@
+.preview__wrapper {
+  position: relative;
+}
+
+.preview__wrapper:last-child .ingredient__preview {
+  margin-left: 0;
+}
+
+.ingredient__preview {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  padding: 6px 12px;
+  background-image: linear-gradient(63deg, #801AB3 0%, #4C4CFF 100%);
+  background-origin: border-box;
+  box-shadow: inset 0 100vw #1C1C21;
+  border: 2px solid transparent;
+  margin-left: -15px;
+}
+
+.fade {
+  opacity: 0.4;
+}
+
+.ingredient__preview:last-child {
+  margin-left: 0;
+}
+
+.ingredient__preview img {
+  position: absolute;
+  top: 6px;
+  left: -19px;
+  width: 100px;
+}
+
+.extra__ingredients-count {
+  position: absolute;
+  display: flex;
+  top: 20px;
+  left: 6px;
+}

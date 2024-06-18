@@ -16,8 +16,6 @@ function EmptyBun({ type }: EmptyBunProps): JSX.Element {
   const [{ canDrop }, dropTarget] = useDrop({
     accept: 'bun',
     drop(item: Ingredient) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       dispatch(addConstructorBun(item));
     },
     collect: (monitor) => ({

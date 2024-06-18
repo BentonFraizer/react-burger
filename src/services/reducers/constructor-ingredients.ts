@@ -36,9 +36,14 @@ type ActionTypes =
   | typeof MOVE_CONSTRUCTOR_INGREDIENT
   | typeof CLEAR_CONSTRUCTOR
 
+type Indexes = {
+  dragIndex: number,
+  hoverIndex: number
+}
+
 export type ConstructorIngredientsAction = {
   type: ActionTypes;
-  payload?: Ingredient | UniqueIdIngredient | string;
+  payload?: Ingredient | UniqueIdIngredient | Indexes;
 };
 
 // eslint-disable-next-line default-param-last
@@ -117,15 +122,11 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
       };
     }
     case MOVE_CONSTRUCTOR_INGREDIENT: {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const { dragIndex, hoverIndex } = action.payload;
+      const { dragIndex, hoverIndex } = action.payload as Indexes;
 
       const dragCard = state.constructorIngredients[dragIndex];
       const newCards = [...state.constructorIngredients];
       newCards.splice(dragIndex, 1);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       newCards.splice(hoverIndex, 0, dragCard);
 
       return {

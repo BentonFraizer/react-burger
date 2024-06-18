@@ -1,0 +1,55 @@
+.order__link {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.order__link:last-child {
+  margin-bottom: 0;
+}
+
+.order__card {
+  width: 100%;
+  padding: 24px;
+  background-color: #1C1C21;
+  border-radius: 40px;
+}
+
+.order__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.order__created-date {
+  color: #8585AD;
+}
+
+.order__title {
+  margin-bottom: 8px;
+}
+
+.order__details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ingredients__icons {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.order__price {
+  display: flex;
+}
+
+.white {
+  color: #FFF;
+}
+
+.light__blue {
+  color: #00CCCC;
+}

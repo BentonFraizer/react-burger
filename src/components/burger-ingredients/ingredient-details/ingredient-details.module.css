@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .ingredient-macronutrients {
@@ -14,4 +13,16 @@
   justify-content: space-between;
   text-align: center;
   color: #8585AD;
+}
+
+.loader__wrapper {
+  height: 380px;
+  width: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingredient-image {
+  height: 244px;
 }

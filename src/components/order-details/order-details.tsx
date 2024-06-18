@@ -1,57 +1,115 @@
-import React, { JSX } from 'react';
+import { JSX, useEffect, useState } from 'react';
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useParams } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import s from './order-details.module.css';
-import doneIcon from '../../images/icons/done.svg';
+import { IngredientPreview } from '../ingredient-preview/ingredient-preview';
+import { Ingredient, Order } from '../../types';
+import { countOccurrences, getOrderPrice } from '../../utils/utils';
 import { useAppSelector } from '../../hooks/hooks';
+import { APIRoute } from '../../consts';
 import Loader from '../loader/loader';
+import { request } from '../../utils/api';
 
 function OrderDetails(): JSX.Element {
-  const { orderNumber, orderRequest, orderFailed, orderFailedMessage } = useAppSelector((state) => state.order);
+  const [order, setOrder] = useState<Order>();
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  const style = !background ? { marginTop: 122 } : { marginTop: 0 };
+  const { ingredients } = useAppSelector((state) => state.ingredients);
+  const { number } = useParams();
 
-  let content;
+  const getCardInfo = async () => request(`${APIRoute.orders}/${number}`);
 
-  if (orderRequest) {
-    content = <Loader />;
-  } else if (orderFailed) {
-    content = <>
-      <>
-        <p className='text text_type_main-medium mb-5'>
-          Ошибка оформления заказа.
-        </p>
-        <p className='text text_type_main-default mb-3'>
-          Информация об ошибке:
-        </p>
-        <p className='text text_type_main-medium'>
-          <span>{orderFailedMessage}</span>
-        </p>
-      </>
-    </>;
-  } else {
-    content = (
-      <>
-        <div className={`${s['order-number']} mb-10`}>
-          <p className='text text_type_digits-large'>{orderNumber}</p>
-        </div>
-        <div className={s['order-id']}>
-          <p className='text text_type_main-medium mb-15'>
-            идентификатор заказа
-          </p>
-        </div>
-        <div className={`${s['order-icon']} mb-15`}>
-          <img src={doneIcon} alt='Заказ принят' />
-        </div>
-        <div className={`${s['order-text']} mb-15`}>
-          <p className={'text text_type_main-default mb-2'}>
-            Ваш заказ начали готовить
-          </p>
-          <p className={`${s.text} text_type_main-default mb-2`}>
-            Дождитесь готовности на орбитальной станции
-          </p>
-        </div>
-      </>
+  useEffect(() => {
+    getCardInfo().then((data) => {
+      setOrder(data.orders[0]);
+    });
+  }, []);
+
+  if (!order) {
+    return (
+      <div className={s.loader__wrapper}>
+        <Loader />
+      </div>
     );
   }
 
-  return <div className={s['order-details']}>{content}</div>;
+  const orderStatus = {
+    done: { text: 'Выполнен', style: s.light__blue },
+    pending: { text: 'Готовится', style: s.white },
+    created: { text: 'Создан', style: s.white },
+  } as const;
+
+  const occurrences = countOccurrences(order?.ingredients);
+
+  return (
+    <div className={s.order} style={style}>
+      <div className={s.order__number}>
+        <p className='text text_type_digits-default mb-10'>#{order?.number}</p>
+      </div>
+      <div className={s.order__name}>
+        <p className='text text_type_main-medium mb-3'>
+          {order?.name}
+        </p>
+      </div>
+      <div className={s.order__status}>
+        <p className={`text text_type_main-default mb-15 ${orderStatus[order.status].style}`}>
+          {orderStatus[order.status].text}
+        </p>
+      </div>
+      <div className={s.order__content}>
+        <p className='text text_type_main-medium mb-6'>
+          Состав:
+        </p>
+      </div>
+      <div className={s.order__ingredients}>
+
+        {
+          Object.entries(occurrences).map(([key, value]) => {
+            const currentIngredient = (ingredients as Ingredient[]).find((item) => key === item._id);
+            if (!currentIngredient) {
+              return null;
+            }
+
+            return (
+              <div className={s.ingredient} key={key}>
+                <div className={s.ingredient__img}>
+                  <IngredientPreview imageSrc={currentIngredient.image} />
+                </div>
+                <div className={s.ingredient__name}>
+                  <p className='text text_type_main-default'>
+                    {currentIngredient.name}
+                  </p>
+                </div>
+                <div className={s.ingredient__cost}>
+                  <div className='ingredient__amount'>
+                    <p className='text text_type_digits-default mr-2'>{value} x</p>
+                  </div>
+                  <div className='ingredient__price'>
+                    <p className='text text_type_digits-default mr-2'>{currentIngredient.price}</p>
+                  </div>
+                  <CurrencyIcon type='primary' />
+                </div>
+              </div>
+            );
+          })
+        }
+
+      </div>
+      <div className={s.order__info}>
+        <div className={s.order__time}>
+          <p className='text text_type_main-default'>
+            <FormattedDate date={new Date(order?.createdAt as Date)} />
+          </p>
+        </div>
+        <div className={s.order__total}>
+          <p className='text text_type_digits-default mr-2'>{getOrderPrice(ingredients as Ingredient[], order as Order)}</p>
+          <CurrencyIcon type='primary' />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default OrderDetails;

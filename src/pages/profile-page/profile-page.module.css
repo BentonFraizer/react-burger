@@ -13,8 +13,7 @@
 
 .profile {
   width: 100%;
-  max-width: 860px;
-  margin-top: 120px;
+  max-width: 1240px;
   display: flex;
 }
 
@@ -23,6 +22,7 @@
   flex-direction: column;
   margin-right: 60px;
   width: 320px;
+  margin-top: 120px;
 }
 
 .left a:nth-child(2) + button {
@@ -40,6 +40,11 @@
   font-size: 24px;
   height: 64px;
   color: rgba(133, 133, 173, 1);
+}
+
+.right {
+  max-width: 860px;
+  width: 100%;
 }
 
 .active button {

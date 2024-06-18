@@ -59,7 +59,7 @@ type ActionTypes =
   | typeof FETCH_LOGOUT_FAILED;
 
 export type UserAction = {
-  type: ActionTypes;
+  type: ActionTypes | string;
   payload?: User | boolean | null;
 };
 

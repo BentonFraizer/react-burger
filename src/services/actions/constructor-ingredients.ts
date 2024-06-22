@@ -2,9 +2,7 @@ import { Ingredient, UniqueIdIngredient } from '../../types';
 
 export const ADD_CONSTRUCTOR_INGREDIENT = 'ADD_CONSTRUCTOR_INGREDIENT';
 export const REMOVE_CONSTRUCTOR_INGREDIENT = 'REMOVE_CONSTRUCTOR_INGREDIENT';
-export const GET_CONSTRUCTOR_INGREDIENTS = 'GET_CONSTRUCTOR_INGREDIENTS';
 export const ADD_CONSTRUCTOR_BUN = 'ADD_CONSTRUCTOR_BUN';
-export const GET_CONSTRUCTOR_BUN = 'GET_CONSTRUCTOR_BUN';
 export const MOVE_CONSTRUCTOR_INGREDIENT = 'MOVE_CONSTRUCTOR_INGREDIENT';
 export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 
@@ -22,22 +20,10 @@ export function removeConstructorIngredient(ingredient: UniqueIdIngredient) {
   };
 }
 
-export function getConstructorIngredients() {
-  return {
-    type: GET_CONSTRUCTOR_INGREDIENTS,
-  };
-}
-
 export function addConstructorBun(bun: Ingredient) {
   return {
     type: ADD_CONSTRUCTOR_BUN,
     payload: bun,
-  };
-}
-
-export function getConstructorBun() {
-  return {
-    type: GET_CONSTRUCTOR_BUN,
   };
 }
 

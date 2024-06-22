@@ -1,5 +1,5 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,6 @@ import { RootState } from '../../services/types';
 import {
   addConstructorBun,
   addConstructorIngredient,
-  getConstructorBun,
-  getConstructorIngredients,
   removeConstructorIngredient,
 } from '../../services/actions/constructor-ingredients';
 import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order';
@@ -35,11 +33,6 @@ function BurgerConstructor() {
   const isInitialMount = useRef(true);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getConstructorIngredients());
-    dispatch(getConstructorBun());
-  }, [dispatch]);
 
   const totalPrice = useMemo(() => {
     if (bun === null && constructorIngredients.length === 0) {

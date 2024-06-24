@@ -1,4 +1,4 @@
-import { UniqueIdIngredient } from '../../../types';
+import { Ingredient, UniqueIdIngredient } from '../../../types';
 
 export const MOCK_BUN_INGREDIENT: UniqueIdIngredient = {
   _id: '643d69a5c3f7b9001cfa093d',
@@ -45,5 +45,20 @@ export const MOCK_NOT_BUN_INGREDIENT_2: UniqueIdIngredient = {
   image_mobile: 'https://code.s3.yandex.net/react/code/sauce-04-mobile.png',
   image_large: 'https://code.s3.yandex.net/react/code/sauce-04-large.png',
   __v: 0,
-  uniqueId: 'd301a26f-d176-4465-a805-5f98fdc7ed79'
+  uniqueId: 'd301a26f-d176-4465-a805-5f98fdc7ed79',
+};
+
+export const MOCK_INGREDIENT: Ingredient = {
+  _id: '643d69a5c3f7b9001cfa093f',
+  name: 'Мясо бессмертных моллюсков Protostomia',
+  type: 'main',
+  proteins: 433,
+  fat: 244,
+  carbohydrates: 33,
+  calories: 420,
+  price: 1337,
+  image: 'https://code.s3.yandex.net/react/code/meat-02.png',
+  image_mobile: 'https://code.s3.yandex.net/react/code/meat-02-mobile.png',
+  image_large: 'https://code.s3.yandex.net/react/code/meat-02-large.png',
+  __v: 0,
 };

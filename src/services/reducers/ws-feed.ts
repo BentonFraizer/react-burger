@@ -7,10 +7,10 @@ import {
   FEED_GET_MESSAGE,
   FEED_SEND_MESSAGE
 } from '../actions/ws-feed';
-import { AllOrdersResponse } from '../../types';
+import { AllOrdersResponse, Order } from '../../types';
 
-type InitialStateType = {
-  allOrders: AllOrdersResponse[],
+export type InitialFeedStateType = {
+  allOrders: Order[],
   total: number,
   totalToday: number,
   connectionState: 'connecting' | 'opened' | 'disconnecting' | 'closed'
@@ -18,7 +18,7 @@ type InitialStateType = {
   feedOrderNumber: null | string;
 }
 
-const initialState: InitialStateType = {
+const initialState: InitialFeedStateType = {
   allOrders: [],
   total: 0,
   totalToday: 0,
@@ -42,7 +42,7 @@ export type WSFeedsAction = {
 };
 
 // eslint-disable-next-line default-param-last
-export const feedReducer = (state: InitialStateType = initialState, action: WSFeedsAction) => {
+export const feedReducer = (state: InitialFeedStateType = initialState, action: WSFeedsAction) => {
   switch (action.type) {
     case FEED_CONNECTION_INIT: {
       return {

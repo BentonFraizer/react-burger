@@ -6,7 +6,7 @@ import {
   DELETE_ORDER_NUMBER,
 } from '../actions/order';
 
-describe('orders reducer', () => {
+describe('order reducer', () => {
   let initialState: InitialOrdersStateType = {
     orderNumber: null,
     orderRequest: false,

@@ -5,14 +5,14 @@ import {
 } from '../actions/ingredients';
 import Ingredient from '../../types/ingredient';
 
-type InitialStateType = {
+export type InitialIngredientsStateType = {
   ingredients: Ingredient[],
   ingredientsRequest: boolean,
   ingredientsFailed: boolean,
   ingredientsFailedMessage: string,
 }
 
-const initialState: InitialStateType = {
+const initialState: InitialIngredientsStateType = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
@@ -27,7 +27,7 @@ export type IngredientsAction = {
 };
 
 // eslint-disable-next-line default-param-last
-export const ingredientsReducer = (state:InitialStateType = initialState, action:IngredientsAction) => {
+export const ingredientsReducer = (state:InitialIngredientsStateType = initialState, action:IngredientsAction) => {
   switch (action.type) {
     case FETCH_INGREDIENTS_REQUEST: {
       return {

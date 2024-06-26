@@ -9,7 +9,7 @@ import {
 } from '../actions/ws-user-orders';
 import { AllOrdersResponse, Order } from '../../types';
 
-type InitialStateType = {
+export type InitialUserOrdersStateType = {
   userOrders: Order[],
   total: number,
   totalToday: number,
@@ -17,7 +17,7 @@ type InitialStateType = {
   error: string,
 };
 
-const initialState: InitialStateType = {
+const initialState: InitialUserOrdersStateType = {
   userOrders: [],
   total: 0,
   totalToday: 0,
@@ -40,7 +40,7 @@ export type WSUserOrdersAction = {
 }
 
 // eslint-disable-next-line default-param-last
-export const userOrdersReducer = (state: InitialStateType = initialState, action: WSUserOrdersAction) => {
+export const userOrdersReducer = (state: InitialUserOrdersStateType = initialState, action: WSUserOrdersAction) => {
   switch (action.type) {
     case USER_ORDERS_CONNECTION_INIT: {
       return {

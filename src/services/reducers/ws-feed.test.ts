@@ -8,13 +8,7 @@ import {
   FEED_GET_MESSAGE,
 } from '../actions/ws-feed';
 import { ALL_ORDERS_RESPONSE } from './mock/mockForTests';
-
-const States = {
-  Connecting: 'connecting',
-  Disconnecting: 'disconnecting',
-  Opened: 'opened',
-  Closed: 'closed',
-} as const;
+import { States } from '../../consts';
 
 describe('feed reducer', () => {
   let initialState: InitialFeedStateType = {

@@ -5,20 +5,18 @@ import {
   FETCH_ORDER_NUMBER_SUCCESS,
 } from '../actions/order';
 
-type InitialStateType = {
+export type InitialOrdersStateType = {
   orderNumber: null | string,
   orderRequest: boolean,
   orderFailed: boolean,
   orderFailedMessage: string,
-  identifiersForOrder: string[],
 }
 
-const initialState: InitialStateType = {
+const initialState: InitialOrdersStateType = {
   orderNumber: null,
   orderRequest: false,
   orderFailed: false,
   orderFailedMessage: '',
-  identifiersForOrder: [],
 };
 
 type ActionTypes =
@@ -33,7 +31,7 @@ export type OrderAction = {
 };
 
 // eslint-disable-next-line default-param-last
-export const orderReducer = (state: InitialStateType = initialState, action: OrderAction) => {
+export const orderReducer = (state: InitialOrdersStateType = initialState, action: OrderAction) => {
   switch (action.type) {
     case FETCH_ORDER_NUMBER_REQUEST: {
       return {

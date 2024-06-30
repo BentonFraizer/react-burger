@@ -15,7 +15,7 @@ function LoginPage(): JSX.Element {
   // Инициализация состояния значений полей ввода
   const initialFormValues = {
     email: '',
-    password: ''
+    password: '',
   };
 
   // Использование кастомного хука useForm
@@ -43,6 +43,7 @@ function LoginPage(): JSX.Element {
           placeholder='E-mail'
           isIcon={false}
           extraClass='mb-6'
+          data-cy='login-email-input'
         />
         <PasswordInput
           autoComplete='off'
@@ -51,9 +52,17 @@ function LoginPage(): JSX.Element {
           name='password'
           icon='ShowIcon'
           extraClass='mb-6'
+          data-cy='login-password-input'
         />
-        <Button htmlType='submit' type='primary' size='medium' extraClass='mb-20' disabled={isLoginRequest}>
-          {isLoginRequest ? <Loader small={true}/> : 'Войти'}
+        <Button
+          htmlType='submit'
+          type='primary'
+          size='medium'
+          extraClass='mb-20'
+          disabled={isLoginRequest}
+          data-cy='login-submit-btn'
+        >
+          {isLoginRequest ? <Loader small={true} /> : 'Войти'}
         </Button>
         <p className='text text_type_main-default mb-4'>
           Вы - новый пользователь?{' '}

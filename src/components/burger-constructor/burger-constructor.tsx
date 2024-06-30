@@ -150,6 +150,7 @@ function BurgerConstructor() {
           </div>
         </div>
         <Button
+          data-cy='make-order-btn'
           htmlType='button'
           type='primary'
           size='medium'

@@ -4,7 +4,14 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["airbnb-base", "plugin:@typescript-eslint/recommended"],
+  "plugins": [
+    "cypress"
+  ],
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:cypress/recommended"
+  ],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"

@@ -79,7 +79,7 @@ function BurgerIngredients() {
   const groupedIngredients = groupIngredientsByType(data as Ingredient[]);
 
   return (
-    <div className={s['burger-ingredients']}>
+    <div className={s['burger-ingredients']} data-cy='burger-ingredients'>
       <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`}>
         Соберите бургер
       </p>

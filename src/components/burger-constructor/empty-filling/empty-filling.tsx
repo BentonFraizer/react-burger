@@ -20,7 +20,7 @@ function EmptyFilling(): JSX.Element {
   });
   const isDraggingClass = canDrop ? s['is-dragging'] : '';
 
-  return <div className={`${s['constructor-element']} ${isDraggingClass} mb-2 mt-2`} ref={dropTarget}>
+  return <div className={`${s['constructor-element']} ${isDraggingClass} mb-2 mt-2`} ref={dropTarget} data-cy="empty-filling">
     <span className={s['constructor-element__row']}>Выберите начинку</span>
   </div>;
 }

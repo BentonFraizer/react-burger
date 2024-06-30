@@ -104,7 +104,7 @@ function BurgerConstructor() {
 
   const isMakeOrderBtnDisabled = bun === null || constructorIngredients.length === 0;
   return (
-    <div className={s['burger-constructor']}>
+    <div className={s['burger-constructor']} data-cy='burger-constructor'>
       {bun === null ? <EmptyBun type={'top'} />
         : <div className={isDraggingClass} ref={dropTargetForTopBun}>
           <ConstructorElement

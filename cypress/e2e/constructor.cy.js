@@ -6,7 +6,7 @@ describe('constructor page testing', () => {
         fixture: 'ingredients.json',
       },
     );
-    cy.viewport(1300, 800);
+    cy.viewport(1300, 900);
     cy.visit('http://localhost:3000/');
   });
 
@@ -70,5 +70,20 @@ describe('constructor page testing', () => {
     cy.get('.burger-constructor_bun-top__2iC4h').contains(' (верх)');
     cy.get('.draggable-constructor-element_constructor-element__gAumO')
       .contains('Моковое филе Люминесцентного тетраодонтимформа');
+  });
+
+  it('should open and close ingredient modal with description', () => {
+    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]').click();
+    cy.location().should((loc) => {
+      expect(loc.toString()).to.eq(
+        'http://localhost:3000/ingredients/643d69a5c3f7b9001cfa093e'
+      );
+    });
+    cy.get('[data-cy="modal"]').should('be.visible');
+    cy.get('[data-cy="modal"]').contains('Детали ингредиента');
+    cy.get('[data-cy="modal"]').contains('Калории, ккал');
+    cy.get('[data-cy="modal"]').contains('643');
+    cy.get('[data-cy="close-modal-btn"]').click();
+    cy.get('[data-cy="modal"]').should('not.exist');
   });
 });

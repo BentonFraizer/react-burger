@@ -143,9 +143,16 @@ describe('constructor page testing', () => {
     cy.get('[data-cy="make-order-btn"]').should('not.be.disabled').click();
 
     // Вводим данные для входа
-    cy.get('[data-cy="login-email-input"]').type('mail_6@mail.ru');
-    cy.get('[data-cy="login-password-input"]').type('Bo22nin');
+    cy.get('[data-cy="login-email-input"]').type('superuser3000@mail.ru');
+    cy.get('[data-cy="login-password-input"]').type('root001');
     cy.get('[data-cy="login-submit-btn"]').click();
+    cy.intercept(
+      'POST',
+      'https://norma.nomoreparties.space/api/auth/login',
+      {
+        fixture: 'user.json'
+      }
+    );
 
     // Снова наживаем кнопку "Форомить заказ"
     cy.get('[data-cy="make-order-btn"]').should('not.be.disabled').click();

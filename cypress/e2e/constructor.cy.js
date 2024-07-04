@@ -1,13 +1,13 @@
 describe('constructor page testing', () => {
   beforeEach('should be available on localhost:3000 with mock data', () => {
     cy.intercept(
-      'https://norma.nomoreparties.space/api/ingredients',
+      'api/ingredients',
       {
         fixture: 'ingredients.json',
       },
     );
     cy.viewport(1300, 900);
-    cy.visit('http://localhost:3000/');
+    cy.visit('/');
   });
 
   it('should render correctly', () => {
@@ -148,7 +148,7 @@ describe('constructor page testing', () => {
     cy.get('[data-cy="login-submit-btn"]').click();
     cy.intercept(
       'POST',
-      'https://norma.nomoreparties.space/api/auth/login',
+      'api/auth/login',
       {
         fixture: 'user.json'
       }
@@ -158,7 +158,7 @@ describe('constructor page testing', () => {
     cy.get('[data-cy="make-order-btn"]').should('not.be.disabled').click();
     cy.intercept(
       'POST',
-      'https://norma.nomoreparties.space/api/orders',
+      'api/orders',
       {
         fixture: 'order.json'
       }

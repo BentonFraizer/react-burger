@@ -11,6 +11,10 @@ import { MOCK_BUN_INGREDIENT, MOCK_NOT_BUN_INGREDIENT_1, MOCK_NOT_BUN_INGREDIENT
 describe('constructor reducer', () => {
   let localInitialState = initialState;
 
+  const BUN_INGREDIENT_ID = '643d69a5c3f7b9001cfa093d';
+  const NOT_BUN_INGREDIENT_ID_1 = '643d69a5c3f7b9001cfa0941';
+  const NOT_BUN_INGREDIENT_ID_2 = '643d69a5c3f7b9001cfa0943';
+
   beforeEach(() => {
     localInitialState = initialState;
   });
@@ -31,7 +35,7 @@ describe('constructor reducer', () => {
       constructorIngredients: [],
       counters: {
         buns: {
-          '643d69a5c3f7b9001cfa093d': 2,
+          [BUN_INGREDIENT_ID]: 2,
         },
         ingredients: {},
       },
@@ -54,7 +58,7 @@ describe('constructor reducer', () => {
       counters: {
         buns: {},
         ingredients: {
-          '643d69a5c3f7b9001cfa0941': 1,
+          [NOT_BUN_INGREDIENT_ID_1]: 1,
         },
       },
     };
@@ -72,8 +76,8 @@ describe('constructor reducer', () => {
       counters: {
         buns: {},
         ingredients: {
-          '643d69a5c3f7b9001cfa0941': 1,
-          '643d69a5c3f7b9001cfa0943': 1,
+          [NOT_BUN_INGREDIENT_ID_1]: 1,
+          [NOT_BUN_INGREDIENT_ID_2]: 1,
         },
       },
     };
@@ -91,8 +95,8 @@ describe('constructor reducer', () => {
       counters: {
         buns: {},
         ingredients: {
-          '643d69a5c3f7b9001cfa0941': 1,
-          '643d69a5c3f7b9001cfa0943': 1,
+          [NOT_BUN_INGREDIENT_ID_1]: 1,
+          [NOT_BUN_INGREDIENT_ID_2]: 1,
         },
       },
     };
@@ -107,8 +111,8 @@ describe('constructor reducer', () => {
       counters: {
         buns: {},
         ingredients: {
-          '643d69a5c3f7b9001cfa0941': 1,
-          '643d69a5c3f7b9001cfa0943': 1,
+          [NOT_BUN_INGREDIENT_ID_1]: 1,
+          [NOT_BUN_INGREDIENT_ID_2]: 1,
         },
       },
     };
@@ -126,7 +130,7 @@ describe('constructor reducer', () => {
       counters: {
         buns: {},
         ingredients: {
-          '643d69a5c3f7b9001cfa0943': 1,
+          [NOT_BUN_INGREDIENT_ID_2]: 1,
         },
       },
     };
@@ -140,11 +144,11 @@ describe('constructor reducer', () => {
       constructorIngredients: [MOCK_NOT_BUN_INGREDIENT_1, MOCK_NOT_BUN_INGREDIENT_2],
       counters: {
         buns: {
-          '643d69a5c3f7b9001cfa093d': 2,
+          [BUN_INGREDIENT_ID]: 2,
         },
         ingredients: {
-          '643d69a5c3f7b9001cfa0941': 1,
-          '643d69a5c3f7b9001cfa0943': 1,
+          [NOT_BUN_INGREDIENT_ID_1]: 1,
+          [NOT_BUN_INGREDIENT_ID_2]: 1,
         },
       },
     };

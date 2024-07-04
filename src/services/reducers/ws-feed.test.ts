@@ -18,7 +18,7 @@ describe('feed reducer', () => {
       allOrders: [],
       total: 0,
       totalToday: 0,
-      connectionState: 'closed',
+      connectionState: States.Closed,
       error: '',
       feedOrderNumber: null,
     };
@@ -102,7 +102,7 @@ describe('feed reducer', () => {
       allOrders: [],
       total: 0,
       totalToday: 0,
-      connectionState: 'closed',
+      connectionState: States.Closed,
       error: '',
       feedOrderNumber: null,
     };

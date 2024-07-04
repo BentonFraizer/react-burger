@@ -59,16 +59,17 @@ describe('ingredients reducer', () => {
   });
 
   it('should set error flag after FETCH_INGREDIENTS_FAILED action', () => {
+    const ERROR_MESSAGE = 'Error happened.';
     const action:IngredientsAction = {
       type: FETCH_INGREDIENTS_FAILED,
-      payload: 'Error happened.'
+      payload: ERROR_MESSAGE
     };
 
     const expectedState = {
       ingredients: [],
       ingredientsRequest: false,
       ingredientsFailed: true,
-      ingredientsFailedMessage: 'Error happened.',
+      ingredientsFailedMessage: ERROR_MESSAGE,
     };
 
     const resultingState = ingredientsReducer(localInitialState, action);

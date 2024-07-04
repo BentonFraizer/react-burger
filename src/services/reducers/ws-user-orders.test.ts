@@ -18,7 +18,7 @@ describe('user orders reducer', () => {
       userOrders: [],
       total: 0,
       totalToday: 0,
-      connectionState: 'closed',
+      connectionState: States.Closed,
       error: '',
     };
   });

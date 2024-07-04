@@ -5,7 +5,7 @@ export type InitialIngredientDetailsStateType = {
   ingredientDetails: null | Ingredient
 }
 
-const initialState: InitialIngredientDetailsStateType = {
+export const initialState: InitialIngredientDetailsStateType = {
   ingredientDetails: null,
 };
 

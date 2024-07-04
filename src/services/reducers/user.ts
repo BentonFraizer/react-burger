@@ -29,7 +29,7 @@ export type InitialUserStateType = {
   logoutFailed: boolean,
 };
 
-const initialState: InitialUserStateType = {
+export const initialState: InitialUserStateType = {
   user: null,
   userRequest: false,
   userFailed: false,

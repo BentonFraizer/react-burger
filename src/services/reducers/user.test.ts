@@ -1,4 +1,4 @@
-import { InitialUserStateType, UserAction, userReducer } from './user';
+import { initialState, UserAction, userReducer } from './user';
 import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS,
@@ -18,21 +18,10 @@ import {
 import { FAKE_USER } from './mock/mockForTests';
 
 describe('user reducer', () => {
-  let initialState: InitialUserStateType = {
-    user: null,
-    userRequest: false,
-    userFailed: false,
-    isAuthChecked: false,
-    loginRequest: false,
-    loginFailed: false,
-    registerRequest: false,
-    registerFailed: false,
-    logoutRequest: false,
-    logoutFailed: false,
-  };
+  let localInitialState = initialState;
 
   beforeEach(() => {
-    initialState = {
+    localInitialState = {
       user: null,
       userRequest: false,
       userFailed: false,
@@ -48,7 +37,7 @@ describe('user reducer', () => {
 
   it('should return initial state', () => {
     const unknownAction = 'UNKNOWN_ACTION' as unknown as UserAction;
-    expect(userReducer(undefined, unknownAction)).toEqual(initialState);
+    expect(userReducer(undefined, unknownAction)).toEqual(localInitialState);
   });
 
   it('should set user request flag after FETCH_USER_REQUEST action', () => {
@@ -57,11 +46,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       userRequest: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -73,12 +62,12 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       user: FAKE_USER,
       userRequest: false,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -89,11 +78,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       userFailed: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -104,11 +93,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       loginRequest: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -118,17 +107,17 @@ describe('user reducer', () => {
       type: FETCH_LOGIN_SUCCESS,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       loginRequest: true,
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       loginRequest: false,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -138,19 +127,19 @@ describe('user reducer', () => {
       type: FETCH_LOGIN_FAILED,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       loginRequest: true,
       loginFailed: false,
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       loginRequest: false,
       loginFailed: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -161,11 +150,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       registerRequest: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -175,17 +164,17 @@ describe('user reducer', () => {
       type: FETCH_REGISTER_SUCCESS,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       registerRequest: true,
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       registerRequest: false,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -195,19 +184,19 @@ describe('user reducer', () => {
       type: FETCH_REGISTER_FAILED,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       registerRequest: true,
       registerFailed: false,
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       registerRequest: false,
       registerFailed: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -218,11 +207,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       logoutRequest: true,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -232,17 +221,17 @@ describe('user reducer', () => {
       type: FETCH_LOGOUT_SUCCESS,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       logoutRequest: true,
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       logoutRequest: false,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -253,11 +242,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       logoutFailed: true
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -269,11 +258,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       isAuthChecked: true
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -285,11 +274,11 @@ describe('user reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       user: FAKE_USER,
     };
 
-    const resultingState = userReducer(initialState, action);
+    const resultingState = userReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });

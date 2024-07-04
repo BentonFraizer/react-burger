@@ -12,7 +12,7 @@ export type InitialOrdersStateType = {
   orderFailedMessage: string,
 }
 
-const initialState: InitialOrdersStateType = {
+export const initialState: InitialOrdersStateType = {
   orderNumber: null,
   orderRequest: false,
   orderFailed: false,

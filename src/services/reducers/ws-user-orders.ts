@@ -17,7 +17,7 @@ export type InitialUserOrdersStateType = {
   error: string,
 };
 
-const initialState: InitialUserOrdersStateType = {
+export const initialState: InitialUserOrdersStateType = {
   userOrders: [],
   total: 0,
   totalToday: 0,

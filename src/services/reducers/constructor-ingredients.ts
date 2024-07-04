@@ -16,7 +16,7 @@ export type InitialConstructorStateType = {
   };
 }
 
-const initialState: InitialConstructorStateType = {
+export const initialState: InitialConstructorStateType = {
   bun: null,
   constructorIngredients: [],
   counters: {

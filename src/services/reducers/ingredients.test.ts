@@ -3,20 +3,15 @@ import {
   FETCH_INGREDIENTS_SUCCESS,
   FETCH_INGREDIENTS_FAILED
 } from '../actions/ingredients';
-import { IngredientsAction, ingredientsReducer, InitialIngredientsStateType } from './ingredients';
+import { initialState, IngredientsAction, ingredientsReducer } from './ingredients';
 import { ALL_INGREDIENTS } from './mock/mockForTests';
 import { Ingredient } from '../../types';
 
 describe('ingredients reducer', () => {
-  let initialState: InitialIngredientsStateType = {
-    ingredients: [],
-    ingredientsRequest: false,
-    ingredientsFailed: false,
-    ingredientsFailedMessage: '',
-  };
+  let localInitialState = initialState;
 
   beforeEach(() => {
-    initialState = {
+    localInitialState = {
       ingredients: [],
       ingredientsRequest: false,
       ingredientsFailed: false,
@@ -26,7 +21,7 @@ describe('ingredients reducer', () => {
 
   it('should return initial state', () => {
     const unknownAction = 'UNKNOWN_ACTION' as unknown as IngredientsAction;
-    expect(ingredientsReducer(undefined, unknownAction)).toEqual(initialState);
+    expect(ingredientsReducer(undefined, unknownAction)).toEqual(localInitialState);
   });
 
   it('should set ingredientsRequest flag after FETCH_INGREDIENTS_REQUEST action', () => {
@@ -41,7 +36,7 @@ describe('ingredients reducer', () => {
       ingredientsFailedMessage: '',
     };
 
-    const resultingState = ingredientsReducer(initialState, action);
+    const resultingState = ingredientsReducer(localInitialState, action);
     expect(resultingState).toEqual(expectedState);
   });
 
@@ -58,7 +53,7 @@ describe('ingredients reducer', () => {
       ingredientsFailedMessage: '',
     };
 
-    const resultingState = ingredientsReducer(initialState, action);
+    const resultingState = ingredientsReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -76,7 +71,7 @@ describe('ingredients reducer', () => {
       ingredientsFailedMessage: 'Error happened.',
     };
 
-    const resultingState = ingredientsReducer(initialState, action);
+    const resultingState = ingredientsReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });

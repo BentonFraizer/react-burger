@@ -18,7 +18,7 @@ export type InitialFeedStateType = {
   feedOrderNumber: null | string;
 }
 
-const initialState: InitialFeedStateType = {
+export const initialState: InitialFeedStateType = {
   allOrders: [],
   total: 0,
   totalToday: 0,

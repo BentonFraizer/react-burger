@@ -1,4 +1,4 @@
-import { InitialUserOrdersStateType, userOrdersReducer, WSUserOrdersAction } from './ws-user-orders';
+import { initialState, userOrdersReducer, WSUserOrdersAction } from './ws-user-orders';
 import {
   USER_ORDERS_CONNECTION_INIT,
   USER_ORDERS_CONNECTION_SUCCESS,
@@ -11,16 +11,10 @@ import { States } from '../../consts';
 import { ALL_ORDERS_RESPONSE } from './mock/mockForTests';
 
 describe('user orders reducer', () => {
-  let initialState: InitialUserOrdersStateType = {
-    userOrders: [],
-    total: 0,
-    totalToday: 0,
-    connectionState: 'closed',
-    error: '',
-  };
+  let localInitialState = initialState;
 
   beforeEach(() => {
-    initialState = {
+    localInitialState = {
       userOrders: [],
       total: 0,
       totalToday: 0,
@@ -35,11 +29,11 @@ describe('user orders reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Connecting
     };
 
-    const resultingState = userOrdersReducer(initialState, action);
+    const resultingState = userOrdersReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -50,11 +44,11 @@ describe('user orders reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Opened
     };
 
-    const resultingState = userOrdersReducer(initialState, action);
+    const resultingState = userOrdersReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -66,11 +60,11 @@ describe('user orders reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       error: ERROR_MESSAGE,
     };
 
-    const resultingState = userOrdersReducer(initialState, action);
+    const resultingState = userOrdersReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -81,11 +75,11 @@ describe('user orders reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Disconnecting,
     };
 
-    const resultingState = userOrdersReducer(initialState, action);
+    const resultingState = userOrdersReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -95,8 +89,8 @@ describe('user orders reducer', () => {
       type: USER_ORDERS_CONNECTION_CLOSED,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       total: ALL_ORDERS_RESPONSE.total,
       totalToday: ALL_ORDERS_RESPONSE.totalToday,
       userOrders: ALL_ORDERS_RESPONSE.orders,
@@ -104,14 +98,14 @@ describe('user orders reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Closed,
       total: 0,
       totalToday: 0,
       userOrders: []
     };
 
-    const resultingState = userOrdersReducer(initialState, action);
+    const resultingState = userOrdersReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -123,13 +117,13 @@ describe('user orders reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       total: ALL_ORDERS_RESPONSE.total,
       totalToday: ALL_ORDERS_RESPONSE.totalToday,
       userOrders: ALL_ORDERS_RESPONSE.orders
     };
 
-    const resultingState = userOrdersReducer(initialState, action);
+    const resultingState = userOrdersReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });

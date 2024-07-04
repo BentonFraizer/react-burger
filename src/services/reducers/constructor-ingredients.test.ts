@@ -5,32 +5,19 @@ import {
   MOVE_CONSTRUCTOR_INGREDIENT,
   REMOVE_CONSTRUCTOR_INGREDIENT,
 } from '../actions/constructor-ingredients';
-import { ConstructorIngredientsAction, constructorReducer, InitialConstructorStateType } from './constructor-ingredients';
+import { initialState, ConstructorIngredientsAction, constructorReducer } from './constructor-ingredients';
 import { MOCK_BUN_INGREDIENT, MOCK_NOT_BUN_INGREDIENT_1, MOCK_NOT_BUN_INGREDIENT_2 } from './mock/mockForTests';
 
 describe('constructor reducer', () => {
-  let initialState: InitialConstructorStateType = {
-    bun: null,
-    constructorIngredients: [],
-    counters: {
-      buns: {},
-      ingredients: {},
-    },
-  };
+  let localInitialState = initialState;
+
   beforeEach(() => {
-    initialState = {
-      bun: null,
-      constructorIngredients: [],
-      counters: {
-        buns: {},
-        ingredients: {},
-      },
-    };
+    localInitialState = initialState;
   });
 
   it('should return initial state', () => {
     const unknownAction = 'UNKNOWN_ACTION' as unknown as ConstructorIngredientsAction;
-    expect(constructorReducer(undefined, unknownAction)).toEqual(initialState);
+    expect(constructorReducer(undefined, unknownAction)).toEqual(localInitialState);
   });
 
   it('should add bun ingredient after ADD_CONSTRUCTOR_BUN action', () => {
@@ -50,7 +37,7 @@ describe('constructor reducer', () => {
       },
     };
 
-    const resultingState = constructorReducer(initialState, action);
+    const resultingState = constructorReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -72,14 +59,14 @@ describe('constructor reducer', () => {
       },
     };
 
-    const resultingState = constructorReducer(initialState, action);
+    const resultingState = constructorReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
 
   it('should replace dragged not bun ingredient after MOVE_CONSTRUCTOR_INGREDIENT action', () => {
     // Добавляем два разных ингредиента (не булки) в начальное состояние
-    initialState = {
+    localInitialState = {
       bun: null,
       constructorIngredients: [MOCK_NOT_BUN_INGREDIENT_1, MOCK_NOT_BUN_INGREDIENT_2],
       counters: {
@@ -96,7 +83,7 @@ describe('constructor reducer', () => {
       payload: { dragIndex: 1, hoverIndex: 0 },
     };
 
-    const resultingState = constructorReducer(initialState, action);
+    const resultingState = constructorReducer(localInitialState, action);
 
     const expectedState = {
       bun: null,
@@ -114,7 +101,7 @@ describe('constructor reducer', () => {
   });
 
   it('should remove not bun ingredient after cart icon click (REMOVE_CONSTRUCTOR_INGREDIENT action)', () => {
-    initialState = {
+    localInitialState = {
       bun: null,
       constructorIngredients: [MOCK_NOT_BUN_INGREDIENT_1, MOCK_NOT_BUN_INGREDIENT_2],
       counters: {
@@ -131,7 +118,7 @@ describe('constructor reducer', () => {
       payload: MOCK_NOT_BUN_INGREDIENT_1,
     };
 
-    const resultingState = constructorReducer(initialState, action);
+    const resultingState = constructorReducer(localInitialState, action);
 
     const expectedState = {
       bun: null,
@@ -148,7 +135,7 @@ describe('constructor reducer', () => {
   });
 
   it('should delete all ingredients from state (CLEAR_CONSTRUCTOR action)', () => {
-    initialState = {
+    localInitialState = {
       bun: MOCK_BUN_INGREDIENT,
       constructorIngredients: [MOCK_NOT_BUN_INGREDIENT_1, MOCK_NOT_BUN_INGREDIENT_2],
       counters: {
@@ -166,7 +153,7 @@ describe('constructor reducer', () => {
       type: CLEAR_CONSTRUCTOR,
     };
 
-    const resultingState = constructorReducer(initialState, action);
+    const resultingState = constructorReducer(localInitialState, action);
 
     const expectedState = {
       bun: null,

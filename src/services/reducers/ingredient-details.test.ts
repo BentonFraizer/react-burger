@@ -1,20 +1,19 @@
 import { SET_INGREDIENT_DETAILS, DELETE_INGREDIENT_DETAILS } from '../actions/ingredient-details';
-import { IngredientDetailsAction, ingredientDetailsReducer, InitialIngredientDetailsStateType } from './ingredient-details';
+import { initialState, IngredientDetailsAction, ingredientDetailsReducer } from './ingredient-details';
 import { MOCK_INGREDIENT } from './mock/mockForTests';
 
 describe('ingredient details reducer', () => {
-  let initialState: InitialIngredientDetailsStateType = {
-    ingredientDetails: null,
-  };
+  let localInitialState = initialState;
+
   beforeEach(() => {
-    initialState = {
+    localInitialState = {
       ingredientDetails: null,
     };
   });
 
   it('should return initial state', () => {
     const unknownAction = 'UNKNOWN_ACTION' as unknown as IngredientDetailsAction;
-    expect(ingredientDetailsReducer(undefined, unknownAction)).toEqual(initialState);
+    expect(ingredientDetailsReducer(undefined, unknownAction)).toEqual(localInitialState);
   });
 
   it('should set ingredient data after SET_INGREDIENT_DETAILS action', () => {
@@ -27,13 +26,13 @@ describe('ingredient details reducer', () => {
       ingredientDetails: MOCK_INGREDIENT,
     };
 
-    const resultingState = ingredientDetailsReducer(initialState, action);
+    const resultingState = ingredientDetailsReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
 
   it('should delete ingredient data after DELETE_INGREDIENT_DETAILS action', () => {
-    initialState = {
+    localInitialState = {
       ingredientDetails: MOCK_INGREDIENT,
     };
 
@@ -45,7 +44,7 @@ describe('ingredient details reducer', () => {
       ingredientDetails: null,
     };
 
-    const resultingState = ingredientDetailsReducer(initialState, action);
+    const resultingState = ingredientDetailsReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });

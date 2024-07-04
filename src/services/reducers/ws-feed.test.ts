@@ -1,4 +1,4 @@
-import { feedReducer, InitialFeedStateType, WSFeedsAction } from './ws-feed';
+import { initialState, feedReducer, WSFeedsAction } from './ws-feed';
 import {
   FEED_CONNECTION_INIT,
   FEED_CONNECTION_SUCCESS,
@@ -11,17 +11,10 @@ import { ALL_ORDERS_RESPONSE } from './mock/mockForTests';
 import { States } from '../../consts';
 
 describe('feed reducer', () => {
-  let initialState: InitialFeedStateType = {
-    allOrders: [],
-    total: 0,
-    totalToday: 0,
-    connectionState: 'closed',
-    error: '',
-    feedOrderNumber: null,
-  };
+  let localInitialState = initialState;
 
   beforeEach(() => {
-    initialState = {
+    localInitialState = {
       allOrders: [],
       total: 0,
       totalToday: 0,
@@ -37,11 +30,11 @@ describe('feed reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Connecting,
     };
 
-    const resultingState = feedReducer(initialState, action);
+    const resultingState = feedReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -52,11 +45,11 @@ describe('feed reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Opened,
     };
 
-    const resultingState = feedReducer(initialState, action);
+    const resultingState = feedReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -68,11 +61,11 @@ describe('feed reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       error: ERROR_MESSAGE,
     };
 
-    const resultingState = feedReducer(initialState, action);
+    const resultingState = feedReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -83,11 +76,11 @@ describe('feed reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       connectionState: States.Disconnecting
     };
 
-    const resultingState = feedReducer(initialState, action);
+    const resultingState = feedReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -97,8 +90,8 @@ describe('feed reducer', () => {
       type: FEED_CONNECTION_CLOSED,
     };
 
-    initialState = {
-      ...initialState,
+    localInitialState = {
+      ...localInitialState,
       allOrders: ALL_ORDERS_RESPONSE.orders,
       total: ALL_ORDERS_RESPONSE.total,
       totalToday: ALL_ORDERS_RESPONSE.totalToday,
@@ -114,7 +107,7 @@ describe('feed reducer', () => {
       feedOrderNumber: null,
     };
 
-    const resultingState = feedReducer(initialState, action);
+    const resultingState = feedReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -126,13 +119,13 @@ describe('feed reducer', () => {
     };
 
     const expectedState = {
-      ...initialState,
+      ...localInitialState,
       allOrders: ALL_ORDERS_RESPONSE.orders,
       total: ALL_ORDERS_RESPONSE.total,
       totalToday: ALL_ORDERS_RESPONSE.totalToday,
     };
 
-    const resultingState = feedReducer(initialState, action);
+    const resultingState = feedReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });

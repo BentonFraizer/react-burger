@@ -12,7 +12,7 @@ export type InitialIngredientsStateType = {
   ingredientsFailedMessage: string,
 }
 
-const initialState: InitialIngredientsStateType = {
+export const initialState: InitialIngredientsStateType = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,

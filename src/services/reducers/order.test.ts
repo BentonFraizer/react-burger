@@ -1,4 +1,4 @@
-import { InitialOrdersStateType, OrderAction, orderReducer } from './order';
+import { initialState, OrderAction, orderReducer } from './order';
 import {
   FETCH_ORDER_NUMBER_REQUEST,
   FETCH_ORDER_NUMBER_SUCCESS,
@@ -7,15 +7,10 @@ import {
 } from '../actions/order';
 
 describe('order reducer', () => {
-  let initialState: InitialOrdersStateType = {
-    orderNumber: null,
-    orderRequest: false,
-    orderFailed: false,
-    orderFailedMessage: '',
-  };
+  let localInitialState = initialState;
 
   beforeEach(() => {
-    initialState = {
+    localInitialState = {
       orderNumber: null,
       orderRequest: false,
       orderFailed: false,
@@ -25,7 +20,7 @@ describe('order reducer', () => {
 
   it('should return initial state', () => {
     const unknownAction = 'UNKNOWN_ACTION' as unknown as OrderAction;
-    expect(orderReducer(undefined, unknownAction)).toEqual(initialState);
+    expect(orderReducer(undefined, unknownAction)).toEqual(localInitialState);
   });
 
   it('should set orderRequest flag after FETCH_ORDER_NUMBER_REQUEST action', () => {
@@ -40,7 +35,7 @@ describe('order reducer', () => {
       orderFailedMessage: '',
     };
 
-    const resultingState = orderReducer(initialState, action);
+    const resultingState = orderReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -59,7 +54,7 @@ describe('order reducer', () => {
       orderFailedMessage: '',
     };
 
-    const resultingState = orderReducer(initialState, action);
+    const resultingState = orderReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -78,7 +73,7 @@ describe('order reducer', () => {
       orderFailedMessage: ERROR_MESSAGE,
     };
 
-    const resultingState = orderReducer(initialState, action);
+    const resultingState = orderReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });
@@ -89,7 +84,7 @@ describe('order reducer', () => {
       type: DELETE_ORDER_NUMBER,
     };
 
-    initialState = {
+    localInitialState = {
       orderNumber: ORDER_NUMBER,
       orderRequest: false,
       orderFailed: false,
@@ -103,7 +98,7 @@ describe('order reducer', () => {
       orderFailedMessage: '',
     };
 
-    const resultingState = orderReducer(initialState, action);
+    const resultingState = orderReducer(localInitialState, action);
 
     expect(resultingState).toEqual(expectedState);
   });

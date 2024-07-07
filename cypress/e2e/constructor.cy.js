@@ -24,48 +24,11 @@ describe('constructor page testing', () => {
   });
 
   it('should drag bun and not bun ingredients into constructor', () => {
-    const dataTransfer = new DataTransfer();
     // Перетаскивание булки в конструктор
-    cy.get('@mockBun')
-      .should('be.visible')
-      .and('exist');
-    cy.get('@emptyTopBun')
-      .should('be.visible')
-      .and('exist');
-
-    cy.get('@mockBun')
-      .trigger('dragstart', {
-        dataTransfer
-      });
-
-    cy.get('@emptyTopBun')
-      .trigger('dragover', {
-        dataTransfer
-      });
-
-    cy.get('@emptyTopBun')
-      .trigger('drop', {
-        dataTransfer
-      });
+    cy.dragAndDrop('@mockBun', '@emptyTopBun');
 
     // Перетаскивание начинки в конструктор
-    cy.get('@mockNotBun')
-      .should('be.visible');
-
-    cy.get('@mockNotBun')
-      .trigger('dragstart', {
-        dataTransfer
-      });
-
-    cy.get('@emptyFilling')
-      .trigger('dragover', {
-        dataTransfer
-      });
-
-    cy.get('@emptyFilling')
-      .trigger('drop', {
-        dataTransfer
-      });
+    cy.dragAndDrop('@mockNotBun', '@emptyFilling');
 
     // Проверка на то, ожидаемые в конструкторе елементы появились в конструкторе
     cy.get('[data-cy="not-empty-top-bun"]').contains(' (верх)');
@@ -88,48 +51,12 @@ describe('constructor page testing', () => {
 
   it('should make order', () => {
     cy.get('[data-cy="make-order-btn"]').as('makeOrderBtn');
-    // Заполняем конструктор
-    const dataTransfer = new DataTransfer();
-    cy.get('@mockBun')
-      .should('be.visible')
-      .and('exist');
-    cy.get('@emptyTopBun')
-      .should('be.visible')
-      .and('exist');
 
-    cy.get('@mockBun')
-      .trigger('dragstart', {
-        dataTransfer
-      });
-
-    cy.get('@emptyTopBun')
-      .trigger('dragover', {
-        dataTransfer
-      });
-
-    cy.get('@emptyTopBun')
-      .trigger('drop', {
-        dataTransfer
-      });
+    // Перетаскивание булки в конструктор
+    cy.dragAndDrop('@mockBun', '@emptyTopBun');
 
     // Перетаскивание начинки в конструктор
-    cy.get('@mockNotBun')
-      .should('be.visible');
-
-    cy.get('@mockNotBun')
-      .trigger('dragstart', {
-        dataTransfer
-      });
-
-    cy.get('@emptyFilling')
-      .trigger('dragover', {
-        dataTransfer
-      });
-
-    cy.get('@emptyFilling')
-      .trigger('drop', {
-        dataTransfer
-      });
+    cy.dragAndDrop('@mockNotBun', '@emptyFilling');
 
     // Проверка на то, ожидаемые в конструкторе елементы появились в конструкторе
     cy.get('[data-cy="not-empty-top-bun"]').contains(' (верх)');

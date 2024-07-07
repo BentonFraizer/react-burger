@@ -35,3 +35,28 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('dragAndDrop', (source, target) => {
+  const dataTransfer = new DataTransfer();
+  cy.get(source)
+    .should('be.visible')
+    .and('exist');
+  cy.get(target)
+    .should('be.visible')
+    .and('exist');
+
+  cy.get(source)
+    .trigger('dragstart', {
+      dataTransfer
+    });
+
+  cy.get(target)
+    .trigger('dragover', {
+      dataTransfer
+    });
+
+  cy.get(target)
+    .trigger('drop', {
+      dataTransfer
+    });
+});

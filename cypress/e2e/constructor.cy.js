@@ -8,10 +8,14 @@ describe('constructor page testing', () => {
     );
     cy.viewport(1300, 900);
     cy.visit('/');
+    cy.get('[data-cy="643d69a5c3f7b9001cfa093c"]').as('mockBun');
+    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]').as('mockNotBun');
+    cy.get('[data-cy="empty-top-bun"]').as('emptyTopBun');
+    cy.get('[data-cy="empty-filling"]').as('emptyFilling');
   });
 
   it('should render correctly', () => {
-    cy.get('.burger-ingredients_subtitle__zwGyL')
+    cy.get('[data-cy="page-subtitle"]')
       .should('have.text', 'Соберите бургер');
     cy.get('[data-cy="burger-ingredients"]')
       .should('be.visible');
@@ -22,125 +26,118 @@ describe('constructor page testing', () => {
   it('should drag bun and not bun ingredients into constructor', () => {
     const dataTransfer = new DataTransfer();
     // Перетаскивание булки в конструктор
-    cy.get('.ingredients-item_ingredient-item__9yfer')
-      .first()
+    cy.get('@mockBun')
       .should('be.visible')
       .and('exist');
-    cy.get('[data-cy="empty-top-bun"]')
+    cy.get('@emptyTopBun')
       .should('be.visible')
       .and('exist');
 
-    cy.get('.ingredients-item_ingredient-item__9yfer')
-      .first()
+    cy.get('@mockBun')
       .trigger('dragstart', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-top-bun"]')
+    cy.get('@emptyTopBun')
       .trigger('dragover', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-top-bun"]')
+    cy.get('@emptyTopBun')
       .trigger('drop', {
         dataTransfer
       });
 
     // Перетаскивание начинки в конструктор
-    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]')
+    cy.get('@mockNotBun')
       .should('be.visible');
 
-    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]')
-      .first()
+    cy.get('@mockNotBun')
       .trigger('dragstart', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-filling"]')
+    cy.get('@emptyFilling')
       .trigger('dragover', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-filling"]')
+    cy.get('@emptyFilling')
       .trigger('drop', {
         dataTransfer
       });
 
     // Проверка на то, ожидаемые в конструкторе елементы появились в конструкторе
-    cy.get('.burger-constructor_bun-top__2iC4h').contains(' (верх)');
-    cy.get('.draggable-constructor-element_constructor-element__gAumO')
+    cy.get('[data-cy="not-empty-top-bun"]').contains(' (верх)');
+    cy.get('[data-cy="not-empty-filling"]')
       .contains('Моковое филе Люминесцентного тетраодонтимформа');
   });
 
   it('should open and close ingredient modal with description', () => {
-    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]').click();
-    cy.location().should((loc) => {
-      expect(loc.toString()).to.eq(
-        'http://localhost:3000/ingredients/643d69a5c3f7b9001cfa093e'
-      );
-    });
-    cy.get('[data-cy="modal"]').should('be.visible');
-    cy.get('[data-cy="modal"]').contains('Детали ингредиента');
-    cy.get('[data-cy="modal"]').contains('Калории, ккал');
-    cy.get('[data-cy="modal"]').contains('643');
+    const MOCK_BUN_ROUTE = 'http://localhost:3000/ingredients/643d69a5c3f7b9001cfa093e';
+    cy.get('@mockNotBun').click();
+    cy.get('[data-cy="modal"]').as('modal');
+    cy.location().should((loc) => expect(loc.toString()).to.eq(MOCK_BUN_ROUTE));
+    cy.get('@modal').should('be.visible');
+    cy.get('@modal').contains('Детали ингредиента');
+    cy.get('@modal').contains('Калории, ккал');
+    cy.get('@modal').contains('643');
     cy.get('[data-cy="close-modal-btn"]').click();
-    cy.get('[data-cy="modal"]').should('not.exist');
+    cy.get('@modal').should('not.exist');
   });
 
   it('should make order', () => {
+    cy.get('[data-cy="make-order-btn"]').as('makeOrderBtn');
     // Заполняем конструктор
     const dataTransfer = new DataTransfer();
-    cy.get('.ingredients-item_ingredient-item__9yfer')
-      .first()
+    cy.get('@mockBun')
       .should('be.visible')
       .and('exist');
-    cy.get('[data-cy="empty-top-bun"]')
+    cy.get('@emptyTopBun')
       .should('be.visible')
       .and('exist');
 
-    cy.get('.ingredients-item_ingredient-item__9yfer')
-      .first()
+    cy.get('@mockBun')
       .trigger('dragstart', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-top-bun"]')
+    cy.get('@emptyTopBun')
       .trigger('dragover', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-top-bun"]')
+    cy.get('@emptyTopBun')
       .trigger('drop', {
         dataTransfer
       });
 
     // Перетаскивание начинки в конструктор
-    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]')
+    cy.get('@mockNotBun')
       .should('be.visible');
 
-    cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]')
-      .first()
+    cy.get('@mockNotBun')
       .trigger('dragstart', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-filling"]')
+    cy.get('@emptyFilling')
       .trigger('dragover', {
         dataTransfer
       });
 
-    cy.get('[data-cy="empty-filling"]')
+    cy.get('@emptyFilling')
       .trigger('drop', {
         dataTransfer
       });
 
     // Проверка на то, ожидаемые в конструкторе елементы появились в конструкторе
-    cy.get('.burger-constructor_bun-top__2iC4h').contains(' (верх)');
-    cy.get('.draggable-constructor-element_constructor-element__gAumO')
+    cy.get('[data-cy="not-empty-top-bun"]').contains(' (верх)');
+    cy.get('[data-cy="not-empty-filling"]')
       .contains('Моковое филе Люминесцентного тетраодонтимформа');
 
     // Проверияем, что кнопка "Оформить заказ" теперь активна и кликаем по ней
-    cy.get('[data-cy="make-order-btn"]').should('not.be.disabled').click();
+    cy.get('@makeOrderBtn').should('not.be.disabled').click();
 
     // Вводим данные для входа
     cy.get('[data-cy="login-email-input"]').type('superuser3000@mail.ru');
@@ -155,7 +152,8 @@ describe('constructor page testing', () => {
     );
 
     // Снова наживаем кнопку "Форомить заказ"
-    cy.get('[data-cy="make-order-btn"]').should('not.be.disabled').click();
+    cy.get('@makeOrderBtn').should('not.be.disabled').click();
+    cy.get('[data-cy="modal"]').as('modal');
     cy.intercept(
       'POST',
       'api/orders',
@@ -163,16 +161,16 @@ describe('constructor page testing', () => {
         fixture: 'order.json'
       }
     );
-    cy.get('[data-cy="modal"]').should('be.visible');
-    cy.get('[data-cy="modal"]').contains('44710');
-    cy.get('[data-cy="modal"]').contains('идентификатор заказа');
-    cy.get('[data-cy="modal"]').contains('Ваш заказ начали готовить');
+    cy.get('@modal').should('be.visible');
+    cy.get('@modal').contains('44710');
+    cy.get('@modal').contains('идентификатор заказа');
+    cy.get('@modal').contains('Ваш заказ начали готовить');
     cy.get('[data-cy="close-modal-btn"]').click();
-    cy.get('[data-cy="modal"]').should('not.exist');
+    cy.get('@modal').should('not.exist');
 
     // Проверяем, что конструктор пустой и кнопка "Оформить заказ" не активна
-    cy.get('[data-cy="empty-top-bun"]').should('exist');
-    cy.get('[data-cy="empty-filling"]').should('exist');
-    cy.get('[data-cy="make-order-btn"]').should('be.disabled');
+    cy.get('@emptyTopBun').should('exist');
+    cy.get('@emptyFilling').should('exist');
+    cy.get('@makeOrderBtn').should('be.disabled');
   });
 });

@@ -106,7 +106,7 @@ function BurgerConstructor() {
   return (
     <div className={s['burger-constructor']} data-cy='burger-constructor'>
       {bun === null ? <EmptyBun type={'top'} />
-        : <div className={isDraggingClass} ref={dropTargetForTopBun}>
+        : <div className={isDraggingClass} ref={dropTargetForTopBun} data-cy='not-empty-top-bun'>
           <ConstructorElement
             type='top'
             isLocked={true}
@@ -118,7 +118,11 @@ function BurgerConstructor() {
         </div>
       }
       {constructorIngredients.length !== 0
-        ? <ul className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`} ref={dropTargetForFillings}>
+        ? <ul
+          className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`}
+          ref={dropTargetForFillings}
+          data-cy='not-empty-filling'
+        >
           {constructorIngredients.map((main, index) => <DraggableConstructorElement
             key={main.uniqueId}
             index={index}

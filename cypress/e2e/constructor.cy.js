@@ -8,6 +8,9 @@ describe('constructor page testing', () => {
     );
     cy.viewport(1300, 900);
     cy.visit('/');
+    // Удаляем токены
+    window.localStorage.removeItem('refreshToken', JSON.stringify('test-refreshToken'));
+    window.localStorage.removeItem('accessToken', JSON.stringify('test-accessToken'));
     cy.get('[data-cy="643d69a5c3f7b9001cfa093c"]').as('mockBun');
     cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]').as('mockNotBun');
     cy.get('[data-cy="empty-top-bun"]').as('emptyTopBun');
@@ -50,6 +53,24 @@ describe('constructor page testing', () => {
   });
 
   it('should make order', () => {
+    cy.intercept(
+      'POST',
+      'api/auth/login',
+      {
+        fixture: 'user.json'
+      }
+    );
+    cy.intercept(
+      'POST',
+      'api/orders',
+      {
+        fixture: 'order.json'
+      }
+    );
+
+    // Устанавливаем токены
+    window.localStorage.setItem('refreshToken', JSON.stringify('test-refreshToken'));
+    window.localStorage.setItem('accessToken', JSON.stringify('test-accessToken'));
     cy.get('[data-cy="make-order-btn"]').as('makeOrderBtn');
 
     // Перетаскивание булки в конструктор
@@ -70,24 +91,11 @@ describe('constructor page testing', () => {
     cy.get('[data-cy="login-email-input"]').type('superuser3000@mail.ru');
     cy.get('[data-cy="login-password-input"]').type('root001');
     cy.get('[data-cy="login-submit-btn"]').click();
-    cy.intercept(
-      'POST',
-      'api/auth/login',
-      {
-        fixture: 'user.json'
-      }
-    );
 
-    // Снова наживаем кнопку "Форомить заказ"
+    // Снова наживаем кнопку "Офромить заказ"
     cy.get('@makeOrderBtn').should('not.be.disabled').click();
     cy.get('[data-cy="modal"]').as('modal');
-    cy.intercept(
-      'POST',
-      'api/orders',
-      {
-        fixture: 'order.json'
-      }
-    );
+
     cy.get('@modal').should('be.visible');
     cy.get('@modal').contains('44710');
     cy.get('@modal').contains('идентификатор заказа');

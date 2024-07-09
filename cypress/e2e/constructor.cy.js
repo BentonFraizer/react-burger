@@ -8,13 +8,16 @@ describe('constructor page testing', () => {
     );
     cy.viewport(1300, 900);
     cy.visit('/');
-    // Удаляем токены
-    window.localStorage.removeItem('refreshToken', JSON.stringify('test-refreshToken'));
-    window.localStorage.removeItem('accessToken', JSON.stringify('test-accessToken'));
     cy.get('[data-cy="643d69a5c3f7b9001cfa093c"]').as('mockBun');
     cy.get('[data-cy="643d69a5c3f7b9001cfa093e"]').as('mockNotBun');
     cy.get('[data-cy="empty-top-bun"]').as('emptyTopBun');
     cy.get('[data-cy="empty-filling"]').as('emptyFilling');
+  });
+
+  afterEach('should clean tokens', () => {
+    // Удаляем токены
+    window.localStorage.removeItem('refreshToken', JSON.stringify('test-refreshToken'));
+    window.localStorage.removeItem('accessToken', JSON.stringify('test-accessToken'));
   });
 
   it('should render correctly', () => {

@@ -1,11 +1,11 @@
 import { SET_INGREDIENT_DETAILS, DELETE_INGREDIENT_DETAILS } from '../actions/ingredient-details';
 import Ingredient from '../../types/ingredient';
 
-type InitialStateType = {
+export type InitialIngredientDetailsStateType = {
   ingredientDetails: null | Ingredient
 }
 
-const initialState: InitialStateType = {
+export const initialState: InitialIngredientDetailsStateType = {
   ingredientDetails: null,
 };
 
@@ -16,8 +16,11 @@ export type IngredientDetailsAction = {
   payload?: Ingredient | null;
 };
 
-// eslint-disable-next-line default-param-last
-export const ingredientDetailsReducer = (state: InitialStateType = initialState, action: IngredientDetailsAction) => {
+export const ingredientDetailsReducer = (
+  // eslint-disable-next-line default-param-last
+  state: InitialIngredientDetailsStateType = initialState,
+  action: IngredientDetailsAction
+) => {
   switch (action.type) {
     case SET_INGREDIENT_DETAILS: {
       return {

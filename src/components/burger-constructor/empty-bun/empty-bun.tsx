@@ -12,6 +12,7 @@ type EmptyBunProps = {
 function EmptyBun({ type }: EmptyBunProps): JSX.Element {
   const dispatch = useAppDispatch();
   const positionClass = type === 'top' ? s['constructor-element_pos_top'] : s['constructor-element_pos_bottom'];
+  const dataAttributeType = type === 'top' ? 'empty-top-bun' : 'empty-bottom-bun';
 
   const [{ canDrop }, dropTarget] = useDrop({
     accept: 'bun',
@@ -25,7 +26,11 @@ function EmptyBun({ type }: EmptyBunProps): JSX.Element {
 
   const isDraggingClass = canDrop ? s['is-dragging'] : '';
 
-  return <div className={`${s['constructor-element']}  ${positionClass} ${isDraggingClass}`} ref={dropTarget}>
+  return <div
+    className={`${s['constructor-element']} ${positionClass} ${isDraggingClass}`}
+    ref={dropTarget}
+    data-cy={dataAttributeType}
+  >
     <span className={s['constructor-element__row']}>Выберите булки</span>
   </div>;
 }

@@ -34,7 +34,7 @@ function Modal({ title, children, onClose }: ModalProps): JSX.Element {
 
   return (
     createPortal(
-      <div className={s.modal}>
+      <div className={s.modal} data-cy='modal'>
         <div className={s['modal-wrapper']}>
           <ModalOverlay onClose={onClose} />
           <div className={s['modal-content']}>
@@ -42,7 +42,7 @@ function Modal({ title, children, onClose }: ModalProps): JSX.Element {
               <p className='text text_type_main-large'>
                 {title}
               </p>
-              <div className={s['close-btn']} onClick={handleCloseBtnClick}>
+              <div className={s['close-btn']} onClick={handleCloseBtnClick} data-cy='close-modal-btn'>
                 <CloseIcon type='primary' />
               </div>
             </div>

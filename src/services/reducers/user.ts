@@ -16,7 +16,7 @@ import {
 } from '../actions/user';
 import { User } from '../../types';
 
-type InitialStateType = {
+export type InitialUserStateType = {
   user: User | null,
   userRequest: boolean,
   userFailed: boolean,
@@ -29,7 +29,7 @@ type InitialStateType = {
   logoutFailed: boolean,
 };
 
-const initialState: InitialStateType = {
+export const initialState: InitialUserStateType = {
   user: null,
   userRequest: false,
   userFailed: false,
@@ -64,7 +64,7 @@ export type UserAction = {
 };
 
 // eslint-disable-next-line default-param-last
-export const userReducer = (state: InitialStateType = initialState, action: UserAction) => {
+export const userReducer = (state: InitialUserStateType = initialState, action: UserAction) => {
   switch (action.type) {
     case SET_AUTH_CHECKED:
       return {

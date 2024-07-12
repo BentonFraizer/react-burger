@@ -79,8 +79,8 @@ function BurgerIngredients() {
   const groupedIngredients = groupIngredientsByType(data as Ingredient[]);
 
   return (
-    <div className={s['burger-ingredients']}>
-      <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`}>
+    <div className={s['burger-ingredients']} data-cy='burger-ingredients'>
+      <p className={`${s.subtitle} text text_type_main-large mt-10 mb-5`} data-cy='page-subtitle'>
         Соберите бургер
       </p>
       <div className={s['tabs-wrapper']}>

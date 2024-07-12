@@ -1,5 +1,5 @@
 import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,6 @@ import { RootState } from '../../services/types';
 import {
   addConstructorBun,
   addConstructorIngredient,
-  getConstructorBun,
-  getConstructorIngredients,
   removeConstructorIngredient,
 } from '../../services/actions/constructor-ingredients';
 import { deleteOrderNumber, getOrderNumber } from '../../services/actions/order';
@@ -35,11 +33,6 @@ function BurgerConstructor() {
   const isInitialMount = useRef(true);
 
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getConstructorIngredients());
-    dispatch(getConstructorBun());
-  }, [dispatch]);
 
   const totalPrice = useMemo(() => {
     if (bun === null && constructorIngredients.length === 0) {
@@ -111,9 +104,9 @@ function BurgerConstructor() {
 
   const isMakeOrderBtnDisabled = bun === null || constructorIngredients.length === 0;
   return (
-    <div className={s['burger-constructor']}>
+    <div className={s['burger-constructor']} data-cy='burger-constructor'>
       {bun === null ? <EmptyBun type={'top'} />
-        : <div className={isDraggingClass} ref={dropTargetForTopBun}>
+        : <div className={isDraggingClass} ref={dropTargetForTopBun} data-cy='not-empty-top-bun'>
           <ConstructorElement
             type='top'
             isLocked={true}
@@ -125,7 +118,11 @@ function BurgerConstructor() {
         </div>
       }
       {constructorIngredients.length !== 0
-        ? <ul className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`} ref={dropTargetForFillings}>
+        ? <ul
+          className={`${s['constructor-elements__wrapper']} ${isFillingDraggingClass}`}
+          ref={dropTargetForFillings}
+          data-cy='not-empty-filling'
+        >
           {constructorIngredients.map((main, index) => <DraggableConstructorElement
             key={main.uniqueId}
             index={index}
@@ -157,6 +154,7 @@ function BurgerConstructor() {
           </div>
         </div>
         <Button
+          data-cy='make-order-btn'
           htmlType='button'
           type='primary'
           size='medium'

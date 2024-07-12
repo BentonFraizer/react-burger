@@ -1,15 +1,13 @@
 import {
   ADD_CONSTRUCTOR_BUN,
   ADD_CONSTRUCTOR_INGREDIENT,
-  GET_CONSTRUCTOR_BUN,
-  GET_CONSTRUCTOR_INGREDIENTS,
   MOVE_CONSTRUCTOR_INGREDIENT,
   REMOVE_CONSTRUCTOR_INGREDIENT,
   CLEAR_CONSTRUCTOR,
 } from '../actions/constructor-ingredients';
 import { Ingredient, UniqueIdIngredient } from '../../types';
 
-type InitialConstructorStateType = {
+export type InitialConstructorStateType = {
   bun: Ingredient | null,
   constructorIngredients: UniqueIdIngredient[] | [],
   counters: {
@@ -18,7 +16,7 @@ type InitialConstructorStateType = {
   };
 }
 
-const initialState: InitialConstructorStateType = {
+export const initialState: InitialConstructorStateType = {
   bun: null,
   constructorIngredients: [],
   counters: {
@@ -27,12 +25,10 @@ const initialState: InitialConstructorStateType = {
   },
 };
 
-type ActionTypes =
+export type ActionTypes =
   typeof ADD_CONSTRUCTOR_INGREDIENT
   | typeof REMOVE_CONSTRUCTOR_INGREDIENT
-  | typeof GET_CONSTRUCTOR_INGREDIENTS
   | typeof ADD_CONSTRUCTOR_BUN
-  | typeof GET_CONSTRUCTOR_BUN
   | typeof MOVE_CONSTRUCTOR_INGREDIENT
   | typeof CLEAR_CONSTRUCTOR
 
@@ -96,12 +92,6 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
 
       return state;
     }
-    case GET_CONSTRUCTOR_INGREDIENTS: {
-      return {
-        ...state,
-        constructorIngredients: [...state.constructorIngredients],
-      };
-    }
     case ADD_CONSTRUCTOR_BUN: {
       const ingredient = action.payload as UniqueIdIngredient;
       const { _id } = ingredient;
@@ -113,12 +103,6 @@ export const constructorReducer = (state: InitialConstructorStateType = initialS
           ...state.counters,
           buns: { [_id]: 2 },
         },
-      };
-    }
-    case GET_CONSTRUCTOR_BUN: {
-      return {
-        ...state,
-        bun: state.bun,
       };
     }
     case MOVE_CONSTRUCTOR_INGREDIENT: {

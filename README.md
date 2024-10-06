@@ -9,14 +9,14 @@ The website allows to:
 - **register** and **log in** to the website;
 - **correct** your profile data;
 - **add** buns and ingredients into burgers constructor using **drag-n-dron**;
-- **watch** ingredient information in modal window. (Without gh-pages you could open modal reload page and see the modal again);
+- **watch** ingredient information in modal window. (Without gh-pages you could open modal, reload page and see the modal again);
 - **watch** last 50 orders of all website users by **WebSocket** in realtime;
 - **use** routes for authenticated and unauthenticated users. Try to make order!;
 - **make** orders;
 - **watch** all new orders on a feed page by **WebSocket** in realtime;
 
 ---
-## [Stellar Burger](https://bentonfraizer.github.io/react-burger/)
+## [Check the demo of Stellar Burger](https://bentonfraizer.github.io/react-burger/)
 
 <img src="https://github.com/BentonFraizer/react-burger/blob/main/.github/workflows/stellar-burger.png" width="769" />
 
@@ -45,5 +45,6 @@ npm install
 ```
 4. run in the **dev** mode with:
 ```
-npm start
+npm run start
 ```
+5. click to the link: http://localhost:3000/react-burger
